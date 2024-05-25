@@ -1,18 +1,15 @@
 #include <Arduino.h>
-#include "Utils/LCDManager.h"
-#include "Utils/PageManager.h"
-#include "Utils/KeypadHandler.h"
-#include "Pages/HomePage.h"
+#include "./Utils/LCDManager.h"
+#include "./Utils/PageManager.h"
+#include "./Utils/KeypadHandler.h"
 
-// LCD and Page Manager Setup
-LCDManager lcdManager;
-PageManager pageManager;
+LCDManager lcdManager;   // Direct instantiation of LCDManager
+PageManager pageManager; // Direct instantiation of PageManager
 
 void setup()
 {
   lcdManager.init();
-  pageManager.setPage("menu");
-  pageManager.displayCurrentPage(lcdManager.getLCD());
+  pageManager.setPage(PageManager::INFO_PAGE);
 }
 
 void loop()

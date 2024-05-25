@@ -1,14 +1,16 @@
 #include "InfoPage.h"
+#include "../Utils/PageManager.h"
 
-void displayInfoPage(LiquidCrystal_I2C &lcd, int subpage)
+PageManager pageManager;
+
+void displayInfoPage(LiquidCrystal_I2C &lcd, int subpage, char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);
+
     if (subpage == 0)
     {
         lcd.print("Info Page");
-        lcd.setCursor(0, 1);
-        lcd.print("Some Information");
     }
     else if (subpage == 1)
     {
@@ -17,5 +19,14 @@ void displayInfoPage(LiquidCrystal_I2C &lcd, int subpage)
     else if (subpage == 2)
     {
         lcd.print("Info Subpage 2");
+    }
+
+    if (key == '<')
+    {
+        pageManager.previousSubpage();
+    }
+    else if (key == '>')
+    {
+        pageManager.nextSubpage();
     }
 }

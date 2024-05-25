@@ -1,4 +1,5 @@
 #include "KeypadHandler.h"
+#include "PageManager.h"
 
 const byte KEYPAD_ROWS = 4;
 const byte KEYPAD_COLS = 4;
@@ -17,29 +18,6 @@ void handleKeypad(LCDManager &lcdManager, PageManager &pageManager)
     char key = customKeypad.getKey();
     if (key)
     {
-        if (key == '>')
-        {
-            pageManager.nextSubpage();
-        }
-        else if (key == '<')
-        {
-            pageManager.previousSubpage();
-        }
-        else
-        {
-            switch (key)
-            {
-            case 'A':
-                pageManager.setPage("home");
-                break;
-            case 'B':
-                pageManager.setPage("settings");
-                break;
-            case 'C':
-                pageManager.setPage("info");
-                break;
-            }
-        }
-        pageManager.displayCurrentPage(lcdManager.getLCD());
+        pageManager.displayCurrentPage(lcdManager.getLCD(), key);
     }
 }

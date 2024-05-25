@@ -2,20 +2,34 @@
 #define PAGEMANAGER_H
 
 #include <LiquidCrystal_I2C.h>
+#include "../Pages/MenuPage.h"
+#include "../Pages/SettingsPage.h"
+#include "../Pages/InfoPage.h"
 
 class PageManager
 {
 public:
-    PageManager() : currentPage("home"), currentSubpage(0) {}
+    enum PageState
+    {
+        MENU_PAGE,
+        HOME_PAGE,
+        SETTINGS_PAGE,
+        INFO_PAGE
+    };
 
-    void setPage(const char *page);
+    PageManager();
+    void setPage(PageState page);
+    PageState getPageState() const;
+    void displayCurrentPage(LiquidCrystal_I2C &lcd, char key = '\0');
     void nextSubpage();
     void previousSubpage();
-    void displayCurrentPage(LiquidCrystal_I2C &lcd);
+    void resetSubpage();
+    int getCurrentSubpage() const;
 
 private:
-    const char *currentPage;
+    PageState currentState;
     int currentSubpage;
+    bool editing;
 };
 
 #endif

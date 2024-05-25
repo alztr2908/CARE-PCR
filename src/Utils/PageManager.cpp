@@ -1,18 +1,44 @@
 #include "PageManager.h"
-#include "Pages/HomePage.h"
-#include "Pages/SettingsPage.h"
-#include "Pages/InfoPage.h"
-#include "Pages/MenuPage.h"
 
-void PageManager::setPage(const char *page)
+PageManager::PageManager() : currentState(MENU_PAGE), currentSubpage(0), editing(false)
 {
-    currentPage = page;
-    currentSubpage = 0;
+    // Initialize subpages if needed
+}
+
+void PageManager::setPage(PageState page)
+{
+    currentState = page;
+    resetSubpage();
+}
+
+PageManager::PageState PageManager::getPageState() const
+{
+    return currentState;
+}
+
+void PageManager::displayCurrentPage(LiquidCrystal_I2C &lcd, char key)
+{
+    switch (currentState)
+    {
+    // case MENU_PAGE:
+    //     displayMenuPage(lcd, *this, currentSubpage, key);
+    //     break;
+    // case HOME_PAGE:
+    //     // Implement home page display
+    //     break;
+    // case SETTINGS_PAGE:
+    //     displaySettingsPage(lcd, *this, currentSubpage, key);
+    //     break;
+    case INFO_PAGE:
+        displayInfoPage(lcd, currentSubpage, key);
+        break;
+    }
 }
 
 void PageManager::nextSubpage()
 {
     currentSubpage++;
+    // You may want to add checks to cycle through subpages or limit the number
 }
 
 void PageManager::previousSubpage()
@@ -21,28 +47,14 @@ void PageManager::previousSubpage()
     {
         currentSubpage--;
     }
-    else
-    {
-        setPage("menu");
-    }
 }
 
-void PageManager::displayCurrentPage(LiquidCrystal_I2C &lcd)
+void PageManager::resetSubpage()
 {
-    if (strcmp(currentPage, "home") == 0)
-    {
-        displayHomePage(lcd, currentSubpage);
-    }
-    else if (strcmp(currentPage, "settings") == 0)
-    {
-        displaySettingsPage(lcd, currentSubpage);
-    }
-    else if (strcmp(currentPage, "info") == 0)
-    {
-        displayInfoPage(lcd, currentSubpage);
-    }
-    else if (strcmp(currentPage, "menu") == 0)
-    {
-        displayMenuPage(lcd, currentSubpage);
-    }
+    currentSubpage = 0;
+}
+
+int PageManager::getCurrentSubpage() const
+{
+    return currentSubpage;
 }

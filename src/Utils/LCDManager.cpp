@@ -1,10 +1,12 @@
 #include "LCDManager.h"
 
-LCDManager::LCDManager() : lcd(0x27, 16, 2) {}
+LCDManager::LCDManager() : lcd(0x27, 20, 4)
+{
+}
 
 void LCDManager::init()
 {
-    lcd.begin(16, 2);
+    lcd.begin(20, 4);
     lcd.init();
     lcd.backlight();
 }
