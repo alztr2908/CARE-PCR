@@ -3,6 +3,7 @@
 
 #include <LiquidCrystal_I2C.h>
 #include "../Pages/MenuPage.h"
+#include "../Pages/HomePage.h"
 #include "../Pages/SettingsPage.h"
 #include "../Pages/InfoPage.h"
 

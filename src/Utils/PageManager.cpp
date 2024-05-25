@@ -39,16 +39,18 @@ void PageManager::handleMenuSelection(LiquidCrystal_I2C &lcd, char key)
 {
     switch (key)
     {
+    case 'A':
+        setPage(PageManager::HOME_PAGE);
+        displayHomePage(lcd, 0, '\0');
+        break;
     case 'B':
         setPage(PageManager::SETTINGS_PAGE);
-        currentState = getPageState();
         displaySettingsPage(lcd, 0, '\0');
         break;
-        // case 'B':
-        //     currentState = SAVED_EXPERIMENT;
-        //     currentScreenIndex = 0;
-        //     displaySavedExperiment('\0');
-        //     break;
+    case 'C':
+        setPage(PageManager::INFO_PAGE);
+        displayInfoPage(lcd, 0, '\0');
+        break;
     }
 }
 

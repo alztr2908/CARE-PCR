@@ -23,6 +23,9 @@ void handleKeypad(LCDManager &lcdManager, PageManager &pageManager)
         case PageManager::MENU_PAGE:
             pageManager.handleMenuSelection(lcdManager.getLCD(), key);
             break;
+        case PageManager::HOME_PAGE:
+            displayHomePage(lcdManager.getLCD(), 0, key);
+            break;
         case PageManager::SETTINGS_PAGE:
             displaySettingsPage(lcdManager.getLCD(), 0, key);
             break;
