@@ -18,6 +18,17 @@ void handleKeypad(LCDManager &lcdManager, PageManager &pageManager)
     char key = customKeypad.getKey();
     if (key)
     {
-        pageManager.displayCurrentPage(lcdManager.getLCD(), key);
+        switch (pageManager.getPageState())
+        {
+        case PageManager::MENU_PAGE:
+            pageManager.handleMenuSelection(lcdManager.getLCD(), key);
+            break;
+        case PageManager::SETTINGS_PAGE:
+            displaySettingsPage(lcdManager.getLCD(), 0, key);
+            break;
+        case PageManager::INFO_PAGE:
+            displayInfoPage(lcdManager.getLCD(), 0, key);
+            break;
+        }
     }
 }

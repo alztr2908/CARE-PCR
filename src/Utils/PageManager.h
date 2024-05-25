@@ -21,11 +21,12 @@ public:
 
     void setPage(PageState page);
     PageState getPageState() const;
-    void displayCurrentPage(LiquidCrystal_I2C &lcd, char key = '\0');
+    // void displayCurrentPage(LiquidCrystal_I2C &lcd, char key = '\0');
     void nextSubpage();
     void previousSubpage();
     void resetSubpage();
-    int getCurrentSubpage() const;
+    void handleMenuSelection(LiquidCrystal_I2C &lcd, char key = '\0');
+    // int getCurrentSubpage() const;
 
     // Declare pageManager as extern
     static PageManager pageManager; // Declaration

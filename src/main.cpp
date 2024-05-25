@@ -31,7 +31,8 @@ void setup()
 {
   lcdManager.init();
   displayWelcome();
-  /*pageManager.displayCurrentPage(lcdManager.getLCD(), '\0'); */
+  displayMenuPage(lcdManager.getLCD(), 0, '\0');
+  /*pageManager.displayCurrentPage(lcdManager.getLCD(), '\0');*/
 }
 
 void loop()

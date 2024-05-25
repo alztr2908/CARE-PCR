@@ -24,12 +24,13 @@ void displayMenuPage(LiquidCrystal_I2C &lcd, int subpage, char key)
     //     pageManager.setPage(PageManager::HOME_PAGE);
     // }
     // else
-    if (key == 'B')
-    {
-        pageManager.setPage(PageManager::SETTINGS_PAGE);
-    }
-    else if (key == 'C')
-    {
-        pageManager.setPage(PageManager::INFO_PAGE);
-    }
+    // if (key == 'B')
+    // {
+    //     pageManager.setPage(PageManager::SETTINGS_PAGE);
+    //     displaySettingsPage(lcd, 0, '\0');
+    // }
+    // else if (key == 'C')
+    // {
+    //     pageManager.setPage(PageManager::INFO_PAGE);
+    // }
 }
