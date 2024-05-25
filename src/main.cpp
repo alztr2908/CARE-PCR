@@ -11,7 +11,7 @@ PageManager pageManager;
 void setup()
 {
   lcdManager.init();
-  pageManager.setPage("home");
+  pageManager.setPage("menu");
   pageManager.displayCurrentPage(lcdManager.getLCD());
 }
 

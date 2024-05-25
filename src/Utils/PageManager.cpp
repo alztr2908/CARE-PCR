@@ -2,6 +2,7 @@
 #include "Pages/HomePage.h"
 #include "Pages/SettingsPage.h"
 #include "Pages/InfoPage.h"
+#include "Pages/MenuPage.h"
 
 void PageManager::setPage(const char *page)
 {
@@ -20,6 +21,10 @@ void PageManager::previousSubpage()
     {
         currentSubpage--;
     }
+    else
+    {
+        setPage("menu");
+    }
 }
 
 void PageManager::displayCurrentPage(LiquidCrystal_I2C &lcd)
@@ -35,5 +40,9 @@ void PageManager::displayCurrentPage(LiquidCrystal_I2C &lcd)
     else if (strcmp(currentPage, "info") == 0)
     {
         displayInfoPage(lcd, currentSubpage);
+    }
+    else if (strcmp(currentPage, "menu") == 0)
+    {
+        displayMenuPage(lcd, currentSubpage);
     }
 }
