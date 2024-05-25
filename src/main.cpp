@@ -1,10 +1,8 @@
 #include <Arduino.h>
-#include "LCDManager.h"
-#include "PageManager.h"
-#include "KeypadHandler.h"
-#include "HomePage.h"
-#include "SettingsPage.h"
-#include "InfoPage.h"
+#include "Utils/LCDManager.h"
+#include "Utils/PageManager.h"
+#include "Utils/KeypadHandler.h"
+#include "Pages/HomePage.h"
 
 // LCD and Page Manager Setup
 LCDManager lcdManager;

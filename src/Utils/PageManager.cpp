@@ -1,7 +1,7 @@
 #include "PageManager.h"
-#include "HomePage.h"
-#include "SettingsPage.h"
-#include "InfoPage.h"
+#include "Pages/HomePage.h"
+#include "Pages/SettingsPage.h"
+#include "Pages/InfoPage.h"
 
 void PageManager::setPage(const char *page)
 {
