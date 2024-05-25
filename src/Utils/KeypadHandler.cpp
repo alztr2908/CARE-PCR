@@ -20,17 +20,14 @@ void handleKeypad(LCDManager &lcdManager, PageManager &pageManager)
     {
         switch (pageManager.getPageState())
         {
-        case PageManager::MENU_PAGE:
+        case PageManager::MENU:
             pageManager.handleMenuSelection(lcdManager.getLCD(), key);
             break;
-        case PageManager::HOME_PAGE:
-            displayHomePage(lcdManager.getLCD(), 0, key);
+        case PageManager::NEW_EXPERIMENT:
+            displayNewExperiment(lcdManager.getLCD(), 0, key);
             break;
-        case PageManager::SETTINGS_PAGE:
-            displaySettingsPage(lcdManager.getLCD(), 0, key);
-            break;
-        case PageManager::INFO_PAGE:
-            displayInfoPage(lcdManager.getLCD(), 0, key);
+        case PageManager::SAVED_EXPERIMENT:
+            displaySavedExperiment(lcdManager.getLCD(), 0, key);
             break;
         }
     }

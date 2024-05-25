@@ -1,6 +1,6 @@
 #include "PageManager.h"
 
-PageManager::PageManager() : currentState(MENU_PAGE), currentSubpage(0), editing(false)
+PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false)
 {
     // Initialize subpages if needed
 }
@@ -40,16 +40,12 @@ void PageManager::handleMenuSelection(LiquidCrystal_I2C &lcd, char key)
     switch (key)
     {
     case 'A':
-        setPage(PageManager::HOME_PAGE);
-        displayHomePage(lcd, 0, '\0');
+        setPage(PageManager::NEW_EXPERIMENT);
+        displayNewExperiment(lcd, 0, '\0');
         break;
     case 'B':
-        setPage(PageManager::SETTINGS_PAGE);
-        displaySettingsPage(lcd, 0, '\0');
-        break;
-    case 'C':
-        setPage(PageManager::INFO_PAGE);
-        displayInfoPage(lcd, 0, '\0');
+        setPage(PageManager::SAVED_EXPERIMENT);
+        displaySavedExperiment(lcd, 0, '\0');
         break;
     }
 }

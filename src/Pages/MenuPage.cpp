@@ -8,16 +8,13 @@ void displayMenuPage(LiquidCrystal_I2C &lcd, int subpage, char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("Menu Page");
-
-    lcd.setCursor(0, 1);
-    lcd.print("A: Home");
-
+    lcd.print("CARE-PCR");
+    lcd.setCursor(15, 0);
+    lcd.print("11:59");
     lcd.setCursor(0, 2);
-    lcd.print("B: Settings");
-
+    lcd.print("A-Add new experiment");
     lcd.setCursor(0, 3);
-    lcd.print("C: Info");
+    lcd.print("B-Saved experiment");
 
     // if (key == 'A')
     // {

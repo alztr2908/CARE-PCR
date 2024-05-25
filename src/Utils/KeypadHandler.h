@@ -5,9 +5,8 @@
 #include "PageManager.h"
 #include "LCDManager.h"
 #include "../Pages/MenuPage.h"
-#include "../Pages/HomePage.h"
-#include "../Pages/SettingsPage.h"
-#include "../Pages/InfoPage.h"
+#include "../Pages/NewExperimentPage.h"
+#include "../Pages/SavedExperimentPage.h"
 
 // Keypad Setup
 extern const byte KEYPAD_ROWS;

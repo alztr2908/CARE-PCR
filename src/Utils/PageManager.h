@@ -3,19 +3,17 @@
 
 #include <LiquidCrystal_I2C.h>
 #include "../Pages/MenuPage.h"
-#include "../Pages/HomePage.h"
-#include "../Pages/SettingsPage.h"
-#include "../Pages/InfoPage.h"
+#include "../Pages/NewExperimentPage.h"
+#include "../Pages/SavedExperimentPage.h"
 
 class PageManager
 {
 public:
     enum PageState
     {
-        MENU_PAGE,
-        HOME_PAGE,
-        SETTINGS_PAGE,
-        INFO_PAGE
+        MENU,
+        NEW_EXPERIMENT,
+        SAVED_EXPERIMENT,
     };
 
     PageManager();
