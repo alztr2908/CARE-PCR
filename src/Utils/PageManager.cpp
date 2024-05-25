@@ -20,15 +20,15 @@ void PageManager::displayCurrentPage(LiquidCrystal_I2C &lcd, char key)
 {
     switch (currentState)
     {
-    // case MENU_PAGE:
-    //     displayMenuPage(lcd, *this, currentSubpage, key);
-    //     break;
+    case MENU_PAGE:
+        displayMenuPage(lcd, currentSubpage, key);
+        break;
     // case HOME_PAGE:
     //     // Implement home page display
     //     break;
-    // case SETTINGS_PAGE:
-    //     displaySettingsPage(lcd, *this, currentSubpage, key);
-    //     break;
+    case SETTINGS_PAGE:
+        displaySettingsPage(lcd, currentSubpage, key);
+        break;
     case INFO_PAGE:
         displayInfoPage(lcd, currentSubpage, key);
         break;

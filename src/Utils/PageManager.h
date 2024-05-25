@@ -18,6 +18,7 @@ public:
     };
 
     PageManager();
+
     void setPage(PageState page);
     PageState getPageState() const;
     void displayCurrentPage(LiquidCrystal_I2C &lcd, char key = '\0');
@@ -25,6 +26,9 @@ public:
     void previousSubpage();
     void resetSubpage();
     int getCurrentSubpage() const;
+
+    // Declare pageManager as extern
+    static PageManager pageManager; // Declaration
 
 private:
     PageState currentState;

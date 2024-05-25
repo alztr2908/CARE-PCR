@@ -6,5 +6,5 @@
 
 class PageManager;
 
-void displayMenuPage(LiquidCrystal_I2C &lcd, PageManager &pageManager, int subpage, char key);
+void displayMenuPage(LiquidCrystal_I2C &lcd, int subpage, char key);
 #endif

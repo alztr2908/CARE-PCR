@@ -1,9 +1,10 @@
 #include "MenuPage.h"
 #include "../Utils/PageManager.h"
 
-PageManager pageManager;
+// Declare the extern variable to access the existing instance
+extern PageManager pageManager;
 
-void displayMenuPage(LiquidCrystal_I2C &lcd, PageManager &pageManager, int subpage, char key)
+void displayMenuPage(LiquidCrystal_I2C &lcd, int subpage, char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -18,11 +19,12 @@ void displayMenuPage(LiquidCrystal_I2C &lcd, PageManager &pageManager, int subpa
     lcd.setCursor(0, 3);
     lcd.print("C: Info");
 
-    if (key == 'A')
-    {
-        pageManager.setPage(PageManager::HOME_PAGE);
-    }
-    else if (key == 'B')
+    // if (key == 'A')
+    // {
+    //     pageManager.setPage(PageManager::HOME_PAGE);
+    // }
+    // else
+    if (key == 'B')
     {
         pageManager.setPage(PageManager::SETTINGS_PAGE);
     }

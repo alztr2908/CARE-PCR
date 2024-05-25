@@ -1,7 +1,10 @@
 #include "SettingsPage.h"
 #include "../Utils/PageManager.h"
 
-void displaySettingsPage(LiquidCrystal_I2C &lcd, PageManager &pageManager, int subpage, char key)
+// Declare the extern variable to access the existing instance
+extern PageManager pageManager;
+
+void displaySettingsPage(LiquidCrystal_I2C &lcd, int subpage, char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);

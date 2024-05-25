@@ -3,6 +3,6 @@
 
 #include <LiquidCrystal_I2C.h>
 
-void displaySettingsPage(LiquidCrystal_I2C &lcd, PageManager &pageManager, int subpage, char key);
+void displaySettingsPage(LiquidCrystal_I2C &lcd, int subpage, char key);
 
 #endif
