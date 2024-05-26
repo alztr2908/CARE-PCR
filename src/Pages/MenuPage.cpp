@@ -1,10 +1,13 @@
 #include "MenuPage.h"
 #include "../Utils/PageManager.h"
+#include "../Utils/LCDManager.h"
 
 // Declare the extern variable to access the existing instance
 extern PageManager pageManager;
 
-void displayMenuPage(LiquidCrystal_I2C &lcd, int subpage, char key)
+LiquidCrystal_I2C lcd = lcdManager.getLCD();
+
+void displayMenuPage(int subpage, char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);

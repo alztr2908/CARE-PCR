@@ -3,10 +3,11 @@
 
 #include <Keypad.h>
 #include "PageManager.h"
-#include "LCDManager.h"
 #include "../Pages/MenuPage.h"
 #include "../Pages/NewExperimentPage.h"
 #include "../Pages/SavedExperimentPage.h"
+
+class PageManager;
 
 // Keypad Setup
 extern const byte KEYPAD_ROWS;
@@ -16,6 +17,6 @@ extern byte rowPins[4];
 extern byte colPins[4];
 extern Keypad customKeypad;
 
-void handleKeypad(LCDManager &lcdManager, PageManager &pageManager);
+void handleKeypad();
 
 #endif

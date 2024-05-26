@@ -1,6 +1,9 @@
 #include "KeypadHandler.h"
 #include "PageManager.h"
 
+// Declare the extern variable to access the existing instance
+extern PageManager pageManager;
+
 const byte KEYPAD_ROWS = 4;
 const byte KEYPAD_COLS = 4;
 char keys[KEYPAD_ROWS][KEYPAD_COLS] = {
@@ -13,7 +16,7 @@ byte colPins[KEYPAD_COLS] = {7, 6, 5, 4};
 
 Keypad customKeypad = Keypad(makeKeymap(keys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
 
-void handleKeypad(LCDManager &lcdManager, PageManager &pageManager)
+void handleKeypad()
 {
     char key = customKeypad.getKey();
     if (key)
@@ -21,14 +24,14 @@ void handleKeypad(LCDManager &lcdManager, PageManager &pageManager)
         switch (pageManager.getPageState())
         {
         case PageManager::MENU:
-            pageManager.handleMenuSelection(lcdManager.getLCD(), key);
+            pageManager.handleMenuSelection(key);
             break;
-        case PageManager::NEW_EXPERIMENT:
-            displayNewExperiment(lcdManager.getLCD(), 0, key);
-            break;
-        case PageManager::SAVED_EXPERIMENT:
-            displaySavedExperiment(lcdManager.getLCD(), 0, key);
-            break;
+            // case PageManager::NEW_EXPERIMENT:
+            //     displayNewExperiment(lcdManager.getLCD(), 0, key);
+            //     break;
+            // case PageManager::SAVED_EXPERIMENT:
+            //     displaySavedExperiment(lcdManager.getLCD(), 0, key);
+            //     break;
         }
     }
 }

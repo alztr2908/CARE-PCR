@@ -35,20 +35,27 @@ PageManager::PageState PageManager::getPageState() const
 //     }
 // }
 
-void PageManager::handleMenuSelection(LiquidCrystal_I2C &lcd, char key)
+void PageManager::handleMenuSelection(char key)
 {
     switch (key)
     {
     case 'A':
         setPage(PageManager::NEW_EXPERIMENT);
-        displayNewExperiment(lcd, 0, '\0');
+        // displayNewExperiment(lcd, 0, '\0');
         break;
     case 'B':
         setPage(PageManager::SAVED_EXPERIMENT);
-        displaySavedExperiment(lcd, 0, '\0');
+        // displaySavedExperiment(lcd, 0, '\0');
         break;
     }
 }
+
+// void PageManager::handleReturnMenuSelection(char key)
+// {
+//     setPage(PageManager::MENU);
+//     lcd.clear();
+//     displayMenuPage(0, '\0');
+// }
 
 void PageManager::nextSubpage()
 {
@@ -58,10 +65,13 @@ void PageManager::nextSubpage()
 
 void PageManager::previousSubpage()
 {
-    if (currentSubpage > 0)
-    {
-        currentSubpage--;
-    }
+    currentSubpage--;
+    // if (currentSubpage == 0){
+    //     handleReturnMenuSelection();
+    // } else {
+    //     currentSubpage--;
+
+    // }
 }
 
 void PageManager::resetSubpage()

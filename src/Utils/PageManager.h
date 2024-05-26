@@ -24,7 +24,8 @@ public:
     void nextSubpage();
     void previousSubpage();
     void resetSubpage();
-    void handleMenuSelection(LiquidCrystal_I2C &lcd, char key = '\0');
+    void handleMenuSelection(char key = '\0');
+    // void handleReturnMenuSelection(LiquidCrystal_I2C &lcd, char key);
     // int getCurrentSubpage() const;
 
     // Declare pageManager as extern
