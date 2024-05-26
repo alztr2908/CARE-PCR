@@ -1,6 +1,6 @@
 #ifndef NEWEXPERIMENTPAGE_H
 #define NEWEXPERIMENT_H
 
-void displayNewExperiment(int subpage, char key);
+void displayNewExperiment(char key = '\0');
 
 #endif

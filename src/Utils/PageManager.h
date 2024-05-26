@@ -25,9 +25,13 @@ public:
     void previousSubpage();
     void resetSubpage();
     void handleMenuSelection(char key = '\0');
+    void handleNewExperimentSelection(char key = '\0');
     void handleSavedExperimentSelection(char key = '\0');
     void handleReturnMenuSelection();
     int getCurrentSubpage() const;
+
+    // For global variable purposes only.. delete if thermocycler is added
+    String name = "";
 
 private:
     PageState currentState;

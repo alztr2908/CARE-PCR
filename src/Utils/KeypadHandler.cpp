@@ -24,7 +24,7 @@ void handleKeypad()
             pageManager.handleMenuSelection(key);
             break;
         case PageManager::NEW_EXPERIMENT:
-            displayNewExperiment(0, key);
+            pageManager.handleNewExperimentSelection(key);
             break;
         case PageManager::SAVED_EXPERIMENT:
             pageManager.handleSavedExperimentSelection(key);

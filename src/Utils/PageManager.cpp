@@ -4,7 +4,7 @@
 // Define the extern instance
 PageManager pageManager;
 
-PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false)
+PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false), name("")
 {
     // Initialize subpages if needed
 }
@@ -62,12 +62,41 @@ void PageManager::handleMenuSelection(char key)
     {
     case 'A':
         setPageState(PageManager::NEW_EXPERIMENT);
-        displayNewExperiment(0, '\0');
+        displayNewExperiment();
         break;
     case 'B':
         setPageState(PageManager::SAVED_EXPERIMENT);
         displaySavedExperiment('\0');
         break;
+    }
+}
+
+void PageManager::handleNewExperimentSelection(char key)
+{
+    if (key == '>')
+    {
+        nextSubpage();
+        if (getCurrentSubpage() > 1)
+        {
+            resetSubpage();
+        }
+        displayNewExperiment();
+    }
+    else if (key == '<')
+    {
+        if (getCurrentSubpage() == 0)
+        {
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            previousSubpage();
+            displayNewExperiment();
+        }
+    }
+    else
+    {
+        displayNewExperiment(key);
     }
 }
 
