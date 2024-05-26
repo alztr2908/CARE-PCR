@@ -47,13 +47,18 @@ int PageManager::getCurrentSubpage() const
     return currentSubpage;
 }
 
+void PageManager::setCurrentSubPage(int subpage)
+{
+    currentSubpage = subpage;
+}
+
 void PageManager::handleReturnMenuSelection()
 {
     setPageState(PageManager::MENU);
     resetSubpage();
     lcd.clear();
     lcd.delay(500);
-    displayMenuPage(0, '\0');
+    displayMenuPage();
 }
 
 void PageManager::handleMenuSelection(char key)
@@ -66,7 +71,7 @@ void PageManager::handleMenuSelection(char key)
         break;
     case 'B':
         setPageState(PageManager::SAVED_EXPERIMENT);
-        displaySavedExperiment('\0');
+        displaySavedExperiment();
         break;
     }
 }
@@ -111,7 +116,7 @@ void PageManager::handleSavedExperimentSelection(char key)
         else
         {
             previousSubpage();
-            displaySavedExperiment('\0');
+            displaySavedExperiment();
         }
     }
     else
@@ -139,13 +144,40 @@ void PageManager::handleSavedExperimentSelection(char key)
             //     displayEditExperiment('\0');
             //     // Implement Edit logic here
             // }
-            // else if (key == 'C')
-            // {
-            //     // Implement Delete logic here
-            //     currentState = DEL_EXPERIMENT;
-            //     currentScreenIndex = 0;
-            //     displayDelExperiment('\0');
-            // }
+            else if (key == 'C')
+            {
+                // Implement Delete logic here
+                setPageState(PageManager::DEL_EXPERIMENT);
+                resetSubpage();
+                displayDelExperiment();
+            }
+        }
+    }
+}
+
+void PageManager::handleDelExperimentSelection(char key)
+{
+    if (key == '>' || key == 'A')
+    {
+        // Add delete function in saved experiment list
+        handleReturnMenuSelection();
+    }
+    else if (key == '<')
+    {
+        // Go back to saved experiment option
+        currentState = SAVED_EXPERIMENT;
+        setPageState(PageManager::SAVED_EXPERIMENT);
+        setCurrentSubPage(1);
+        displaySavedExperiment();
+    }
+    else
+    {
+        if (key == 'B')
+        {
+            // Go back to saved experiment list
+            currentState = SAVED_EXPERIMENT;
+            setCurrentSubPage(0);
+            displaySavedExperiment();
         }
     }
 }

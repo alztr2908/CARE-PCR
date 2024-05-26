@@ -5,5 +5,5 @@
 #include "../Pages/MenuPage.h"
 #include "../Pages/SavedExperimentPage.h"
 
-void displayMenuPage(int subpage, char key);
+void displayMenuPage(char key = '\0');
 #endif

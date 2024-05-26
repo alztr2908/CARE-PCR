@@ -2,7 +2,7 @@
 #include "../Utils/PageManager.h"
 #include "../Utils/LCDManager.h"
 
-void displayMenuPage(int subpage, char key)
+void displayMenuPage(char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -13,19 +13,4 @@ void displayMenuPage(int subpage, char key)
     lcd.printWord("A-Add new experiment");
     lcd.setCursor(0, 3);
     lcd.printWord("B-Saved experiment");
-
-    // if (key == 'A')
-    // {
-    //     pageManager.setPage(PageManager::HOME_PAGE);
-    // }
-    // else
-    // if (key == 'B')
-    // {
-    //     pageManager.setPage(PageManager::SETTINGS_PAGE);
-    //     displaySettingsPage(lcd, 0, '\0');
-    // }
-    // else if (key == 'C')
-    // {
-    //     pageManager.setPage(PageManager::INFO_PAGE);
-    // }
 }

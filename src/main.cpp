@@ -28,7 +28,7 @@ void setup()
 {
   lcd.begin();
   displayWelcome();
-  displayMenuPage(0, '\0');
+  displayMenuPage();
 }
 
 void loop()
