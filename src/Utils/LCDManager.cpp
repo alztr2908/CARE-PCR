@@ -1,4 +1,5 @@
 #include "LCDManager.h"
+#include <Arduino.h>
 
 // Define the extern instance
 LCDManager lcd(0x27, 20, 4); // Change the address and size to match your LCD
@@ -26,6 +27,12 @@ void LCDManager::printLetter(const char &letter)
 void LCDManager::clear()
 {
     lcd.clear();
+}
+
+void LCDManager::delay(unsigned long ms)
+{
+    // Integrating arduino delay function
+    ::delay(ms);
 }
 
 void LCDManager::setCursor(int col, int row)

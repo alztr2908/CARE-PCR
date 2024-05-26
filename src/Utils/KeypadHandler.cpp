@@ -1,9 +1,6 @@
 #include "KeypadHandler.h"
 #include "PageManager.h"
 
-// Declare the extern variable to access the existing instance
-// extern PageManager pageManager;
-
 const byte KEYPAD_ROWS = 4;
 const byte KEYPAD_COLS = 4;
 char keys[KEYPAD_ROWS][KEYPAD_COLS] = {
@@ -30,7 +27,7 @@ void handleKeypad()
             displayNewExperiment(0, key);
             break;
         case PageManager::SAVED_EXPERIMENT:
-            displaySavedExperiment(0, key);
+            pageManager.handleSavedExperimentSelection(key);
             break;
         }
     }

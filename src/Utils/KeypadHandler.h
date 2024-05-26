@@ -7,8 +7,6 @@
 #include "../Pages/NewExperimentPage.h"
 #include "../Pages/SavedExperimentPage.h"
 
-class PageManager;
-
 // Keypad Setup
 extern const byte KEYPAD_ROWS;
 extern const byte KEYPAD_COLS;

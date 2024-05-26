@@ -14,6 +14,7 @@ public:
     void printLetter(const char &letter);
     void clear();
     void setCursor(int col, int row);
+    void delay(unsigned long ms);
     // Add more methods as needed
 
 private:

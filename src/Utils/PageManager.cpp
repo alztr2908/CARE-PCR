@@ -1,4 +1,5 @@
 #include "PageManager.h"
+#include "LCDManager.h"
 
 // Define the extern instance
 PageManager pageManager;
@@ -18,47 +19,6 @@ PageManager::PageState PageManager::getPageState() const
 {
     return currentState;
 }
-
-// void PageManager::displayCurrentPage(LiquidCrystal_I2C &lcd, char key)
-// {
-//     switch (currentState)
-//     {
-//         case MENU_PAGE:
-//             displayMenuPage(lcd, currentSubpage, key);
-//             break;
-//         // case HOME_PAGE:
-//         //     // Implement home page display
-//         //     break;
-//         case SETTINGS_PAGE:
-//             displaySettingsPage(lcd, currentSubpage, key);
-//             break;
-//         case INFO_PAGE:
-//             displayInfoPage(lcd, currentSubpage, key);
-//             break;
-//     }
-// }
-
-void PageManager::handleMenuSelection(char key)
-{
-    switch (key)
-    {
-    case 'A':
-        setPageState(PageManager::NEW_EXPERIMENT);
-        displayNewExperiment(0, '\0');
-        break;
-    case 'B':
-        setPageState(PageManager::SAVED_EXPERIMENT);
-        displaySavedExperiment(0, '\0');
-        break;
-    }
-}
-
-// void PageManager::handleReturnMenuSelection(char key)
-// {
-//     setPage(PageManager::MENU);
-//     lcd.clear();
-//     displayMenuPage(0, '\0');
-// }
 
 void PageManager::nextSubpage()
 {
@@ -82,7 +42,81 @@ void PageManager::resetSubpage()
     currentSubpage = 0;
 }
 
-// int PageManager::getCurrentSubpage() const
-// {
-//     return currentSubpage;
-// }
+int PageManager::getCurrentSubpage() const
+{
+    return currentSubpage;
+}
+
+void PageManager::handleReturnMenuSelection()
+{
+    setPageState(PageManager::MENU);
+    resetSubpage();
+    lcd.clear();
+    lcd.delay(500);
+    displayMenuPage(0, '\0');
+}
+
+void PageManager::handleMenuSelection(char key)
+{
+    switch (key)
+    {
+    case 'A':
+        setPageState(PageManager::NEW_EXPERIMENT);
+        displayNewExperiment(0, '\0');
+        break;
+    case 'B':
+        setPageState(PageManager::SAVED_EXPERIMENT);
+        displaySavedExperiment('\0');
+        break;
+    }
+}
+
+void PageManager::handleSavedExperimentSelection(char key)
+{
+    if (key == '<')
+    {
+        if (getCurrentSubpage() == 0)
+        {
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            previousSubpage();
+            displaySavedExperiment('\0');
+        }
+    }
+    else
+    {
+        if (getCurrentSubpage() == 0)
+        {
+            if (key == 'A' || key == 'B' || key == 'C')
+            {
+                nextSubpage();
+                displaySavedExperiment(key);
+            }
+        }
+        else if (getCurrentSubpage() == 1)
+        {
+            if (key == 'A')
+            {
+                // currentState = RUN_EXPERIMENT;
+                // currentScreenIndex = 0;
+                handleReturnMenuSelection();
+            }
+            // else if (key == 'B')
+            // {
+            //     currentState = EDIT_EXPERIMENT;
+            //     currentScreenIndex = 0;
+            //     displayEditExperiment('\0');
+            //     // Implement Edit logic here
+            // }
+            // else if (key == 'C')
+            // {
+            //     // Implement Delete logic here
+            //     currentState = DEL_EXPERIMENT;
+            //     currentScreenIndex = 0;
+            //     displayDelExperiment('\0');
+            // }
+        }
+    }
+}

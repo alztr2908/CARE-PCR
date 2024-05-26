@@ -3,8 +3,6 @@
 #include "./Utils/PageManager.h"
 #include "./Utils/KeypadHandler.h"
 
-// PageManager pageManager; // Direct instantiation of PageManager
-
 void displayWelcome()
 {
   lcd.clear();
