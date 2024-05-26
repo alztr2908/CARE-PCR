@@ -137,13 +137,13 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // currentScreenIndex = 0;
                 handleReturnMenuSelection();
             }
-            // else if (key == 'B')
-            // {
-            //     currentState = EDIT_EXPERIMENT;
-            //     currentScreenIndex = 0;
-            //     displayEditExperiment('\0');
-            //     // Implement Edit logic here
-            // }
+            else if (key == 'B')
+            {
+                // Implement Edit logic here
+                setPageState(PageManager::EDIT_EXPERIMENT);
+                resetSubpage();
+                displayEditExperiment();
+            }
             else if (key == 'C')
             {
                 // Implement Delete logic here
@@ -151,6 +151,34 @@ void PageManager::handleSavedExperimentSelection(char key)
                 resetSubpage();
                 displayDelExperiment();
             }
+        }
+    }
+}
+
+void PageManager::handleEditExperimentSelection(char key)
+{
+    if (key == '>')
+    {
+        if (getCurrentSubpage() == 5)
+        {
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            nextSubpage();
+            displayEditExperiment();
+        }
+    }
+    else if (key == '<')
+    {
+        if (getCurrentSubpage() == 0)
+        {
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            previousSubpage();
+            displayEditExperiment();
         }
     }
 }

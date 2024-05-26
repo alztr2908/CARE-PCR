@@ -29,6 +29,9 @@ void handleKeypad()
         case PageManager::SAVED_EXPERIMENT:
             pageManager.handleSavedExperimentSelection(key);
             break;
+        case PageManager::EDIT_EXPERIMENT:
+            pageManager.handleEditExperimentSelection(key);
+            break;
         case PageManager::DEL_EXPERIMENT:
             pageManager.handleDelExperimentSelection(key);
             break;
