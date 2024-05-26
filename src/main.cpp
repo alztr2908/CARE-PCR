@@ -3,8 +3,7 @@
 #include "./Utils/PageManager.h"
 #include "./Utils/KeypadHandler.h"
 
-// LCDManager lcdManager;   // Direct instantiation of LCDManager
-PageManager pageManager; // Direct instantiation of PageManager
+// PageManager pageManager; // Direct instantiation of PageManager
 
 void displayWelcome()
 {
@@ -32,7 +31,6 @@ void setup()
   lcd.begin();
   displayWelcome();
   displayMenuPage(0, '\0');
-  /*pageManager.displayCurrentPage(lcdManager.getLCD(), '\0');*/
 }
 
 void loop()

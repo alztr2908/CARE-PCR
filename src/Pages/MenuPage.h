@@ -7,7 +7,7 @@
 #include "../Pages/MenuPage.h"
 #include "../Pages/SavedExperimentPage.h"
 
-class PageManager;
+// class PageManager;
 // class LCDManager;
 
 void displayMenuPage(int subpage, char key);

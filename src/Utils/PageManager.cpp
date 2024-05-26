@@ -1,11 +1,14 @@
 #include "PageManager.h"
 
+// Define the extern instance
+PageManager pageManager;
+
 PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false)
 {
     // Initialize subpages if needed
 }
 
-void PageManager::setPage(PageState page)
+void PageManager::setPageState(PageState page)
 {
     currentState = page;
     // resetSubpage();
@@ -40,11 +43,11 @@ void PageManager::handleMenuSelection(char key)
     switch (key)
     {
     case 'A':
-        setPage(PageManager::NEW_EXPERIMENT);
+        setPageState(PageManager::NEW_EXPERIMENT);
         displayNewExperiment(0, '\0');
         break;
     case 'B':
-        setPage(PageManager::SAVED_EXPERIMENT);
+        setPageState(PageManager::SAVED_EXPERIMENT);
         displaySavedExperiment(0, '\0');
         break;
     }

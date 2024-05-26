@@ -3,7 +3,7 @@
 #include "../Utils/LCDManager.h"
 
 // Declare the extern variable to access the existing instance
-extern PageManager pageManager;
+// extern PageManager pageManager;
 
 void displayMenuPage(int subpage, char key)
 {

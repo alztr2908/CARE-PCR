@@ -18,7 +18,7 @@ public:
 
     PageManager();
 
-    void setPage(PageState page);
+    void setPageState(PageState page);
     PageState getPageState() const;
     // void displayCurrentPage(LiquidCrystal_I2C &lcd, char key = '\0');
     void nextSubpage();
@@ -28,13 +28,13 @@ public:
     // void handleReturnMenuSelection(LiquidCrystal_I2C &lcd, char key);
     // int getCurrentSubpage() const;
 
-    // Declare pageManager as extern
-    static PageManager pageManager; // Declaration
-
 private:
     PageState currentState;
     int currentSubpage;
     bool editing;
 };
+
+// Declare the extern instance
+extern PageManager pageManager;
 
 #endif

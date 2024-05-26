@@ -2,7 +2,7 @@
 #include "PageManager.h"
 
 // Declare the extern variable to access the existing instance
-extern PageManager pageManager;
+// extern PageManager pageManager;
 
 const byte KEYPAD_ROWS = 4;
 const byte KEYPAD_COLS = 4;
