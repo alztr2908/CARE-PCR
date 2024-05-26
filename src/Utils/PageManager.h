@@ -5,6 +5,7 @@
 #include "../Pages/MenuPage.h"
 #include "../Pages/NewExperimentPage.h"
 #include "../Pages/SavedExperimentPage.h"
+#include "../Pages/RunExperimentPage.h"
 #include "../Pages/EditExperimentPage.h"
 #include "../Pages/DelExperimentPage.h"
 
@@ -32,6 +33,7 @@ public:
     void handleNewExperimentSelection(char key = '\0');
     void handleSavedExperimentSelection(char key = '\0');
     void handleDelExperimentSelection(char key = '\0');
+    void handleRunExperimentSelection(char key = '\0');
     void handleEditExperimentSelection(char key = '\0');
     void handleReturnMenuSelection();
     int getCurrentSubpage() const;

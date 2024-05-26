@@ -133,9 +133,10 @@ void PageManager::handleSavedExperimentSelection(char key)
         {
             if (key == 'A')
             {
-                // currentState = RUN_EXPERIMENT;
-                // currentScreenIndex = 0;
-                handleReturnMenuSelection();
+                // Implement Run logic here
+                setPageState(PageManager::RUN_EXPERIMENT);
+                resetSubpage();
+                displayRunExperiment();
             }
             else if (key == 'B')
             {
@@ -155,6 +156,52 @@ void PageManager::handleSavedExperimentSelection(char key)
     }
 }
 
+void PageManager::handleRunExperimentSelection(char key)
+{
+    if (key == '>' && getCurrentSubpage() == 0)
+    {
+        nextSubpage();
+        displayRunExperiment();
+    }
+    else if (key == '<')
+    {
+        if (getCurrentSubpage() == 0)
+        {
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            previousSubpage();
+            displayRunExperiment();
+        }
+    }
+    else
+    {
+        if (getCurrentSubpage() == 1 || getCurrentSubpage() == 2)
+        {
+            if (key == 'A')
+            {
+                lcd.clear();
+                lcd.setCursor(0, 0);
+                lcd.printWord("AAA");
+                lcd.setCursor(0, 1);
+                lcd.printWord("Data saved");
+                lcd.setCursor(0, 2);
+                lcd.printWord("successfully");
+                lcd.delay(2000);
+                handleReturnMenuSelection();
+            }
+            else if (key == 'B')
+            {
+                handleReturnMenuSelection();
+            }
+        }
+        else
+        {
+            displayRunExperiment(key);
+        }
+    }
+}
 void PageManager::handleEditExperimentSelection(char key)
 {
     if (key == '>')
