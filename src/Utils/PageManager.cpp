@@ -41,11 +41,11 @@ void PageManager::handleMenuSelection(char key)
     {
     case 'A':
         setPage(PageManager::NEW_EXPERIMENT);
-        // displayNewExperiment(lcd, 0, '\0');
+        displayNewExperiment(0, '\0');
         break;
     case 'B':
         setPage(PageManager::SAVED_EXPERIMENT);
-        // displaySavedExperiment(lcd, 0, '\0');
+        displaySavedExperiment(0, '\0');
         break;
     }
 }

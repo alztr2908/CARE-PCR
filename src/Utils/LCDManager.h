@@ -7,15 +7,22 @@
 class LCDManager
 {
 public:
-    LCDManager();
-    void init();
-    LiquidCrystal_I2C &getLCD();
+    LCDManager(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows);
+
+    void begin();
+    void printWord(const String &message);
+    void printLetter(const char &letter);
+    void clear();
+    void setCursor(int col, int row);
+    // Add more methods as needed
 
 private:
     LiquidCrystal_I2C lcd;
+    uint8_t cols;
+    uint8_t rows;
 };
 
 // Declare the extern instance
-extern LCDManager lcdManager;
+extern LCDManager lcd;
 
 #endif

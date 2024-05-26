@@ -5,19 +5,17 @@
 // Declare the extern variable to access the existing instance
 extern PageManager pageManager;
 
-LiquidCrystal_I2C lcd = lcdManager.getLCD();
-
 void displayMenuPage(int subpage, char key)
 {
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("CARE-PCR");
+    lcd.printWord("CARE-PCR");
     lcd.setCursor(15, 0);
-    lcd.print("11:59");
+    lcd.printWord("11:59");
     lcd.setCursor(0, 2);
-    lcd.print("A-Add new experiment");
+    lcd.printWord("A-Add new experiment");
     lcd.setCursor(0, 3);
-    lcd.print("B-Saved experiment");
+    lcd.printWord("B-Saved experiment");
 
     // if (key == 'A')
     // {

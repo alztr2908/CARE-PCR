@@ -6,8 +6,6 @@
 // LCDManager lcdManager;   // Direct instantiation of LCDManager
 PageManager pageManager; // Direct instantiation of PageManager
 
-LiquidCrystal_I2C lcd = lcdManager.getLCD();
-
 void displayWelcome()
 {
   lcd.clear();
@@ -21,7 +19,7 @@ void displayWelcome()
 
     for (byte letter = 0; letter < message.length(); letter++)
     {
-      lcd.print(message[letter]);
+      lcd.printLetter(message[letter]);
       delay(50);
     }
   }
@@ -31,7 +29,7 @@ void displayWelcome()
 
 void setup()
 {
-  lcdManager.init();
+  lcd.begin();
   displayWelcome();
   displayMenuPage(0, '\0');
   /*pageManager.displayCurrentPage(lcdManager.getLCD(), '\0');*/

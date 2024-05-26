@@ -26,12 +26,12 @@ void handleKeypad()
         case PageManager::MENU:
             pageManager.handleMenuSelection(key);
             break;
-            // case PageManager::NEW_EXPERIMENT:
-            //     displayNewExperiment(lcdManager.getLCD(), 0, key);
-            //     break;
-            // case PageManager::SAVED_EXPERIMENT:
-            //     displaySavedExperiment(lcdManager.getLCD(), 0, key);
-            //     break;
+        case PageManager::NEW_EXPERIMENT:
+            displayNewExperiment(0, key);
+            break;
+        case PageManager::SAVED_EXPERIMENT:
+            displaySavedExperiment(0, key);
+            break;
         }
     }
 }
