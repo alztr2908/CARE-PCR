@@ -41,12 +41,17 @@ void setup()
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;
-  thermocyclerArray.addElement(0, tc2);
+  thermocyclerArray.addElement(1, tc2);
   Thermocycler tc3;
-  thermocyclerArray.addElement(0, tc3);
+  thermocyclerArray.addElement(2, tc3);
 
   lcd.begin();
   displayWelcome();
+
+  /* Debugging purposes */
+  // lcd.clear();
+  // lcd.printWord(thermocyclerArray.getElement(0).getProgName());
+  // delay(1000);
   displayMenuPage();
 }
 

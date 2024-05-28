@@ -11,9 +11,9 @@ private:
 public:
     ThermocyclerArray();
 
-    void addElement(int index, const Thermocycler &thermocycler);
+    void addElement(int index, Thermocycler thermocycler);
     void deleteElement(int index);
-    void modifyElement(int index, const Thermocycler &thermocycler);
+    void modifyElement(int index, Thermocycler thermocycler);
     Thermocycler getElement(int index);
 
     // const Thermocycler *getThermocyclers() const { return thermocyclerArray; }

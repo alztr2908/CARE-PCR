@@ -38,8 +38,30 @@ public:
     void handleReturnMenuSelection();
     int getCurrentSubpage() const;
 
-    // For global variable purposes only.. delete if thermocycler is added
-    String name;
+    // For global variable purposes only..
+    String inProgressProgName;
+    String currentProgName;
+
+    int currentHeatedLid;
+
+    float currentInitStepTemp;
+    int currentInitStepTime;
+
+    int currentCycleNo;
+
+    float currentFirstStepTemp;
+    int currentFirstStepTime;
+
+    float currentSecondStepTemp;
+    int currentSecondStepTime;
+
+    float currentThirdStepTemp;
+    int currentThirdStepTime;
+
+    float currentFinalStepTemp;
+    int currentFinalStepTime;
+
+    float currentFinalHoldTemp;
 
 private:
     void resetSubpage();

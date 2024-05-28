@@ -16,10 +16,10 @@ void displayNewExperiment(char key)
         lcd.printWord("Name: ");
         if (key != '\0' && key != '<' && key != '>')
         {
-            pageManager.name += key;
+            pageManager.inProgressProgName += key;
         }
         lcd.setCursor(8, 2);
-        lcd.printWord(pageManager.name);
+        lcd.printWord(pageManager.inProgressProgName);
         break;
     case 1:
         lcd.setCursor(2, 2);

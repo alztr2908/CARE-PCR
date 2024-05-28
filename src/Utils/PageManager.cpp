@@ -4,7 +4,7 @@
 // Define the extern instance
 PageManager pageManager;
 
-PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false), name("")
+PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false), inProgressProgName("")
 {
     // Initialize subpages if needed
 }
@@ -123,11 +123,26 @@ void PageManager::handleSavedExperimentSelection(char key)
     {
         if (getCurrentSubpage() == 0)
         {
-            if (key == 'A' || key == 'B' || key == 'C')
+
+            if (key == 'A')
             {
-                nextSubpage();
-                displaySavedExperiment(key);
+                currentProgName = thermocyclerArray.getElement(0).getProgName();
             }
+            else if (key == 'B')
+            {
+                currentProgName = thermocyclerArray.getElement(1).getProgName();
+            }
+            else if (key == 'C')
+            {
+                currentProgName = thermocyclerArray.getElement(2).getProgName();
+            }
+            nextSubpage();
+            displaySavedExperiment();
+            // if (key == 'A' || key == 'B' || key == 'C')
+            // {
+            //     nextSubpage();
+            //     displaySavedExperiment(key);
+            // }
         }
         else if (getCurrentSubpage() == 1)
         {

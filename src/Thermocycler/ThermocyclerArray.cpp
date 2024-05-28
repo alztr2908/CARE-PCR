@@ -6,7 +6,7 @@ ThermocyclerArray thermocyclerArray;
 
 ThermocyclerArray::ThermocyclerArray() {}
 
-void ThermocyclerArray::addElement(int index, const Thermocycler &thermocycler)
+void ThermocyclerArray::addElement(int index, Thermocycler thermocycler)
 {
     if (index >= 0 && index < 3)
     {
@@ -22,7 +22,7 @@ void ThermocyclerArray::deleteElement(int index)
     }
 }
 
-void ThermocyclerArray::modifyElement(int index, const Thermocycler &thermocycler)
+void ThermocyclerArray::modifyElement(int index, Thermocycler thermocycler)
 {
     if (index >= 0 && index < 3)
     {
