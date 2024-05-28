@@ -38,3 +38,40 @@ void displayRunExperiment(char key)
         break;
     }
 }
+
+/******
+
+case loop:
+    CurrentStep = StepArray[index]
+    currentTime = 0;
+
+    if (currentTime <= (CurrentStep.time*1000)){
+        PID();
+        if (Plate.temp >= CurrentStep.temp) {
+            currentTime = millis();
+        }
+    }
+
+    if (index > 4){
+        iCycle++;
+        index = 0;
+    } else {
+        index++
+    }
+
+    if (iCycle >= TotalCycle) {
+        STATE = final
+        iCycle = 0
+    }
+
+case final:
+    CurrentStep = StepArray[Final]
+    currentTime = 0;
+
+    if (currentTime <= (CurrentStep.time*1000)){
+        PID();
+        if (Plate.temp >= CurrentStep.temp) {
+            currentTime = millis();
+        }
+    }
+******/
