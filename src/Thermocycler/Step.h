@@ -6,31 +6,29 @@ class Step
 public:
     enum StepType
     {
-        DEFAULT,
+        NONVAL,
         INITIAL,
         DENATURATION,
         ANNEALING,
         EXTENDING,
         FINAL,
-        HOLD
+        HOLD,
     };
+
+    Step();
+
+    StepType getStepType();
+    float getStepTemperature();
+    int getStepTime();
+
+    void setStepType(StepType t);
+    void setStepTemperature(float temp);
+    void setStepTime(int tm);
 
 private:
     StepType type;
-    float temperature;
-    int time;
-
-public:
-    Step() : type(DEFAULT), temperature(0.0), time(0) {}
-    Step(StepType t, float temp, int tm) : type(t), temperature(temp), time(tm) {}
-
-    StepType getType() const { return type; }
-    float getTemperature() const { return temperature; }
-    int getTime() const { return time; }
-
-    void setType(StepType t) { type = t; }
-    void setTemperature(float temp) { temperature = temp; }
-    void setTime(int tm) { time = tm; }
+    float stepTemperature;
+    int stepTime;
 };
 
-#endif
+#endif // _STEP_H

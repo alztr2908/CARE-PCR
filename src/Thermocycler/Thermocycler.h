@@ -17,18 +17,18 @@ public:
     Thermocycler();
 
     // Functions used for setting the Step Parameters
-    void SetStep(int index, Step::StepType type, float temp, int time);
-    void ModifyStep(int index, Step::StepType type, float temp, int time);
+    void setStep(int index, Step::StepType type, float temp, int time);
+    void modifyStep(int index, Step::StepType type, float temp, int time);
 
     // Getters
-    String getProgName() const { return progName; }
-    double hasHeatedLid() const { return heatedLid; }
+    String getProgName() { return progName; }
+    double getHeatedLid() { return heatedLid; }
     // const Step *getSteps() const { return steps; }
-    float getFinalHoldTemp() const { return finalHoldTemp; }
-    int getNumCycles() const { return numCycles; }
+    float getFinalHoldTemp() { return finalHoldTemp; }
+    int getNumCycles() { return numCycles; }
 
     // Setters
-    void setProgName(const String &name) { progName = name; }
+    void setProgName(String name);
     void setHeatedLid(double lid) { heatedLid = lid; }
     void setFinalHoldTemp(float temp) { finalHoldTemp = temp; }
     void setNumCycles(int cycles) { numCycles = cycles; }

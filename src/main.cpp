@@ -27,6 +27,24 @@ void displayWelcome()
 
 void setup()
 {
+  // Initialize and add thermocyclers
+  Thermocycler tc1;
+  tc1.setProgName("Program1");
+  tc1.setHeatedLid(110.0);
+  tc1.setFinalHoldTemp(72.0);
+  tc1.setNumCycles(30);
+  tc1.setStep(0, Step::INITIAL, 95.0, 5);
+  tc1.setStep(1, Step::DENATURATION, 95.0, 30);
+  tc1.setStep(2, Step::ANNEALING, 55.0, 30);
+  tc1.setStep(3, Step::EXTENDING, 72.0, 30);
+  tc1.setStep(4, Step::FINAL, 72.0, 5);
+  thermocyclerArray.addElement(0, tc1);
+
+  Thermocycler tc2;
+  thermocyclerArray.addElement(0, tc2);
+  Thermocycler tc3;
+  thermocyclerArray.addElement(0, tc3);
+
   lcd.begin();
   displayWelcome();
   displayMenuPage();

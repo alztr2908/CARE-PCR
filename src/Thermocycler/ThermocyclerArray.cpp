@@ -1,4 +1,8 @@
 #include "ThermocyclerArray.h"
+#include "GlobalDeclarations.h"
+
+// Define the extern instance
+ThermocyclerArray thermocyclerArray;
 
 ThermocyclerArray::ThermocyclerArray() {}
 
