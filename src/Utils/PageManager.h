@@ -50,6 +50,6 @@ private:
 };
 
 // Declare the extern instance
-extern PageManager pageManager;
+// extern PageManager pageManager;
 
 #endif

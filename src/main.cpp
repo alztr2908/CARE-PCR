@@ -1,7 +1,8 @@
 #include <Arduino.h>
-#include "./Utils/LCDManager.h"
-#include "./Utils/PageManager.h"
 #include "./Utils/KeypadHandler.h"
+#include "GlobalDeclarations.h"
+// #include "./Thermocycler/Thermocycler.h"
+// #include "./Thermocycler/ThermocyclerArray.h"
 
 void displayWelcome()
 {

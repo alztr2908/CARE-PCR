@@ -24,6 +24,6 @@ private:
 };
 
 // Declare the extern instance
-extern LCDManager lcd;
+// extern LCDManager lcd;
 
 #endif

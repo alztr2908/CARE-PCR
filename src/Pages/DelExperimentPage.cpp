@@ -1,6 +1,5 @@
 #include "DelExperimentPage.h"
-#include "../Utils/PageManager.h"
-#include "../Utils/LCDManager.h"
+#include "GlobalDeclarations.h"
 
 void displayDelExperiment(char key)
 {

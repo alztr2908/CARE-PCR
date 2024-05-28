@@ -1,6 +1,5 @@
 #include "RunExperimentPage.h"
-#include "../Utils/PageManager.h"
-#include "../Utils/LCDManager.h"
+#include "GlobalDeclarations.h"
 
 void displayRunExperiment(char key)
 {

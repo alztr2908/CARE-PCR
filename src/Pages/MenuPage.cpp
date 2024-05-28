@@ -1,6 +1,5 @@
 #include "MenuPage.h"
-#include "../Utils/PageManager.h"
-#include "../Utils/LCDManager.h"
+#include "GlobalDeclarations.h"
 
 void displayMenuPage(char key)
 {

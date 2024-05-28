@@ -1,6 +1,5 @@
 #include "EditExperimentPage.h"
-#include "../Utils/PageManager.h"
-#include "../Utils/LCDManager.h"
+#include "GlobalDeclarations.h"
 
 void displayEditExperiment(char key)
 {
