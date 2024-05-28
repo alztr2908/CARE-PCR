@@ -12,7 +12,7 @@ void displayEditExperiment(char key)
 
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.printWord("AAA");
+    lcd.printWord(pageManager.currentProgName);
     lcd.printWord(" (C-TEMP T-TIME)");
     lcd.setCursor(2, 1);
     lcd.printWord(editOperationList[currentScreenIndex]);

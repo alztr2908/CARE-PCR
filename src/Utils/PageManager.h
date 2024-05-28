@@ -24,23 +24,27 @@ public:
 
     PageManager();
 
+    // Utils
     void setPageState(PageState page);
     PageState getPageState() const;
-    // void displayCurrentPage(LiquidCrystal_I2C &lcd, char key = '\0');
     void nextSubpage();
     void previousSubpage();
+    int getCurrentSubpage() const;
+
+    // Main Logic
+    void handleReturnMenuSelection();
     void handleMenuSelection(char key = '\0');
     void handleNewExperimentSelection(char key = '\0');
     void handleSavedExperimentSelection(char key = '\0');
     void handleDelExperimentSelection(char key = '\0');
     void handleRunExperimentSelection(char key = '\0');
     void handleEditExperimentSelection(char key = '\0');
-    void handleReturnMenuSelection();
-    int getCurrentSubpage() const;
 
     // For global variable purposes only..
-    String inProgressProgName;
+    String newProgName;
     String currentProgName;
+
+    int currentThermocyclerArrayIndex;
 
     int currentHeatedLid;
 
@@ -64,8 +68,10 @@ public:
     float currentFinalHoldTemp;
 
 private:
+    // Accesory methods
     void resetSubpage();
     void setCurrentSubPage(int subpage);
+
     PageState currentState;
     int currentSubpage;
     bool editing;

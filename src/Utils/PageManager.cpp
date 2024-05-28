@@ -4,11 +4,9 @@
 // Define the extern instance
 PageManager pageManager;
 
-PageManager::PageManager() : currentState(MENU), currentSubpage(0), editing(false), inProgressProgName("")
-{
-    // Initialize subpages if needed
-}
+PageManager::PageManager() {}
 
+/* UTILS */
 void PageManager::setPageState(PageState page)
 {
     currentState = page;
@@ -23,18 +21,11 @@ PageManager::PageState PageManager::getPageState() const
 void PageManager::nextSubpage()
 {
     currentSubpage++;
-    // You may want to add checks to cycle through subpages or limit the number
 }
 
 void PageManager::previousSubpage()
 {
     currentSubpage--;
-    // if (currentSubpage == 0){
-    //     handleReturnMenuSelection();
-    // } else {
-    //     currentSubpage--;
-
-    // }
 }
 
 void PageManager::resetSubpage()
@@ -52,6 +43,7 @@ void PageManager::setCurrentSubPage(int subpage)
     currentSubpage = subpage;
 }
 
+/* MAIN LOGIC */
 void PageManager::handleReturnMenuSelection()
 {
     setPageState(PageManager::MENU);
@@ -80,18 +72,51 @@ void PageManager::handleNewExperimentSelection(char key)
 {
     if (key == '>')
     {
-        nextSubpage();
-        if (getCurrentSubpage() > 1)
+        if (getCurrentSubpage() == 0)
         {
-            resetSubpage();
+            // Handle New Experiment Name Parsing
+            currentProgName = newProgName;
+
+            if (thermocyclerArray.isThermocyclerArrayFull())
+            {
+                // Clear and update
+                newProgName = "";
+                currentThermocyclerArrayIndex = thermocyclerArray.emptyElementIndex();
+
+                setPageState(PageManager::EDIT_EXPERIMENT);
+                resetSubpage();
+                displayEditExperiment();
+            }
+            else
+            {
+                // If thermocyclerArray experiments is full, proceed to next page
+                nextSubpage();
+                displayNewExperiment();
+            }
         }
-        displayNewExperiment();
+        else
+        {
+            // Clear
+            newProgName = "";
+            // Go Home
+            handleReturnMenuSelection();
+        }
     }
     else if (key == '<')
     {
         if (getCurrentSubpage() == 0)
         {
-            handleReturnMenuSelection();
+            // Handle New Experiment Name Parsing
+            if (newProgName != "")
+            {
+                String slicedString = newProgName.substring(0, newProgName.length() - 1);
+                newProgName = slicedString;
+                displayNewExperiment();
+            }
+            else
+            {
+                handleReturnMenuSelection();
+            }
         }
         else
         {
@@ -127,22 +152,20 @@ void PageManager::handleSavedExperimentSelection(char key)
             if (key == 'A')
             {
                 currentProgName = thermocyclerArray.getElement(0).getProgName();
+                currentThermocyclerArrayIndex = 0;
             }
             else if (key == 'B')
             {
                 currentProgName = thermocyclerArray.getElement(1).getProgName();
+                currentThermocyclerArrayIndex = 1;
             }
             else if (key == 'C')
             {
                 currentProgName = thermocyclerArray.getElement(2).getProgName();
+                currentThermocyclerArrayIndex = 2;
             }
             nextSubpage();
             displaySavedExperiment();
-            // if (key == 'A' || key == 'B' || key == 'C')
-            // {
-            //     nextSubpage();
-            //     displaySavedExperiment(key);
-            // }
         }
         else if (getCurrentSubpage() == 1)
         {
@@ -217,6 +240,7 @@ void PageManager::handleRunExperimentSelection(char key)
         }
     }
 }
+
 void PageManager::handleEditExperimentSelection(char key)
 {
     if (key == '>')

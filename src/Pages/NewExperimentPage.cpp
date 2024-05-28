@@ -3,7 +3,7 @@
 
 void displayNewExperiment(char key)
 {
-    String name = "";
+    const int MAX_NAME_LENGTH = 3; // Define the maximum length for the name
 
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -14,12 +14,15 @@ void displayNewExperiment(char key)
     case 0:
         lcd.setCursor(2, 2);
         lcd.printWord("Name: ");
-        if (key != '\0' && key != '<' && key != '>')
+        if (key != '\0' && key != '<' && key != '>' && (key == 'A' || key == 'B' || key == 'C'))
         {
-            pageManager.inProgressProgName += key;
+            if (pageManager.newProgName.length() < MAX_NAME_LENGTH)
+            {
+                pageManager.newProgName += key;
+            }
         }
         lcd.setCursor(8, 2);
-        lcd.printWord(pageManager.inProgressProgName);
+        lcd.printWord(pageManager.newProgName);
         break;
     case 1:
         lcd.setCursor(2, 2);

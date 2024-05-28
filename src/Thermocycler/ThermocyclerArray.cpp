@@ -6,6 +6,30 @@ ThermocyclerArray thermocyclerArray;
 
 ThermocyclerArray::ThermocyclerArray() {}
 
+bool ThermocyclerArray::isThermocyclerArrayFull()
+{
+    for (int index = 0; index < 3; index++)
+    {
+        if (thermocyclerArray[index].getProgName() == "")
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int ThermocyclerArray::emptyElementIndex()
+{
+    for (int index = 0; index < 3; index++)
+    {
+        if (thermocyclerArray[index].getProgName() == "")
+        {
+            return index;
+        }
+    }
+}
+
 void ThermocyclerArray::addElement(int index, Thermocycler thermocycler)
 {
     if (index >= 0 && index < 3)

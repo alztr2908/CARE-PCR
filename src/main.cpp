@@ -41,8 +41,10 @@ void setup()
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;
+  // tc2.setProgName("Program2");
   thermocyclerArray.addElement(1, tc2);
   Thermocycler tc3;
+  // tc3.setProgName("Program3");
   thermocyclerArray.addElement(2, tc3);
 
   lcd.begin();

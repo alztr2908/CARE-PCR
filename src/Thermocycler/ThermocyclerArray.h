@@ -11,6 +11,11 @@ private:
 public:
     ThermocyclerArray();
 
+    // Helper Functions
+    bool isThermocyclerArrayFull();
+    int emptyElementIndex();
+
+    // Operation Functions
     void addElement(int index, Thermocycler thermocycler);
     void deleteElement(int index);
     void modifyElement(int index, Thermocycler thermocycler);
