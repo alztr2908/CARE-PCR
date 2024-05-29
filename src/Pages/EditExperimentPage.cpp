@@ -3,7 +3,6 @@
 
 void displayEditExperiment(char key)
 {
-
     const String editOperationList[6] = {"Heated Lid", "Initial Step", "Cycles", "Step 1", "Step 2", "Step 3"};
     const String editOperationParams[2] = {"C- ", "T- "};
 
@@ -29,7 +28,9 @@ void displayEditExperiment(char key)
     case 0:
         lcd.setCursor(4, 2);
         lcd.printWord(editOperationParams[0]);
-        changeOption(currentAnswerField, key);
+        lcd.setCursor(7, 2);
+        changeOption(key, pageManager.currentStringFirstVal);
+        lcd.printWord(pageManager.currentStringFirstVal);
         break;
     // Initial - Temp Time
     case 1:
@@ -38,41 +39,42 @@ void displayEditExperiment(char key)
             lcd.setCursor(4, i + 2);
             lcd.printWord(editOperationParams[i]);
         }
+        // Answer fields logic
         switch (currentAnswerField)
         {
         case 0:
-            changeOption(0, key);
+            changeOption(key, pageManager.currentStringFirstVal);
             break;
         case 1:
-            changeOption(1, key);
+            changeOption(key, pageManager.currentStringSecondVal);
             break;
         }
 
-        // Answer fields logic
+        lcd.setCursor(7, 2);
+        lcd.printWord(pageManager.currentStringFirstVal);
+        lcd.setCursor(7, 3);
+        lcd.printWord(pageManager.currentStringSecondVal);
         break;
 
         // case 2:
     }
 }
 
-void changeOption(int index, char key)
+void changeOption(char key, String &currentVal)
 {
-    const int MAX_DIGIT_LENGTH = 5; // Define the maximum length for the digits
-
-    lcd.setCursor(7, index + 2);
+    const int MAX_DIGIT_LENGTH = 4; // Define the maximum length for the digits
 
     if (key != '\0' && key != '<' && key != '>' && key != 'A' && key != 'B' && key != 'C')
     {
-        if (pageManager.currentStringVal.length() < MAX_DIGIT_LENGTH)
+        if (currentVal.length() < MAX_DIGIT_LENGTH)
         {
             // Ensure a single '.' at the digit
-            if (key != '.' || parseStringFloat(pageManager.currentStringVal))
+            if (key != '.' || parseStringFloat(currentVal))
             {
-                pageManager.currentStringVal += key;
+                currentVal += key;
             }
         }
     }
-    lcd.printWord(pageManager.currentStringVal);
 }
 
 // Ensure that user can't input two '.'

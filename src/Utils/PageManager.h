@@ -46,7 +46,8 @@ public:
     String currentProgName;
 
     // Placeholder of all values
-    String currentStringVal = "";
+    String currentStringFirstVal;
+    String currentStringSecondVal;
 
     int currentThermocyclerArrayIndex;
 

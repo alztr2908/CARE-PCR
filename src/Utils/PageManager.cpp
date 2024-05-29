@@ -253,8 +253,8 @@ void PageManager::handleEditExperimentSelection(char key)
         // Heated Lid
         if (getCurrentSubpage() == 0)
         {
-            currentHeatedLid = currentStringVal.toFloat();
-            currentStringVal = "";
+            currentHeatedLid = currentStringFirstVal.toFloat();
+            currentStringFirstVal = "";
             nextSubpage();
             displayEditExperiment();
         }
@@ -263,16 +263,17 @@ void PageManager::handleEditExperimentSelection(char key)
             // Change Answer fields
             if (getCurrentAnswerField() == 1)
             {
-                currentStringVal = "";
-                currentInitStepTime = currentStringVal.toInt();
+                currentInitStepTime = currentStringSecondVal.toInt();
+
+                currentStringFirstVal = "";
+                currentStringSecondVal = "";
                 currentAnswerField = 0;
                 nextSubpage();
                 displayEditExperiment();
             }
             else
             {
-                currentInitStepTemp = currentStringVal.toFloat();
-                currentStringVal = "";
+                currentInitStepTemp = currentStringFirstVal.toFloat();
                 currentAnswerField++;
             }
         }
