@@ -82,7 +82,7 @@ void PageManager::handleNewExperimentSelection(char key)
             // Handle New Experiment Name Parsing
             currentProgName = newProgName;
 
-            if ((thermocyclerArray.isThermocyclerArrayFull()) && (!thermocyclerArray.checkThermocyclerArrayName(currentProgName)) && (currentProgName == ""))
+            if ((thermocyclerArray.isThermocyclerArrayFull()) && (!thermocyclerArray.checkThermocyclerArrayName(currentProgName)) && (currentProgName != ""))
             {
                 // Clear and update
                 newProgName = "";
