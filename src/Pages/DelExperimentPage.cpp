@@ -31,6 +31,8 @@ void displayDelExperiment(char key)
         lcd.printWord("*** DELETED");
         lcd.setCursor(2, 2);
         lcd.printWord("SUCCESSFULLY ***");
+        lcd.setCursor(5, 3);
+        lcd.printWord(">> press any...");
         break;
     }
 }

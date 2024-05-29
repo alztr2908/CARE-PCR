@@ -31,7 +31,7 @@ void displaySavedExperiment(char key)
 
     case 1:
         lcd.printWord(pageManager.currentProgName);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < numSavedExperiment; i++)
         {
             lcd.setCursor(2, i + 1);
             lcd.printWord(choiceLetterList[i]);

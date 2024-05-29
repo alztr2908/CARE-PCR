@@ -82,7 +82,7 @@ void PageManager::handleNewExperimentSelection(char key)
             // Handle New Experiment Name Parsing
             currentProgName = newProgName;
 
-            if (thermocyclerArray.isThermocyclerArrayFull())
+            if ((thermocyclerArray.isThermocyclerArrayFull()) && (!thermocyclerArray.checkThermocyclerArrayName(currentProgName)) && (currentProgName == ""))
             {
                 // Clear and update
                 newProgName = "";
@@ -95,6 +95,7 @@ void PageManager::handleNewExperimentSelection(char key)
             else
             {
                 // If thermocyclerArray experiments is full, proceed to next page
+                newProgName = "";
                 nextSubpage();
                 displayNewExperiment();
             }
@@ -153,25 +154,40 @@ void PageManager::handleSavedExperimentSelection(char key)
     {
         if (getCurrentSubpage() == 0)
         {
+            int index = -1;
 
             if (key == 'A')
             {
-                currentProgName = thermocyclerArray.getElement(0).getProgName();
-                currentThermocyclerArrayIndex = 0;
+                index = 0;
             }
             else if (key == 'B')
             {
-                currentProgName = thermocyclerArray.getElement(1).getProgName();
-                currentThermocyclerArrayIndex = 1;
+                index = 1;
             }
             else if (key == 'C')
             {
-                currentProgName = thermocyclerArray.getElement(2).getProgName();
-                currentThermocyclerArrayIndex = 2;
+                index = 2;
             }
-            nextSubpage();
-            displaySavedExperiment();
+
+            if (index != -1)
+            {
+                currentProgName = thermocyclerArray.getElement(index).getProgName();
+                currentThermocyclerArrayIndex = index;
+
+                if (currentProgName == "")
+                {
+                    setPageState(PageManager::NEW_EXPERIMENT);
+                    resetSubpage();
+                    displayNewExperiment();
+                }
+                else
+                {
+                    nextSubpage();
+                    displaySavedExperiment();
+                }
+            }
         }
+
         else if (getCurrentSubpage() == 1)
         {
             if (key == 'A')

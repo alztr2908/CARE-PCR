@@ -27,10 +27,29 @@ void displayNewExperiment(char key)
         lcd.printWord(pageManager.newProgName);
         break;
     case 1:
-        lcd.setCursor(2, 2);
-        lcd.printWord("Saved experiments");
-        lcd.setCursor(4, 3);
-        lcd.printWord("are full");
+        if (!thermocyclerArray.isThermocyclerArrayFull())
+        {
+            lcd.setCursor(2, 2);
+            lcd.printWord("Saved experiments");
+            lcd.setCursor(4, 3);
+            lcd.printWord("are full");
+        }
+        else if (pageManager.currentProgName == "")
+        {
+            lcd.setCursor(1, 2);
+            lcd.printWord("*** Please fill");
+            lcd.setCursor(2, 3);
+            lcd.printWord("up the name ***");
+        }
+        else if (thermocyclerArray.checkThermocyclerArrayName(pageManager.currentProgName))
+        {
+            lcd.setCursor(1, 2);
+            lcd.printWord("*** Name ");
+            lcd.printWord(pageManager.currentProgName);
+            lcd.printWord(" is");
+            lcd.setCursor(2, 3);
+            lcd.printWord("already taken ***");
+        }
         break;
     }
 }

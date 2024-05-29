@@ -13,6 +13,7 @@ public:
 
     // Helper Functions
     bool isThermocyclerArrayFull();
+    bool checkThermocyclerArrayName(String name);
     int emptyElementIndex();
 
     // Operation Functions

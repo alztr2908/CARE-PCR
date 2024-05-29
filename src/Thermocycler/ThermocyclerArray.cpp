@@ -19,6 +19,19 @@ bool ThermocyclerArray::isThermocyclerArrayFull()
     return false;
 }
 
+bool ThermocyclerArray::checkThermocyclerArrayName(String name)
+{
+    for (int index = 0; index < 3; index++)
+    {
+        if (thermocyclerArray[index].getProgName() == name)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int ThermocyclerArray::emptyElementIndex()
 {
     for (int index = 0; index < 3; index++)
