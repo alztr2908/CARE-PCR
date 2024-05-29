@@ -11,11 +11,12 @@ void displaySavedExperiment(char key)
     int numSavedExperiment = 3;
 
     Thermocycler currentThermocycler;
+    int currentScreenIndex = pageManager.getCurrentSubpage();
 
     lcd.clear();
     lcd.setCursor(0, 0);
 
-    switch (pageManager.getCurrentSubpage())
+    switch (currentScreenIndex)
     {
     case 0:
         lcd.printWord("Saved experiments");

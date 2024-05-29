@@ -9,7 +9,9 @@ void displayNewExperiment(char key)
     lcd.setCursor(0, 0);
     lcd.printWord("New Experiment");
 
-    switch (pageManager.getCurrentSubpage())
+    int currentScreenIndex = pageManager.getCurrentSubpage();
+
+    switch (currentScreenIndex)
     {
     case 0:
         lcd.setCursor(2, 2);

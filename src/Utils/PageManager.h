@@ -44,9 +44,12 @@ public:
     String newProgName;
     String currentProgName;
 
+    // Placeholder of all values
+    String currentStringVal = "";
+
     int currentThermocyclerArrayIndex;
 
-    int currentHeatedLid;
+    float currentHeatedLid;
 
     float currentInitStepTemp;
     int currentInitStepTime;

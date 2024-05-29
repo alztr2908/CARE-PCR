@@ -245,15 +245,18 @@ void PageManager::handleEditExperimentSelection(char key)
 {
     if (key == '>')
     {
-        if (getCurrentSubpage() == 5)
+        // Heated Lid
+        if (getCurrentSubpage() == 0)
+        {
+            currentHeatedLid = currentStringVal.toFloat();
+            currentStringVal = "";
+        }
+        else if (getCurrentSubpage() == 5)
         {
             handleReturnMenuSelection();
         }
-        else
-        {
-            nextSubpage();
-            displayEditExperiment();
-        }
+        nextSubpage();
+        displayEditExperiment();
     }
     else if (key == '<')
     {
@@ -266,6 +269,10 @@ void PageManager::handleEditExperimentSelection(char key)
             previousSubpage();
             displayEditExperiment();
         }
+    }
+    else
+    {
+        displayEditExperiment(key);
     }
 }
 
