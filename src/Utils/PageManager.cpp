@@ -378,7 +378,23 @@ void PageManager::handleEditExperimentSelection(char key)
         // Saving
         else if (getCurrentSubpage() == 8)
         {
-            handleReturnMenuSelection();
+            // Initialize and add the new/modified thermocycler
+            Thermocycler currTc = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
+            currTc.setProgName(currentProgName);
+            currTc.setHeatedLid(currentHeatedLid);
+            currTc.setStep(0, Step::INITIAL, currentInitStepTemp, currentInitStepTime);
+            currTc.setNumCycles(currentCycleNo);
+            currTc.setStep(1, Step::DENATURATION, currentFirstStepTemp, currentFirstStepTime);
+            currTc.setStep(2, Step::ANNEALING, currentSecondStepTemp, currentSecondStepTime);
+            currTc.setStep(3, Step::EXTENDING, currentThirdStepTemp, currentThirdStepTime);
+            currTc.setStep(4, Step::FINAL, currentFinalStepTemp, currentFinalStepTime);
+            currTc.setFinalHoldTemp(currentFinalHoldTemp);
+            thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
+
+            // Go back to saved experiment to see if new thermocycler has been saved
+            setPageState(PageManager::SAVED_EXPERIMENT);
+            resetSubpage();
+            displaySavedExperiment();
         }
     }
     else if (key == '<')
@@ -410,16 +426,6 @@ void PageManager::handleEditExperimentSelection(char key)
             displayEditExperiment();
             break;
         }
-
-        // if (getCurrentSubpage() == 0)
-        // {
-        //     handleReturnMenuSelection();
-        // }
-        // else
-        // {
-        //     previousSubpage();
-        //     displayEditExperiment();
-        // }
     }
     else
     {
@@ -427,7 +433,23 @@ void PageManager::handleEditExperimentSelection(char key)
         {
             if (key == 'A')
             {
-                handleReturnMenuSelection();
+                // Initialize and add the new/modified thermocycler
+                Thermocycler currTc = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
+                currTc.setProgName(currentProgName);
+                currTc.setHeatedLid(currentHeatedLid);
+                currTc.setStep(0, Step::INITIAL, currentInitStepTemp, currentInitStepTime);
+                currTc.setNumCycles(currentCycleNo);
+                currTc.setStep(1, Step::DENATURATION, currentFirstStepTemp, currentFirstStepTime);
+                currTc.setStep(2, Step::ANNEALING, currentSecondStepTemp, currentSecondStepTime);
+                currTc.setStep(3, Step::EXTENDING, currentThirdStepTemp, currentThirdStepTime);
+                currTc.setStep(4, Step::FINAL, currentFinalStepTemp, currentFinalStepTime);
+                currTc.setFinalHoldTemp(currentFinalHoldTemp);
+                thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
+
+                // Go back to saved experiment to see if new thermocycler has been saved
+                setPageState(PageManager::SAVED_EXPERIMENT);
+                resetSubpage();
+                displaySavedExperiment();
             }
             else if (key == 'B')
             {

@@ -3,12 +3,12 @@
 
 void displayEditExperiment(char key)
 {
-    const String editOperationList[8] = {"Heated Lid", "Initial Step", "Cycles", "Step 1", "Step 2", "Step 3", "Final Step", "Final Hold"};
+    const String editOperationList[8] = {"Heated Lid", "Initial Step", "Cycles", "Denaturation", "Annealing", "Extending", "Final Step", "Final Hold"};
     const String editOperationParams[2] = {"C- ", "T- "};
 
     // For saving
     const String choiceLetterList[3] = {"A- ", "B- ", "C- "};
-    const String choiceOperationList[3] = {"Save", "Edit", "Delete"};
+    const String choiceOperationList[3] = {"Save", "Edit", "Cancel"};
 
     // Counters
     int currentScreenIndex = pageManager.getCurrentSubpage();

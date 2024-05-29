@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include "./Utils/KeypadHandler.h"
 #include "GlobalDeclarations.h"
-// #include "./Thermocycler/Thermocycler.h"
-// #include "./Thermocycler/ThermocyclerArray.h"
 
 void displayWelcome()
 {
@@ -29,7 +27,7 @@ void setup()
 {
   // Initialize and add thermocyclers
   Thermocycler tc1;
-  tc1.setProgName("Program1");
+  tc1.setProgName("CAB");
   tc1.setHeatedLid(110.0);
   tc1.setFinalHoldTemp(72.0);
   tc1.setNumCycles(30);
