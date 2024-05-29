@@ -250,6 +250,7 @@ void PageManager::handleEditExperimentSelection(char key)
 {
     if (key == '>')
     {
+        /* CAN'T BE SWITCH STATEMENT DUE TO DIFF ATTR*/
         // Heated Lid
         if (getCurrentSubpage() == 0)
         {
@@ -258,6 +259,7 @@ void PageManager::handleEditExperimentSelection(char key)
             nextSubpage();
             displayEditExperiment();
         }
+        // Initial Step
         else if (getCurrentSubpage() == 1)
         {
             // Change Answer fields
@@ -277,26 +279,170 @@ void PageManager::handleEditExperimentSelection(char key)
                 currentAnswerField++;
             }
         }
+        // Cycle No.
+        else if (getCurrentSubpage() == 2)
+        {
+            currentCycleNo = currentStringFirstVal.toInt();
+            currentStringFirstVal = "";
+            nextSubpage();
+            displayEditExperiment();
+        }
+        // Step 1 - Denaturation
+        else if (getCurrentSubpage() == 3)
+        {
+            // Change Answer fields
+            if (getCurrentAnswerField() == 1)
+            {
+                currentFirstStepTime = currentStringSecondVal.toInt();
+
+                currentStringFirstVal = "";
+                currentStringSecondVal = "";
+                currentAnswerField = 0;
+                nextSubpage();
+                displayEditExperiment();
+            }
+            else
+            {
+                currentFirstStepTemp = currentStringFirstVal.toFloat();
+                currentAnswerField++;
+            }
+        }
+        // Step 1 - Annealing
+        else if (getCurrentSubpage() == 4)
+        {
+            // Change Answer fields
+            if (getCurrentAnswerField() == 1)
+            {
+                currentSecondStepTime = currentStringSecondVal.toInt();
+
+                currentStringFirstVal = "";
+                currentStringSecondVal = "";
+                currentAnswerField = 0;
+                nextSubpage();
+                displayEditExperiment();
+            }
+            else
+            {
+                currentSecondStepTemp = currentStringFirstVal.toFloat();
+                currentAnswerField++;
+            }
+        }
+        // Step 1 - Extension
         else if (getCurrentSubpage() == 5)
+        {
+            // Change Answer fields
+            if (getCurrentAnswerField() == 1)
+            {
+                currentThirdStepTime = currentStringSecondVal.toInt();
+
+                currentStringFirstVal = "";
+                currentStringSecondVal = "";
+                currentAnswerField = 0;
+                nextSubpage();
+                displayEditExperiment();
+            }
+            else
+            {
+                currentThirdStepTemp = currentStringFirstVal.toFloat();
+                currentAnswerField++;
+            }
+        }
+        // Final Step
+        else if (getCurrentSubpage() == 6)
+        {
+            // Change Answer fields
+            if (getCurrentAnswerField() == 1)
+            {
+                currentFinalStepTime = currentStringSecondVal.toInt();
+
+                currentStringFirstVal = "";
+                currentStringSecondVal = "";
+                currentAnswerField = 0;
+                nextSubpage();
+                displayEditExperiment();
+            }
+            else
+            {
+                currentFinalStepTemp = currentStringFirstVal.toFloat();
+                currentAnswerField++;
+            }
+        }
+        // Final Hold
+        else if (getCurrentSubpage() == 7)
+        {
+            currentFinalHoldTemp = currentStringFirstVal.toFloat();
+            currentStringFirstVal = "";
+            nextSubpage();
+            displayEditExperiment();
+        }
+        // Saving
+        else if (getCurrentSubpage() == 8)
         {
             handleReturnMenuSelection();
         }
     }
     else if (key == '<')
     {
-        if (getCurrentSubpage() == 0)
+        switch (getCurrentSubpage())
         {
+        case 0:
             handleReturnMenuSelection();
-        }
-        else
-        {
+            break;
+        case 1:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            if (getCurrentAnswerField() == 1)
+            {
+                currentAnswerField--;
+            }
+            else
+            {
+                currentStringFirstVal = "";
+                currentStringSecondVal = "";
+                previousSubpage();
+                displayEditExperiment();
+            }
+            break;
+        default:
             previousSubpage();
             displayEditExperiment();
+            break;
         }
+
+        // if (getCurrentSubpage() == 0)
+        // {
+        //     handleReturnMenuSelection();
+        // }
+        // else
+        // {
+        //     previousSubpage();
+        //     displayEditExperiment();
+        // }
     }
     else
     {
-        displayEditExperiment(key);
+        if (getCurrentSubpage() == 8)
+        {
+            if (key == 'A')
+            {
+                handleReturnMenuSelection();
+            }
+            else if (key == 'B')
+            {
+                resetSubpage();
+                displayEditExperiment();
+            }
+            else if (key == 'C')
+            {
+                handleReturnMenuSelection();
+            }
+        }
+        else
+        {
+            displayEditExperiment(key);
+        }
     }
 }
 

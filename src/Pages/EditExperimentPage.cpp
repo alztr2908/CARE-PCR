@@ -3,24 +3,32 @@
 
 void displayEditExperiment(char key)
 {
-    const String editOperationList[6] = {"Heated Lid", "Initial Step", "Cycles", "Step 1", "Step 2", "Step 3"};
+    const String editOperationList[8] = {"Heated Lid", "Initial Step", "Cycles", "Step 1", "Step 2", "Step 3", "Final Step", "Final Hold"};
     const String editOperationParams[2] = {"C- ", "T- "};
 
+    // For saving
+    const String choiceLetterList[3] = {"A- ", "B- ", "C- "};
+    const String choiceOperationList[3] = {"Save", "Edit", "Delete"};
+
+    // Counters
     int currentScreenIndex = pageManager.getCurrentSubpage();
     int currentAnswerField = pageManager.getCurrentAnswerField();
 
     /* Start here */
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.printWord(pageManager.currentProgName);
-    lcd.printWord("(C-Temp T-Time)");
+    if (currentScreenIndex < 8)
+    {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.printWord(pageManager.currentProgName);
+        lcd.printWord("(C-Temp T-Time)");
 
-    // Track thermocyclerArray Index
-    lcd.setCursor(19, 0);
-    lcd.printWord(String(pageManager.currentThermocyclerArrayIndex));
+        // Track thermocyclerArray Index
+        lcd.setCursor(19, 0);
+        lcd.printWord(String(pageManager.currentThermocyclerArrayIndex));
 
-    lcd.setCursor(2, 1);
-    lcd.printWord(editOperationList[currentScreenIndex]);
+        lcd.setCursor(2, 1);
+        lcd.printWord(editOperationList[currentScreenIndex]);
+    }
 
     switch (currentScreenIndex)
     {
@@ -32,8 +40,17 @@ void displayEditExperiment(char key)
         changeOption(key, pageManager.currentStringFirstVal);
         lcd.printWord(pageManager.currentStringFirstVal);
         break;
+
     // Initial - Temp Time
+    // Step 1 - Temp Time
+    // Step 2 - Temp Time
+    // Step 3 - Temp Time
+    // Final Step - Temp Time
     case 1:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
         for (int i = 0; i < 2; i++)
         {
             lcd.setCursor(4, i + 2);
@@ -56,7 +73,35 @@ void displayEditExperiment(char key)
         lcd.printWord(pageManager.currentStringSecondVal);
         break;
 
-        // case 2:
+    // Cycles - #
+    case 2:
+        lcd.setCursor(4, 2);
+        lcd.printWord("# cycles- ");
+        changeOption(key, pageManager.currentStringFirstVal);
+        lcd.printWord(pageManager.currentStringFirstVal);
+        break;
+
+        // Final Hold - Temp
+    case 7:
+        lcd.setCursor(4, 2);
+        lcd.printWord(editOperationParams[0]);
+        lcd.setCursor(7, 2);
+        changeOption(key, pageManager.currentStringFirstVal);
+        lcd.printWord(pageManager.currentStringFirstVal);
+        break;
+        break;
+
+    // Saving data
+    case 8:
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.printWord(pageManager.currentProgName);
+        for (int i = 0; i < 3; i++)
+        {
+            lcd.setCursor(2, i + 1);
+            lcd.printWord(choiceLetterList[i]);
+            lcd.printWord(choiceOperationList[i]);
+        }
     }
 }
 
