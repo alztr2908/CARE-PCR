@@ -30,6 +30,7 @@ public:
     void nextSubpage();
     void previousSubpage();
     int getCurrentSubpage() const;
+    int getCurrentAnswerField() const;
 
     // Main Logic
     void handleReturnMenuSelection();
@@ -76,6 +77,7 @@ private:
     void setCurrentSubPage(int subpage);
 
     PageState currentState;
+    int currentAnswerField;
     int currentSubpage;
     bool editing;
 };

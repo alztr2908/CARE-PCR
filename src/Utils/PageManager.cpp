@@ -38,6 +38,11 @@ int PageManager::getCurrentSubpage() const
     return currentSubpage;
 }
 
+int PageManager::getCurrentAnswerField() const
+{
+    return currentAnswerField;
+}
+
 void PageManager::setCurrentSubPage(int subpage)
 {
     currentSubpage = subpage;
@@ -250,13 +255,31 @@ void PageManager::handleEditExperimentSelection(char key)
         {
             currentHeatedLid = currentStringVal.toFloat();
             currentStringVal = "";
+            nextSubpage();
+            displayEditExperiment();
+        }
+        else if (getCurrentSubpage() == 1)
+        {
+            // Change Answer fields
+            if (getCurrentAnswerField() == 1)
+            {
+                currentStringVal = "";
+                currentInitStepTime = currentStringVal.toInt();
+                currentAnswerField = 0;
+                nextSubpage();
+                displayEditExperiment();
+            }
+            else
+            {
+                currentInitStepTemp = currentStringVal.toFloat();
+                currentStringVal = "";
+                currentAnswerField++;
+            }
         }
         else if (getCurrentSubpage() == 5)
         {
             handleReturnMenuSelection();
         }
-        nextSubpage();
-        displayEditExperiment();
     }
     else if (key == '<')
     {
