@@ -37,6 +37,8 @@ void displaySavedExperiment(char key)
             lcd.printWord(choiceLetterList[i]);
             lcd.printWord(choiceOperationList[i]);
         }
+        lcd.setCursor(19, 0);
+        lcd.printWord(String(pageManager.currentThermocyclerArrayIndex));
         break;
     }
 }

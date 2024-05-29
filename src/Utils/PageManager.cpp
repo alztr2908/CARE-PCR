@@ -472,25 +472,51 @@ void PageManager::handleDelExperimentSelection(char key)
 {
     if (key == '>' || key == 'A')
     {
-        // Add delete function in saved experiment list
-        handleReturnMenuSelection();
+        switch (getCurrentSubpage())
+        {
+        case 0:
+            // Delete thermocyclerArray element
+            thermocyclerArray.deleteElement(currentThermocyclerArrayIndex);
+            nextSubpage();
+            displayDelExperiment();
+            break;
+        default:
+            handleReturnMenuSelection();
+            break;
+        }
     }
     else if (key == '<')
     {
-        // Go back to saved experiment option
-        currentState = SAVED_EXPERIMENT;
-        setPageState(PageManager::SAVED_EXPERIMENT);
-        setCurrentSubPage(1);
-        displaySavedExperiment();
+        switch (getCurrentSubpage())
+        {
+        case 0:
+            // Go back to saved experiment option
+            currentState = SAVED_EXPERIMENT;
+            setPageState(PageManager::SAVED_EXPERIMENT);
+            setCurrentSubPage(1);
+            displaySavedExperiment();
+            break;
+        default:
+            handleReturnMenuSelection();
+            break;
+        }
     }
     else
     {
-        if (key == 'B')
+        switch (getCurrentSubpage())
         {
-            // Go back to saved experiment list
-            currentState = SAVED_EXPERIMENT;
-            setCurrentSubPage(0);
-            displaySavedExperiment();
+        case 0:
+            if (key == 'B')
+            {
+                // Go back to saved experiment list
+                currentState = SAVED_EXPERIMENT;
+                setCurrentSubPage(0);
+                displaySavedExperiment();
+            }
+            break;
+        default:
+            handleReturnMenuSelection();
+            break;
         }
     }
 }
