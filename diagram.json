@@ -3,7 +3,7 @@
     "author": "Alzter Aquino",
     "editor": "wokwi",
     "parts": [
-      { "type": "wokwi-arduino-uno", "id": "uno", "top": 0, "left": 0, "attrs": {} },
+      { "type": "wokwi-arduino-uno", "id": "uno", "top": 19.8, "left": -0.6, "attrs": {} },
       {
         "type": "wokwi-lcd2004",
         "id": "lcd1",
@@ -14,27 +14,33 @@
       {
         "type": "wokwi-membrane-keypad",
         "id": "keypad1",
-        "top": -414.8,
-        "left": 34.4,
+        "top": -386,
+        "left": 92,
         "attrs": {
           "keys": [ "1", "2", "3", "A", "4", "5", "6", "B", "7", "8", "9", "C", ".", "0", "<", ">" ]
         }
       },
-      { "type": "wokwi-microsd-card", "id": "sd1", "top": -162.97, "left": -153.53, "attrs": {} }
+      { "type": "wokwi-microsd-card", "id": "sd1", "top": -95.77, "left": -57.53, "attrs": {} }
     ],
     "connections": [
       [ "uno:GND.3", "lcd1:GND", "black", [ "v0" ] ],
       [ "uno:5V", "lcd1:VCC", "red", [ "v0" ] ],
       [ "uno:A4", "lcd1:SDA", "green", [ "v0" ] ],
       [ "uno:A5", "lcd1:SCL", "green", [ "v0" ] ],
-      [ "keypad1:C3", "uno:5", "green", [ "v9.6", "h28.65" ] ],
-      [ "keypad1:C2", "uno:6", "green", [ "v19.2", "h28.8" ] ],
-      [ "keypad1:C1", "uno:7", "green", [ "h-0.1", "v28.8", "h25.8" ] ],
-      [ "keypad1:R4", "uno:8", "green", [ "v38.4", "h19" ] ],
-      [ "keypad1:R3", "uno:9", "green", [ "v48", "h18.9" ] ],
-      [ "keypad1:R2", "uno:10", "green", [ "v57.6", "h18.8" ] ],
-      [ "keypad1:R1", "uno:11", "green", [ "v67.2", "h19.2" ] ],
-      [ "keypad1:C4", "uno:4", "green", [ "v0", "h18.9" ] ]
+      [ "uno:5V", "sd1:VCC", "red", [ "h-83.2", "v-239.64" ] ],
+      [ "uno:GND.2", "sd1:GND", "black", [ "v-9.1", "h-83.1", "v-269.4", "h-66.6" ] ],
+      [ "sd1:SCK", "uno:13", "gold", [ "h0" ] ],
+      [ "sd1:DO", "uno:12", "gold", [ "h0" ] ],
+      [ "sd1:DI", "uno:11", "gold", [ "h0" ] ],
+      [ "sd1:CS", "uno:10", "gold", [ "h0" ] ],
+      [ "keypad1:R1", "uno:9", "blue", [ "h-28.8", "v37.8" ] ],
+      [ "keypad1:R2", "uno:8", "blue", [ "v9.6", "h-29" ] ],
+      [ "keypad1:R3", "uno:7", "blue", [ "v19.2", "h-22.5" ] ],
+      [ "keypad1:R4", "uno:6", "blue", [ "v28.8", "h-22.5" ] ],
+      [ "keypad1:C1", "uno:5", "green", [ "v38.4", "h-22.5" ] ],
+      [ "uno:4", "keypad1:C2", "green", [ "v-28.8", "h23.1" ] ],
+      [ "uno:3", "keypad1:C3", "green", [ "v-19.2", "h23.35" ] ],
+      [ "uno:2", "keypad1:C4", "green", [ "h23.3", "v-57.6", "h0.3" ] ]
     ],
     "dependencies": {}
   }

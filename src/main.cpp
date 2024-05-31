@@ -4,6 +4,7 @@
 
 void displayWelcome()
 {
+  // Serial.begin(115200);
   lcd.clear();
   String messages[3] = {"UP CARE", "CARE-PCR", "AQUINO MENDOZA"};
   byte numMessages = sizeof(messages) / sizeof(messages[0]);
