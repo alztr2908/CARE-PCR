@@ -1,5 +1,5 @@
 #include "SavedExperimentPage.h"
-#include "../GlobalDeclarations.h"
+#include "GlobalDeclarations.h"
 // #include "./Thermocycler/Thermocycler.h"
 
 void displaySavedExperiment(char key)

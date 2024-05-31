@@ -1,9 +1,9 @@
 #ifndef GLOBALDECLARATIONS_H
 #define GLOBALDECLARATIONS_H
 
-#include "./Utils/LCDManager.h"
-#include "./Utils/PageManager.h"
-#include "./Thermocycler/ThermocyclerArray.h"
+#include "LCDManager.h"
+#include "PageManager.h"
+#include "ThermocyclerArray.h"
 
 extern LCDManager lcd;
 extern PageManager pageManager;

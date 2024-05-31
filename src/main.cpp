@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "./Utils/KeypadHandler.h"
+#include "KeypadHandler.h"
 #include "GlobalDeclarations.h"
 
 void displayWelcome()

@@ -2,12 +2,12 @@
 #define PAGEMANAGER_H
 
 #include <LiquidCrystal_I2C.h>
-#include "../Pages/MenuPage.h"
-#include "../Pages/NewExperimentPage.h"
-#include "../Pages/SavedExperimentPage.h"
-#include "../Pages/RunExperimentPage.h"
-#include "../Pages/EditExperimentPage.h"
-#include "../Pages/DelExperimentPage.h"
+#include "MenuPage.h"
+#include "NewExperimentPage.h"
+#include "SavedExperimentPage.h"
+#include "RunExperimentPage.h"
+#include "EditExperimentPage.h"
+#include "DelExperimentPage.h"
 
 class PageManager
 {
