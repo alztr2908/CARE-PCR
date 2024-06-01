@@ -2,15 +2,25 @@
 #include "GlobalDeclarations.h"
 #include <Arduino.h>
 
+/*
+Global
+int stepArrayIndex = 0;
+int stepTimeHolder;
+
+const long interval = 1000;
+unsigned long previousMillis;
+unsigned long currentMillis;
+
+*/
+
 void displayRunExperiment(char key)
 {
     int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
     Thermocycler currentThermocycler = thermocyclerArray.getElement(currentArrayIndex);
+    Step currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
 
     Step::StepType currentStepType;
     String currentStepTypeString;
-
-    lcd.clear();
 
     switch (pageManager.getCurrentSubpage())
     {
@@ -26,13 +36,59 @@ void displayRunExperiment(char key)
         lcd.printWord("11:59");
 
         // Step Type >> time set countdown
-        currentStepType = currentThermocycler.getStep(0).getStepType();
+        pageManager.currentMillis = millis();
+        currentStepType = currentStep.getStepType();
         currentStepTypeString = currentThermocycler.getStepTypeString(currentStepType);
         lcd.setCursor(0, 1);
         lcd.printWord(currentStepTypeString);
         lcd.setCursor(13, 1);
         lcd.printWord(">>  ");
-        lcd.printWord(String(currentThermocycler.getStep(0).getStepTime()));
+
+        // Update the stepTime countdown
+        pageManager.stepTimeHolder = currentStep.getStepTime(); // GLOBAL
+        if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
+        {
+            pageManager.previousMillis = pageManager.currentMillis;
+
+            // Decrement the step time holder if it's greater than 0
+            if (pageManager.stepTimeHolder > 0)
+            {
+                pageManager.stepTimeHolder--;
+                currentStep.setStepTime(pageManager.stepTimeHolder);
+
+                // Reflect the changes at thermocyclerArray (reverse initialization)
+                currentThermocycler.setStep(pageManager.stepArrayIndex, currentStepType, currentStep.getStepTemperature(), currentStep.getStepTime());
+                thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+            }
+            else
+            {
+                // Move to the next step if the current step time has elapsed
+                pageManager.stepArrayIndex++;
+                if (pageManager.stepArrayIndex < 5)
+                {
+                    lcd.clear();
+                    currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
+                    pageManager.stepTimeHolder = currentStep.getStepTime();
+                }
+                else
+                {
+                    // Handle end of all steps (reset or other logic)
+                    pageManager.stepArrayIndex = 0; // For example, reset to the first step
+
+                    // currentStep.setStepTime()
+
+                    currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
+                    pageManager.stepTimeHolder = currentStep.getStepTime();
+                }
+            }
+        }
+
+        // Display the remaining step time
+        if (pageManager.stepTimeHolder < 10)
+        {
+            lcd.printWord("0");
+        }
+        lcd.printWord(String(pageManager.stepTimeHolder));
         lcd.printWord("s");
 
         // Current block temp
@@ -48,6 +104,7 @@ void displayRunExperiment(char key)
         lcd.printWord("hh:mm:ss");
         break;
     case 1:
+        lcd.clear();
         lcd.setCursor(0, 1);
         lcd.printWord("SUCCESSFUL!!");
         lcd.setCursor(0, 2);
@@ -56,6 +113,7 @@ void displayRunExperiment(char key)
         lcd.printWord("A-Save B-Home");
         break;
     case 2:
+        lcd.clear();
         lcd.setCursor(0, 1);
         lcd.printWord("NOT SUCCESSFUL!!");
         lcd.setCursor(0, 2);

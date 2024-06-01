@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "KeypadHandler.h"
 #include "GlobalDeclarations.h"
+#include "RunExperimentPage.h"
 
 void displayWelcome()
 {
@@ -33,9 +34,9 @@ void setup()
   tc1.setFinalHoldTemp(72.0);
   tc1.setNumCycles(2);
   tc1.setStep(0, Step::INITIAL, 95.0, 5);
-  tc1.setStep(1, Step::DENATURATION, 95.0, 30);
-  tc1.setStep(2, Step::ANNEALING, 55.0, 30);
-  tc1.setStep(3, Step::EXTENDING, 72.0, 30);
+  tc1.setStep(1, Step::DENATURATION, 95.0, 5);
+  tc1.setStep(2, Step::ANNEALING, 55.0, 5);
+  tc1.setStep(3, Step::EXTENDING, 72.0, 5);
   tc1.setStep(4, Step::FINAL, 72.0, 5);
   thermocyclerArray.addElement(0, tc1);
 
@@ -58,5 +59,13 @@ void setup()
 
 void loop()
 {
-  handleKeypad();
+  switch (pageManager.getPageState())
+  {
+  case PageManager::RUN_EXPERIMENT:
+    displayRunExperiment();
+    break;
+  default:
+    handleKeypad();
+    break;
+  }
 }

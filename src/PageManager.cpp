@@ -195,6 +195,7 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // Implement Run logic here
                 setPageState(PageManager::RUN_EXPERIMENT);
                 resetSubpage();
+                lcd.clear();
                 displayRunExperiment();
             }
             else if (key == 'B')
@@ -219,8 +220,8 @@ void PageManager::handleRunExperimentSelection(char key)
 {
     if (key == '>' && getCurrentSubpage() == 0)
     {
-        nextSubpage();
         displayRunExperiment();
+        // nextSubpage();
     }
     else if (key == '<')
     {

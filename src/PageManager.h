@@ -45,7 +45,13 @@ public:
     String newProgName;
     String currentProgName;
 
-    // Placeholder of all values
+    // Enabling countdown functionality
+    int stepArrayIndex;
+    int stepTimeHolder;
+    unsigned long previousMillis;
+    unsigned long currentMillis;
+
+    // Placeholder of values at EDIT_EXPERIMENT
     String currentStringFirstVal;
     String currentStringSecondVal;
 
@@ -80,7 +86,6 @@ private:
     PageState currentState;
     int currentAnswerField;
     int currentSubpage;
-    bool editing;
 };
 
 // Declare the extern instance
