@@ -6,13 +6,6 @@
 
 class Thermocycler
 {
-private:
-    String progName;
-    double heatedLid;
-    Step steps[5]; // Fixed array of 6 steps
-    float finalHoldTemp;
-    int numCycles;
-
 public:
     enum ProgramType
     {
@@ -30,6 +23,7 @@ public:
     int getNumCycles() { return numCycles; }
     Step getStep(int index);
     String getStepTypeString(Step::StepType stepType);
+    ProgramType getProgType() { return ThermocyclingType; }
 
     // Setters
     void setProgName(String name);
@@ -38,6 +32,15 @@ public:
     void setNumCycles(int cycles) { numCycles = cycles; }
     void setStep(int index, Step::StepType type, float temp, int time);
     void setStepParams(int index, Step step);
+    void setProgType(ProgramType type) { ThermocyclingType = type; }
+
+private:
+    String progName;
+    ProgramType ThermocyclingType;
+    double heatedLid;
+    Step steps[5]; // Fixed array of 6 steps
+    float finalHoldTemp;
+    int numCycles;
 };
 
 #endif

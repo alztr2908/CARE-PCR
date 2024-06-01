@@ -1,6 +1,6 @@
 #include "Thermocycler.h"
 
-Thermocycler::Thermocycler() : progName(""), heatedLid(0.0), finalHoldTemp(0.0), numCycles(0)
+Thermocycler::Thermocycler() : progName(""), heatedLid(0.0), finalHoldTemp(0.0), numCycles(0), ThermocyclingType(ERunning)
 {
     // Initialize steps array to default values
     for (int i = 0; i < 5; ++i)

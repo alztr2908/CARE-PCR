@@ -214,6 +214,7 @@ void PageManager::handleSavedExperimentSelection(char key)
 
                 // Put thermocycling step params at placeholder to call at reset
                 Thermocycler currentThermocycler = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
+                currentCycleNo = currentThermocycler.getNumCycles();
 
                 Step currentStep;
                 for (int i = 0; i < 5; i++)
@@ -373,6 +374,7 @@ void PageManager::handleEditExperimentSelection(char key)
             clearFloatArray(stepTempHolder, 5);
             clearIntArray(stepTimeHolder, 5);
             stepArrayIndex = 0;
+            currentCycleNo = 0;
 
             // Go back to saved experiment to see if new thermocycler has been saved
             setPageState(PageManager::SAVED_EXPERIMENT);
@@ -390,6 +392,7 @@ void PageManager::handleEditExperimentSelection(char key)
             clearFloatArray(stepTempHolder, 5);
             clearIntArray(stepTimeHolder, 5);
             stepArrayIndex = 0;
+            currentCycleNo = 0;
 
             handleReturnMenuSelection();
             break;
@@ -441,6 +444,7 @@ void PageManager::handleEditExperimentSelection(char key)
                 clearFloatArray(stepTempHolder, 5);
                 clearIntArray(stepTimeHolder, 5);
                 stepArrayIndex = 0;
+                currentCycleNo = 0;
 
                 // Go back to saved experiment to see if new thermocycler has been saved
                 setPageState(PageManager::SAVED_EXPERIMENT);
