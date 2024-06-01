@@ -9,6 +9,8 @@
 #include "EditExperimentPage.h"
 #include "DelExperimentPage.h"
 
+#define MAX_STEPS 5
+
 class PageManager
 {
 public:
@@ -45,43 +47,34 @@ public:
     String newProgName;
     String currentProgName;
 
-    // Enabling countdown functionality
-    int stepArrayIndex;
-    int stepTimeHolder;
-    unsigned long previousMillis;
-    unsigned long currentMillis;
-
-    // Placeholder of values at EDIT_EXPERIMENT
+    // Placeholder of values at EDIT_EXPERIMENT and RUN_EXPERIMENT
     String currentStringFirstVal;
     String currentStringSecondVal;
 
+    // ThermocyclerArray parameters
     int currentThermocyclerArrayIndex;
 
+    // Thermocycling parameters
     float currentHeatedLid;
-
-    float currentInitStepTemp;
-    int currentInitStepTime;
-
     int currentCycleNo;
-
-    float currentFirstStepTemp;
-    int currentFirstStepTime;
-
-    float currentSecondStepTemp;
-    int currentSecondStepTime;
-
-    float currentThirdStepTemp;
-    int currentThirdStepTime;
-
-    float currentFinalStepTemp;
-    int currentFinalStepTime;
-
     float currentFinalHoldTemp;
+
+    // Steps
+    float stepTempHolder[MAX_STEPS];
+    int stepTimeHolder[MAX_STEPS];
+
+    // Enabling countdown functionality
+    int stepArrayIndex;
+    int currentStepTime;
+    unsigned long previousMillis;
+    unsigned long currentMillis;
 
 private:
     // Accesory methods
     void resetSubpage();
     void setCurrentSubPage(int subpage);
+    void clearIntArray(int *array, int size);
+    void clearFloatArray(float *array, int size);
 
     PageState currentState;
     int currentAnswerField;

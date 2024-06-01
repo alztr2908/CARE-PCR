@@ -48,6 +48,22 @@ void PageManager::setCurrentSubPage(int subpage)
     currentSubpage = subpage;
 }
 
+void PageManager::clearIntArray(int *array, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        array[i] = 0; // Reset each element to 0
+    }
+}
+
+void PageManager::clearFloatArray(float *array, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        array[i] = 0.0; // Reset each element to 0
+    }
+}
+
 /* MAIN LOGIC */
 void PageManager::handleReturnMenuSelection()
 {
@@ -267,151 +283,90 @@ void PageManager::handleEditExperimentSelection(char key)
 {
     if (key == '>')
     {
-        /* CAN'T BE SWITCH STATEMENT DUE TO DIFF ATTR*/
-        // Heated Lid
-        if (getCurrentSubpage() == 0)
+        switch (getCurrentSubpage())
         {
+
+        // Heated Lid
+        case 0:
             currentHeatedLid = currentStringFirstVal.toFloat();
             currentStringFirstVal = "";
+            stepArrayIndex++;
             nextSubpage();
             displayEditExperiment();
-        }
+            break;
+
         // Initial Step
-        else if (getCurrentSubpage() == 1)
-        {
+        // Step 1 - Denaturation
+        // Step 2 - Annealing
+        // Step 3 - Extension
+        // Final Step
+        case 1:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
             // Change Answer fields
             if (getCurrentAnswerField() == 1)
             {
-                currentInitStepTime = currentStringSecondVal.toInt();
+                stepTimeHolder[stepArrayIndex] = currentStringSecondVal.toInt();
 
                 currentStringFirstVal = "";
                 currentStringSecondVal = "";
+                stepArrayIndex++;
                 currentAnswerField = 0;
                 nextSubpage();
                 displayEditExperiment();
             }
             else
             {
-                currentInitStepTemp = currentStringFirstVal.toFloat();
+                stepTempHolder[stepArrayIndex] = currentStringFirstVal.toFloat();
                 currentAnswerField++;
             }
-        }
+            break;
+
         // Cycle No.
-        else if (getCurrentSubpage() == 2)
-        {
+        case 2:
             currentCycleNo = currentStringFirstVal.toInt();
             currentStringFirstVal = "";
             nextSubpage();
             displayEditExperiment();
-        }
-        // Step 1 - Denaturation
-        else if (getCurrentSubpage() == 3)
-        {
-            // Change Answer fields
-            if (getCurrentAnswerField() == 1)
-            {
-                currentFirstStepTime = currentStringSecondVal.toInt();
+            break;
 
-                currentStringFirstVal = "";
-                currentStringSecondVal = "";
-                currentAnswerField = 0;
-                nextSubpage();
-                displayEditExperiment();
-            }
-            else
-            {
-                currentFirstStepTemp = currentStringFirstVal.toFloat();
-                currentAnswerField++;
-            }
-        }
-        // Step 1 - Annealing
-        else if (getCurrentSubpage() == 4)
-        {
-            // Change Answer fields
-            if (getCurrentAnswerField() == 1)
-            {
-                currentSecondStepTime = currentStringSecondVal.toInt();
-
-                currentStringFirstVal = "";
-                currentStringSecondVal = "";
-                currentAnswerField = 0;
-                nextSubpage();
-                displayEditExperiment();
-            }
-            else
-            {
-                currentSecondStepTemp = currentStringFirstVal.toFloat();
-                currentAnswerField++;
-            }
-        }
-        // Step 1 - Extension
-        else if (getCurrentSubpage() == 5)
-        {
-            // Change Answer fields
-            if (getCurrentAnswerField() == 1)
-            {
-                currentThirdStepTime = currentStringSecondVal.toInt();
-
-                currentStringFirstVal = "";
-                currentStringSecondVal = "";
-                currentAnswerField = 0;
-                nextSubpage();
-                displayEditExperiment();
-            }
-            else
-            {
-                currentThirdStepTemp = currentStringFirstVal.toFloat();
-                currentAnswerField++;
-            }
-        }
-        // Final Step
-        else if (getCurrentSubpage() == 6)
-        {
-            // Change Answer fields
-            if (getCurrentAnswerField() == 1)
-            {
-                currentFinalStepTime = currentStringSecondVal.toInt();
-
-                currentStringFirstVal = "";
-                currentStringSecondVal = "";
-                currentAnswerField = 0;
-                nextSubpage();
-                displayEditExperiment();
-            }
-            else
-            {
-                currentFinalStepTemp = currentStringFirstVal.toFloat();
-                currentAnswerField++;
-            }
-        }
         // Final Hold
-        else if (getCurrentSubpage() == 7)
-        {
+        case 7:
             currentFinalHoldTemp = currentStringFirstVal.toFloat();
             currentStringFirstVal = "";
             nextSubpage();
             displayEditExperiment();
-        }
+            break;
+
         // Saving
-        else if (getCurrentSubpage() == 8)
-        {
+        case 8:
             // Initialize and add the new/modified thermocycler
             Thermocycler currTc = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
             currTc.setProgName(currentProgName);
             currTc.setHeatedLid(currentHeatedLid);
-            currTc.setStep(0, Step::INITIAL, currentInitStepTemp, currentInitStepTime);
             currTc.setNumCycles(currentCycleNo);
-            currTc.setStep(1, Step::DENATURATION, currentFirstStepTemp, currentFirstStepTime);
-            currTc.setStep(2, Step::ANNEALING, currentSecondStepTemp, currentSecondStepTime);
-            currTc.setStep(3, Step::EXTENDING, currentThirdStepTemp, currentThirdStepTime);
-            currTc.setStep(4, Step::FINAL, currentFinalStepTemp, currentFinalStepTime);
             currTc.setFinalHoldTemp(currentFinalHoldTemp);
+
+            currTc.setStep(0, Step::INITIAL, stepTempHolder[0], stepTimeHolder[0]);
+            currTc.setStep(1, Step::DENATURATION, stepTempHolder[1], stepTimeHolder[1]);
+            currTc.setStep(2, Step::ANNEALING, stepTempHolder[2], stepTimeHolder[2]);
+            currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
+            currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
+
             thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
+
+            // Clear and reset values
+            clearFloatArray(stepTempHolder, 5);
+            clearIntArray(stepTimeHolder, 5);
+            stepArrayIndex = 0;
 
             // Go back to saved experiment to see if new thermocycler has been saved
             setPageState(PageManager::SAVED_EXPERIMENT);
             resetSubpage();
             displaySavedExperiment();
+            break;
         }
     }
     else if (key == '<')
@@ -419,6 +374,11 @@ void PageManager::handleEditExperimentSelection(char key)
         switch (getCurrentSubpage())
         {
         case 0:
+            // Clear and reset values
+            clearFloatArray(stepTempHolder, 5);
+            clearIntArray(stepTimeHolder, 5);
+            stepArrayIndex = 0;
+
             handleReturnMenuSelection();
             break;
         case 1:
@@ -454,14 +414,21 @@ void PageManager::handleEditExperimentSelection(char key)
                 Thermocycler currTc = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
                 currTc.setProgName(currentProgName);
                 currTc.setHeatedLid(currentHeatedLid);
-                currTc.setStep(0, Step::INITIAL, currentInitStepTemp, currentInitStepTime);
                 currTc.setNumCycles(currentCycleNo);
-                currTc.setStep(1, Step::DENATURATION, currentFirstStepTemp, currentFirstStepTime);
-                currTc.setStep(2, Step::ANNEALING, currentSecondStepTemp, currentSecondStepTime);
-                currTc.setStep(3, Step::EXTENDING, currentThirdStepTemp, currentThirdStepTime);
-                currTc.setStep(4, Step::FINAL, currentFinalStepTemp, currentFinalStepTime);
                 currTc.setFinalHoldTemp(currentFinalHoldTemp);
+
+                currTc.setStep(0, Step::INITIAL, stepTempHolder[0], stepTimeHolder[0]);
+                currTc.setStep(1, Step::DENATURATION, stepTempHolder[1], stepTimeHolder[1]);
+                currTc.setStep(2, Step::ANNEALING, stepTempHolder[2], stepTimeHolder[2]);
+                currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
+                currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
+
                 thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
+
+                // Clear and reset values
+                clearFloatArray(stepTempHolder, 5);
+                clearIntArray(stepTimeHolder, 5);
+                stepArrayIndex = 0;
 
                 // Go back to saved experiment to see if new thermocycler has been saved
                 setPageState(PageManager::SAVED_EXPERIMENT);
@@ -475,6 +442,11 @@ void PageManager::handleEditExperimentSelection(char key)
             }
             else if (key == 'C')
             {
+                // Clear and reset values
+                clearFloatArray(stepTempHolder, 5);
+                clearIntArray(stepTimeHolder, 5);
+                stepArrayIndex = 0;
+
                 handleReturnMenuSelection();
             }
         }

@@ -5,7 +5,7 @@
 /*
 Global
 int stepArrayIndex = 0;
-int stepTimeHolder;
+int currentStepTime;
 
 const long interval = 1000;
 unsigned long previousMillis;
@@ -45,16 +45,16 @@ void displayRunExperiment(char key)
         lcd.printWord(">>  ");
 
         // Update the stepTime countdown
-        pageManager.stepTimeHolder = currentStep.getStepTime(); // GLOBAL
+        pageManager.currentStepTime = currentStep.getStepTime(); // GLOBAL
         if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
         {
             pageManager.previousMillis = pageManager.currentMillis;
 
             // Decrement the step time holder if it's greater than 0
-            if (pageManager.stepTimeHolder > 0)
+            if (pageManager.currentStepTime > 0)
             {
-                pageManager.stepTimeHolder--;
-                currentStep.setStepTime(pageManager.stepTimeHolder);
+                pageManager.currentStepTime--;
+                currentStep.setStepTime(pageManager.currentStepTime);
 
                 // Reflect the changes at thermocyclerArray (reverse initialization)
                 currentThermocycler.setStep(pageManager.stepArrayIndex, currentStepType, currentStep.getStepTemperature(), currentStep.getStepTime());
@@ -68,7 +68,7 @@ void displayRunExperiment(char key)
                 {
                     lcd.clear();
                     currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
-                    pageManager.stepTimeHolder = currentStep.getStepTime();
+                    pageManager.currentStepTime = currentStep.getStepTime();
                 }
                 else
                 {
@@ -78,17 +78,17 @@ void displayRunExperiment(char key)
                     // currentStep.setStepTime()
 
                     currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
-                    pageManager.stepTimeHolder = currentStep.getStepTime();
+                    pageManager.currentStepTime = currentStep.getStepTime();
                 }
             }
         }
 
         // Display the remaining step time
-        if (pageManager.stepTimeHolder < 10)
+        if (pageManager.currentStepTime < 10)
         {
             lcd.printWord("0");
         }
-        lcd.printWord(String(pageManager.stepTimeHolder));
+        lcd.printWord(String(pageManager.currentStepTime));
         lcd.printWord("s");
 
         // Current block temp
