@@ -9,16 +9,20 @@ class Thermocycler
 private:
     String progName;
     double heatedLid;
-    Step steps[6]; // Fixed array of 6 steps
+    Step steps[5]; // Fixed array of 6 steps
     float finalHoldTemp;
     int numCycles;
 
 public:
+    enum ProgramType
+    {
+        ERunning,
+        EComplete,
+    };
+
     Thermocycler();
 
-    // Functions used for setting the Step Parameters
     void setStep(int index, Step::StepType type, float temp, int time);
-    void modifyStep(int index, Step::StepType type, float temp, int time);
 
     // Getters
     String getProgName() { return progName; }
@@ -26,6 +30,8 @@ public:
     // const Step *getSteps() const { return steps; }
     float getFinalHoldTemp() { return finalHoldTemp; }
     int getNumCycles() { return numCycles; }
+    Step getStep(int index);
+    String getStepTypeString(Step::StepType stepType);
 
     // Setters
     void setProgName(String name);

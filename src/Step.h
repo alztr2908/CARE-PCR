@@ -17,6 +17,7 @@ public:
 
     Step();
 
+    // String StepTypeToString(StepType stepType);
     StepType getStepType();
     float getStepTemperature();
     int getStepTime();

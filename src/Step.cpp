@@ -1,4 +1,5 @@
 #include "Step.h"
+#include <Arduino.h>
 
 Step::Step() : type(NONVAL), stepTemperature(0.0), stepTime(0) {}
 

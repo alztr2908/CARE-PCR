@@ -3,10 +3,15 @@
 Thermocycler::Thermocycler() : progName(""), heatedLid(0.0), finalHoldTemp(0.0), numCycles(0)
 {
     // Initialize steps array to default values
-    for (int i = 0; i < 6; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         steps[i] = Step();
     }
+}
+
+Step Thermocycler::getStep(int index)
+{
+    return steps[index];
 }
 
 void Thermocycler::setStep(int index, Step::StepType type, float temp, int time)
@@ -16,28 +21,39 @@ void Thermocycler::setStep(int index, Step::StepType type, float temp, int time)
     // float currentStepTemp = temp;
     // int currentStepTime = time;
 
-    if (index >= 0 && index < 6)
+    if (index >= 0 && index < 5)
     {
-        currentStep = steps[index];
-        currentStep.setStepType(type);
-        currentStep.setStepTemperature(temp);
-        currentStep.setStepTime(time);
+        // currentStep = steps[index];
+        steps[index].setStepType(type);
+        steps[index].setStepTemperature(temp);
+        steps[index].setStepTime(time);
 
         // steps[index] = Step(type, temp, time);
+    }
+}
+
+String Thermocycler::getStepTypeString(Step::StepType stepType)
+{
+    switch (stepType)
+    {
+    case Step::INITIAL:
+        return "INITIAL";
+    case Step::DENATURATION:
+        return "DENATURATION";
+    case Step::ANNEALING:
+        return "ANNEALING";
+    case Step::EXTENDING:
+        return "EXTENDING";
+    case Step::FINAL:
+        return "FINAL";
+    case Step::HOLD:
+        return "HOLD";
+    default:
+        return "NONVAL";
     }
 }
 
 void Thermocycler::setProgName(String name)
 {
     progName = name;
-}
-
-void Thermocycler::modifyStep(int index, Step::StepType type, float temp, int time)
-{
-    if (index >= 0 && index < 6)
-    {
-        steps[index].setStepType(type);
-        steps[index].setStepTemperature(temp);
-        steps[index].setStepTime(time);
-    }
 }
