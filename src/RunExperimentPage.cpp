@@ -43,6 +43,7 @@ void displayRunExperiment(char key)
         lcd.setCursor(13, 1);
         lcd.printWord(">>  ");
 
+        // if (currentThermocycler.getNumCycles() > 0)
         if (currentThermocycler.getNumCycles() > 0 && currentThermocycler.getProgType() == Thermocycler::ERunning)
         {
             // Update the stepTime countdown
@@ -101,6 +102,18 @@ void displayRunExperiment(char key)
             currentThermocycler.setNumCycles(pageManager.currentCycleNo);
             currentThermocycler.setProgType(Thermocycler::EComplete);
             pageManager.setPageState(PageManager::RUN_EXPERIMENT_NOTRUN);
+
+            for (int i = 0; i < 5; i++)
+            {
+                currentStep = currentThermocycler.getStep(i);
+                currentStep.setStepTemperature(pageManager.stepTempHolder[i]);
+                currentStep.setStepTime(pageManager.stepTimeHolder[i]);
+                currentThermocycler.setStepParams(i, currentStep);
+            }
+            thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+
+            // reset to the first step
+            pageManager.stepArrayIndex = 0;
         }
 
         // Display the remaining step time
@@ -144,6 +157,10 @@ void displayRunExperiment(char key)
         lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
         lcd.setCursor(0, 3);
         lcd.printWord("A-Save B-Home");
+
+        // Make sure that this will run again
+        currentThermocycler.setProgType(Thermocycler::ERunning);
+        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
         break;
     case 2:
         lcd.clear();
@@ -155,6 +172,10 @@ void displayRunExperiment(char key)
         lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
         lcd.setCursor(0, 3);
         lcd.printWord("A-Save B-Home");
+
+        // Make sure that this will run again
+        currentThermocycler.setProgType(Thermocycler::ERunning);
+        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
         break;
     }
 }

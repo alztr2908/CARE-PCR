@@ -282,14 +282,14 @@ void PageManager::handleRunExperimentSelection(char key)
                 lcd.printWord("successfully");
                 lcd.delay(2000);
                 handleReturnMenuSelection();
-
-                timeElapsedinS = 0;
             }
             else if (key == 'B')
             {
                 handleReturnMenuSelection();
-                timeElapsedinS = 0;
             }
+
+            // Reset
+            timeElapsedinS = 0;
         }
         else
         {
