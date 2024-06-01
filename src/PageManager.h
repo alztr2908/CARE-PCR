@@ -68,6 +68,7 @@ public:
     int currentStepTime;
     unsigned long previousMillis;
     unsigned long currentMillis;
+    unsigned long timeElapsedinS;
 
 private:
     // Accesory methods

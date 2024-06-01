@@ -224,6 +224,9 @@ void PageManager::handleSavedExperimentSelection(char key)
                     stepTimeHolder[i] = currentStep.getStepTime();
                 }
 
+                // Init time
+                timeElapsedinS = 0;
+
                 lcd.clear();
                 displayRunExperiment();
             }

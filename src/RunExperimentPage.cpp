@@ -1,6 +1,5 @@
 #include "RunExperimentPage.h"
 #include "GlobalDeclarations.h"
-#include <Arduino.h>
 
 /*
 Global
@@ -51,6 +50,7 @@ void displayRunExperiment(char key)
             if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
             {
                 pageManager.previousMillis = pageManager.currentMillis;
+                pageManager.timeElapsedinS++;
 
                 // Decrement the step time holder if it's greater than 0
                 if (pageManager.currentStepTime > 0)
@@ -125,7 +125,7 @@ void displayRunExperiment(char key)
             lcd.printWord(" of ");
             lcd.printWord(String(pageManager.currentCycleNo));
             lcd.setCursor(12, 3);
-            lcd.printWord("hh:mm:ss");
+            lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
             break;
         case Thermocycler::EComplete:
             lcd.setCursor(0, 3);
@@ -154,6 +154,17 @@ void displayRunExperiment(char key)
     }
 }
 
+String parseTimeElapse(int time)
+{
+    int hours = time / 3600;
+    int minutes = (time % 3600) / 60;
+    int seconds = time % 60;
+
+    char buffer[9]; // HH:MM:SS format needs 9 characters (including null terminator)
+    snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", hours, minutes, seconds);
+
+    return String(buffer);
+}
 /******
 
 case loop:
