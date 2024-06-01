@@ -58,6 +58,7 @@ void displayRunExperiment(char key)
 
                 // Reflect the changes at thermocyclerArray (reverse initialization)
                 currentThermocycler.setStep(pageManager.stepArrayIndex, currentStepType, currentStep.getStepTemperature(), currentStep.getStepTime());
+
                 thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
             }
             else
@@ -72,13 +73,20 @@ void displayRunExperiment(char key)
                 }
                 else
                 {
-                    // Handle end of all steps (reset or other logic)
-                    pageManager.stepArrayIndex = 0; // For example, reset to the first step
+                    // Reset values at Step then reflect it on thermocyclerArray
+                    for (int i = 0; i < 5; i++)
+                    {
+                        currentStep = currentThermocycler.getStep(i);
+                        currentStep.setStepTemperature(pageManager.stepTempHolder[i]);
+                        currentStep.setStepTime(pageManager.stepTimeHolder[i]);
+                        currentThermocycler.setStepParams(i, currentStep);
+                    }
+                    thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
 
-                    // currentStep.setStepTime()
+                    // reset to the first step
+                    pageManager.stepArrayIndex = 0;
 
-                    currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
-                    pageManager.currentStepTime = currentStep.getStepTime();
+                    lcd.clear();
                 }
             }
         }

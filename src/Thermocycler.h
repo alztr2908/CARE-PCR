@@ -22,8 +22,6 @@ public:
 
     Thermocycler();
 
-    void setStep(int index, Step::StepType type, float temp, int time);
-
     // Getters
     String getProgName() { return progName; }
     double getHeatedLid() { return heatedLid; }
@@ -38,6 +36,8 @@ public:
     void setHeatedLid(double lid) { heatedLid = lid; }
     void setFinalHoldTemp(float temp) { finalHoldTemp = temp; }
     void setNumCycles(int cycles) { numCycles = cycles; }
+    void setStep(int index, Step::StepType type, float temp, int time);
+    void setStepParams(int index, Step step);
 };
 
 #endif

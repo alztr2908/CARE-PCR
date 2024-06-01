@@ -211,6 +211,18 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // Implement Run logic here
                 setPageState(PageManager::RUN_EXPERIMENT);
                 resetSubpage();
+
+                // Put thermocycling step params at placeholder to call at reset
+                Thermocycler currentThermocycler = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
+
+                Step currentStep;
+                for (int i = 0; i < 5; i++)
+                {
+                    currentStep = currentThermocycler.getStep(i);
+                    stepTempHolder[i] = currentStep.getStepTemperature();
+                    stepTimeHolder[i] = currentStep.getStepTime();
+                }
+
                 lcd.clear();
                 displayRunExperiment();
             }

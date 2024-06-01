@@ -32,6 +32,11 @@ void Thermocycler::setStep(int index, Step::StepType type, float temp, int time)
     }
 }
 
+void Thermocycler::setStepParams(int index, Step step)
+{
+    steps[index] = step;
+}
+
 String Thermocycler::getStepTypeString(Step::StepType stepType)
 {
     switch (stepType)
