@@ -100,6 +100,7 @@ void displayRunExperiment(char key)
         {
             currentThermocycler.setNumCycles(pageManager.currentCycleNo);
             currentThermocycler.setProgType(Thermocycler::EComplete);
+            pageManager.setPageState(PageManager::RUN_EXPERIMENT_NOTRUN);
         }
 
         // Display the remaining step time
@@ -135,19 +136,23 @@ void displayRunExperiment(char key)
         break;
     case 1:
         lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(0, 1);
         lcd.printWord("SUCCESSFUL!!");
         lcd.setCursor(0, 2);
-        lcd.printWord("hh:mm:ss");
+        lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
         lcd.setCursor(0, 3);
         lcd.printWord("A-Save B-Home");
         break;
     case 2:
         lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(0, 1);
         lcd.printWord("NOT SUCCESSFUL!!");
         lcd.setCursor(0, 2);
-        lcd.printWord("hh:mm:ss");
+        lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
         lcd.setCursor(0, 3);
         lcd.printWord("A-Save B-Home");
         break;

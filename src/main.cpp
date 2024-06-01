@@ -33,11 +33,11 @@ void setup()
   tc1.setHeatedLid(110.0);
   tc1.setFinalHoldTemp(72.0);
   tc1.setNumCycles(2);
-  tc1.setStep(0, Step::INITIAL, 95.0, 30);
-  tc1.setStep(1, Step::DENATURATION, 95.0, 20);
-  tc1.setStep(2, Step::ANNEALING, 55.0, 10);
-  tc1.setStep(3, Step::EXTENDING, 72.0, 5);
-  tc1.setStep(4, Step::FINAL, 72.0, 3);
+  tc1.setStep(0, Step::INITIAL, 95.0, 1);
+  tc1.setStep(1, Step::DENATURATION, 95.0, 1);
+  tc1.setStep(2, Step::ANNEALING, 55.0, 1);
+  tc1.setStep(3, Step::EXTENDING, 72.0, 1);
+  tc1.setStep(4, Step::FINAL, 72.0, 1);
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;
@@ -61,7 +61,7 @@ void loop()
 {
   switch (pageManager.getPageState())
   {
-  case PageManager::RUN_EXPERIMENT:
+  case PageManager::RUN_EXPERIMENT_RUN:
     displayRunExperiment();
     break;
   default:

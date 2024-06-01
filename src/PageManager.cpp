@@ -209,7 +209,7 @@ void PageManager::handleSavedExperimentSelection(char key)
             if (key == 'A')
             {
                 // Implement Run logic here
-                setPageState(PageManager::RUN_EXPERIMENT);
+                setPageState(PageManager::RUN_EXPERIMENT_RUN);
                 resetSubpage();
 
                 // Put thermocycling step params at placeholder to call at reset
@@ -252,8 +252,8 @@ void PageManager::handleRunExperimentSelection(char key)
 {
     if (key == '>' && getCurrentSubpage() == 0)
     {
+        nextSubpage();
         displayRunExperiment();
-        // nextSubpage();
     }
     else if (key == '<')
     {
@@ -275,17 +275,20 @@ void PageManager::handleRunExperimentSelection(char key)
             {
                 lcd.clear();
                 lcd.setCursor(0, 0);
-                lcd.printWord("AAA");
+                lcd.printWord(thermocyclerArray.getElement(currentThermocyclerArrayIndex).getProgName());
                 lcd.setCursor(0, 1);
                 lcd.printWord("Data saved");
                 lcd.setCursor(0, 2);
                 lcd.printWord("successfully");
                 lcd.delay(2000);
                 handleReturnMenuSelection();
+
+                timeElapsedinS = 0;
             }
             else if (key == 'B')
             {
                 handleReturnMenuSelection();
+                timeElapsedinS = 0;
             }
         }
         else

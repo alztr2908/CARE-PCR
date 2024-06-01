@@ -19,7 +19,8 @@ public:
         MENU,
         NEW_EXPERIMENT,
         SAVED_EXPERIMENT,
-        RUN_EXPERIMENT,
+        RUN_EXPERIMENT_RUN,
+        RUN_EXPERIMENT_NOTRUN,
         DEL_EXPERIMENT,
         EDIT_EXPERIMENT,
     };
