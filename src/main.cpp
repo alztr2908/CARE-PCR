@@ -42,16 +42,6 @@ void setup()
   tc1.setStep(4, Step::FINAL, 95.0, 2);
   thermocyclerArray.addElement(0, tc1);
 
-  /*
-  2
-  4*2 = 8
-  10*2 = 20
-
-  3
-  8*2 = 16
-  10*2 = 20
-  */
-
   Thermocycler tc2;
   // tc2.setProgName("Program2");
   thermocyclerArray.addElement(1, tc2);
