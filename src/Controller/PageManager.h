@@ -54,13 +54,16 @@ public:
 
     // ThermocyclerArray parameters
     int currentThermocyclerArrayIndex;
+    float currentBlockTempReading;
+    float ThermocyclerInitialTemp;
+    bool currentRampDirection;
 
     // Thermocycling parameters
     float currentHeatedLid;
     int currentCycleNo;
     float currentFinalHoldTemp;
 
-    // Steps
+    // Thermocycling Steps
     float stepTempHolder[MAX_STEPS];
     int stepTimeHolder[MAX_STEPS];
 

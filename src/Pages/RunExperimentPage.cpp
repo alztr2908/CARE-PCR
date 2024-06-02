@@ -24,75 +24,104 @@ void displayRunExperiment(char key)
     switch (pageManager.getCurrentSubpage())
     {
     case 0:
-        // ProgName
-        lcd.setCursor(0, 0);
-        lcd.printWord(currentThermocycler.getProgName());
-        lcd.setCursor(4, 0);
-        lcd.printWord(String(currentArrayIndex));
-
-        // clock
-        lcd.setCursor(15, 0);
-        lcd.printWord("11:59");
-
-        // Step Type >> time set countdown
+        /* LOGIC */
         pageManager.currentMillis = millis();
         currentStepType = currentStep.getStepType();
         currentStepTypeString = currentThermocycler.getStepTypeString(currentStepType);
-        lcd.setCursor(0, 1);
-        lcd.printWord(currentStepTypeString);
-        lcd.setCursor(13, 1);
-        lcd.printWord(">>  ");
 
         if (currentThermocycler.getNumCycles() > 0)
         {
             // Update the stepTime countdown
-            pageManager.currentStepTime = currentStep.getStepTime(); // GLOBAL
+            pageManager.currentStepTime = currentStep.getStepTime();
             if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
             {
                 pageManager.previousMillis = pageManager.currentMillis;
                 pageManager.timeElapsedinS++;
 
-                // Decrement the step time holder if it's greater than 0
-                if (pageManager.currentStepTime > 1)
+                // Operation
+                switch (currentThermocycler.getProgType())
                 {
-                    pageManager.currentStepTime--;
-                    currentStep.setStepTime(pageManager.currentStepTime);
-
+                // ERunning: Decrement the step time holder if it's greater than 0
+                case Thermocycler::ERunning:
                     // Reflect the changes at thermocyclerArray (reverse initialization)
-                    currentThermocycler.setStep(pageManager.stepArrayIndex, currentStepType, currentStep.getStepTemperature(), currentStep.getStepTime());
-
-                    thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
-                }
-                else
-                {
-                    // Move to the next step if the current step time has elapsed
-                    pageManager.stepArrayIndex++;
-                    if (pageManager.stepArrayIndex < 5)
+                    if (pageManager.currentStepTime > 1)
                     {
-                        currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
-                        pageManager.currentStepTime = currentStep.getStepTime();
+                        pageManager.currentStepTime--;
+                        currentStep.setStepTime(pageManager.currentStepTime);
 
-                        lcd.clear();
+                        currentThermocycler.setStep(pageManager.stepArrayIndex, currentStepType, currentStep.getStepTemperature(), currentStep.getStepTime());
+
+                        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
                     }
-                    // One cycle down
                     else
                     {
-                        // Reset values at Step then reflect it on thermocyclerArray
-                        currentThermocycler.setNumCycles(currentThermocycler.getNumCycles() - 1);
-                        for (int i = 0; i < 5; i++)
+                        pageManager.stepArrayIndex++;
+
+                        // Move to the next step if the current step time has elapsed
+                        if (pageManager.stepArrayIndex < 5)
                         {
-                            currentStep = currentThermocycler.getStep(i);
-                            currentStep.setStepTemperature(pageManager.stepTempHolder[i]);
-                            currentStep.setStepTime(pageManager.stepTimeHolder[i]);
-                            currentThermocycler.setStepParams(i, currentStep);
+                            currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
+                            pageManager.currentStepTime = currentStep.getStepTime();
+
+                            // New temp <- Ramp again
+                            currentThermocycler.setProgType(Thermocycler::ERamp);
+                            thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+                            lcd.clear();
                         }
-                        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
 
-                        // reset to the first step
-                        pageManager.stepArrayIndex = 0;
+                        // One cycle down
+                        else
+                        {
+                            // Reset values at Step then reflect it on thermocyclerArray
+                            currentThermocycler.setNumCycles(currentThermocycler.getNumCycles() - 1);
+                            for (int i = 0; i < 5; i++)
+                            {
+                                currentStep = currentThermocycler.getStep(i);
+                                currentStep.setStepTemperature(pageManager.stepTempHolder[i]);
+                                currentStep.setStepTime(pageManager.stepTimeHolder[i]);
+                                currentThermocycler.setStepParams(i, currentStep);
+                            }
 
-                        // lcd.clear();
+                            // New temp <- Ramp/Run again
+                            if (currentThermocycler.getStep(0).getStepTemperature() == pageManager.currentBlockTempReading)
+                            {
+                                currentThermocycler.setProgType(Thermocycler::ERunning);
+                            }
+                            else
+                            {
+                                currentThermocycler.setProgType(Thermocycler::ERamp);
+                                lcd.clear();
+                            }
+
+                            thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+
+                            // reset to the first step
+                            pageManager.stepArrayIndex = 0;
+
+                            // lcd.clear();
+                        }
                     }
+                    break;
+                // ERamp: inc/dec curentBlockTempReading depends on target temp
+                case Thermocycler::ERamp:
+                    if (pageManager.currentBlockTempReading > currentStep.getStepTemperature())
+                    {
+                        pageManager.currentBlockTempReading--;
+                        pageManager.currentRampDirection = false;
+                    }
+                    else if (pageManager.currentBlockTempReading < currentStep.getStepTemperature())
+                    {
+                        pageManager.currentBlockTempReading++;
+                        pageManager.currentRampDirection = true;
+                    }
+                    else
+                    {
+                        currentThermocycler.setProgType(Thermocycler::ERunning);
+                        lcd.clear();
+                    }
+
+                    thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+                    break;
                 }
             }
         }
@@ -115,24 +144,68 @@ void displayRunExperiment(char key)
             pageManager.stepArrayIndex = 0;
         }
 
-        // Display the remaining step time
-        if (pageManager.currentStepTime < 10)
-        {
-            lcd.printWord("0");
-        }
-        lcd.printWord(String(pageManager.currentStepTime));
-        lcd.printWord("s");
+        /**************************************************/
+        /* DISPLAY */
 
+        /* FIRST ROW */
+        // ProgName
+        lcd.setCursor(0, 0);
+        lcd.printWord(currentThermocycler.getProgName());
+        lcd.setCursor(4, 0);
+        lcd.printWord(String(currentArrayIndex));
+        // clock
+        lcd.setCursor(15, 0);
+        lcd.printWord("11:59");
+
+        /* SECOND ROW*/
+        switch (currentThermocycler.getProgType())
+        {
+        case Thermocycler::ERunning:
+            // Step Type >> time set countdown
+            lcd.setCursor(0, 1);
+            lcd.printWord(currentStepTypeString);
+            lcd.setCursor(13, 1);
+            lcd.printWord(">>  ");
+            // Display the remaining step time
+            if (pageManager.currentStepTime < 10)
+            {
+                lcd.printWord("0");
+            }
+            lcd.printWord(String(pageManager.currentStepTime));
+            lcd.printWord("s");
+            break;
+        case Thermocycler::EComplete:
+            lcd.setCursor(0, 1);
+            lcd.printWord("Final Hold");
+            break;
+        case Thermocycler::ERamp:
+            lcd.setCursor(0, 1);
+            lcd.printWord("RAMP ");
+            if (pageManager.currentRampDirection)
+            {
+                lcd.printWord("UP ");
+            }
+            else
+            {
+                lcd.printWord("DOWN ");
+            }
+            lcd.printWord(String(pageManager.stepArrayIndex));
+            break;
+        }
+
+        /* THIRD ROW */
         // Current block temp
         lcd.setCursor(6, 2);
         lcd.printWord("BLOCK: ");
-        lcd.printWord(String(currentStep.getStepTemperature()));
+        lcd.printWord(String(pageManager.currentBlockTempReading));
         lcd.printWord(" C");
 
+        /* FOURTH ROW */
         // Cycle and elapsed time -> ProgType
         switch (currentThermocycler.getProgType())
         {
         case Thermocycler::ERunning:
+        case Thermocycler::ERamp:
             lcd.setCursor(0, 3);
             lcd.printWord(String(currentThermocycler.getNumCycles()));
             lcd.printWord(" of ");
@@ -146,26 +219,22 @@ void displayRunExperiment(char key)
             break;
         }
         break;
-    case 1:
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.printWord(currentThermocycler.getProgName());
-        lcd.setCursor(0, 1);
-        lcd.printWord("SUCCESSFUL!!");
-        lcd.setCursor(0, 2);
-        lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
-        lcd.setCursor(0, 3);
-        lcd.printWord("A-Save B-Home");
 
-        currentThermocycler.setProgType(Thermocycler::ERunning);
-        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler); // Make sure to save the state
-        break;
+    case 1:
     case 2:
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(0, 1);
-        lcd.printWord("NOT SUCCESSFUL!!");
+
+        if (pageManager.getCurrentSubpage() == 1)
+        {
+            lcd.printWord("SUCCESSFUL!!");
+        }
+        else
+        {
+            lcd.printWord("NOT SUCCESSFUL!!");
+        }
         lcd.setCursor(0, 2);
         lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
         lcd.setCursor(0, 3);

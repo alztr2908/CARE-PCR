@@ -10,7 +10,8 @@ public:
     enum ProgramType
     {
         ERunning,
-        EComplete,
+        ERamp,
+        EComplete, // final hold
     };
 
     Thermocycler();

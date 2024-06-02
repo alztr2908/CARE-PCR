@@ -227,6 +227,20 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // Init time
                 timeElapsedinS = 0;
 
+                // Init block temperature.
+                // Block temp reading simulation temp and will  setProgState (ERunning or ERamp)
+                currentBlockTempReading = ThermocyclerInitialTemp;
+                if (currentThermocycler.getStep(0).getStepTemperature() == currentBlockTempReading)
+                {
+                    currentThermocycler.setProgType(Thermocycler::ERunning);
+                }
+                else
+                {
+                    currentThermocycler.setProgType(Thermocycler::ERamp);
+                }
+                thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currentThermocycler);
+
+                // Start the program
                 lcd.clear();
                 displayRunExperiment();
             }

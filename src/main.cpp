@@ -28,6 +28,8 @@ void displayWelcome()
 void setup()
 {
   // Initialize and add thermocyclers
+  pageManager.ThermocyclerInitialTemp = 93.00;
+
   Thermocycler tc1;
   tc1.setProgName("CAB");
   tc1.setHeatedLid(110.0);
