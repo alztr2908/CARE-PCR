@@ -1,5 +1,5 @@
 #include "PageManager.h"
-#include "GlobalDeclarations.h"
+#include "../GlobalDeclarations.h"
 
 // Define the extern instance
 PageManager pageManager;

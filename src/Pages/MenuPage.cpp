@@ -1,5 +1,5 @@
 #include "MenuPage.h"
-#include "GlobalDeclarations.h"
+#include "../GlobalDeclarations.h"
 
 void displayMenuPage(char key)
 {

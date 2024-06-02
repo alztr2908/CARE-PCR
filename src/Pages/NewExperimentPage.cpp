@@ -1,5 +1,5 @@
 #include "NewExperimentPage.h"
-#include "GlobalDeclarations.h"
+#include "../GlobalDeclarations.h"
 
 void displayNewExperiment(char key)
 {

@@ -9,7 +9,7 @@ int currentStepTime;
 const long interval = 1000;
 unsigned long previousMillis;
 unsigned long currentMillis;
-
+unsigned long timeElapsedinS; // Add this if it is not declared
 */
 
 void displayRunExperiment(char key)
@@ -43,8 +43,7 @@ void displayRunExperiment(char key)
         lcd.setCursor(13, 1);
         lcd.printWord(">>  ");
 
-        // if (currentThermocycler.getNumCycles() > 0)
-        if (currentThermocycler.getNumCycles() > 0 && currentThermocycler.getProgType() == Thermocycler::ERunning)
+        if (currentThermocycler.getNumCycles() > 0)
         {
             // Update the stepTime countdown
             pageManager.currentStepTime = currentStep.getStepTime(); // GLOBAL
@@ -54,7 +53,7 @@ void displayRunExperiment(char key)
                 pageManager.timeElapsedinS++;
 
                 // Decrement the step time holder if it's greater than 0
-                if (pageManager.currentStepTime > 0)
+                if (pageManager.currentStepTime > 1)
                 {
                     pageManager.currentStepTime--;
                     currentStep.setStepTime(pageManager.currentStepTime);
@@ -158,9 +157,8 @@ void displayRunExperiment(char key)
         lcd.setCursor(0, 3);
         lcd.printWord("A-Save B-Home");
 
-        // Make sure that this will run again
         currentThermocycler.setProgType(Thermocycler::ERunning);
-        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler); // Make sure to save the state
         break;
     case 2:
         lcd.clear();
@@ -173,9 +171,8 @@ void displayRunExperiment(char key)
         lcd.setCursor(0, 3);
         lcd.printWord("A-Save B-Home");
 
-        // Make sure that this will run again
         currentThermocycler.setProgType(Thermocycler::ERunning);
-        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler); // Make sure to save the state
         break;
     }
 }
@@ -191,39 +188,3 @@ String parseTimeElapse(int time)
 
     return String(buffer);
 }
-/******
-
-case loop:
-    CurrentStep = StepArray[index]
-    currentTime = 0;
-
-    if (currentTime <= (CurrentStep.time*1000)){
-        PID();
-        if (Plate.temp >= CurrentStep.temp) {
-            currentTime = millis();
-        }
-    }
-
-    if (index > 4){
-        iCycle++;
-        index = 0;
-    } else {
-        index++
-    }
-
-    if (iCycle >= TotalCycle) {
-        STATE = final
-        iCycle = 0
-    }
-
-case final:
-    CurrentStep = StepArray[Final]
-    currentTime = 0;
-
-    if (currentTime <= (CurrentStep.time*1000)){
-        PID();
-        if (Plate.temp >= CurrentStep.temp) {
-            currentTime = millis();
-        }
-    }
-******/

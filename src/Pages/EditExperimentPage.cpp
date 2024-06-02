@@ -1,5 +1,5 @@
 #include "EditExperimentPage.h"
-#include "GlobalDeclarations.h"
+#include "../GlobalDeclarations.h"
 
 void displayEditExperiment(char key)
 {

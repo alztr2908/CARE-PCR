@@ -1,5 +1,5 @@
 #include "KeypadHandler.h"
-#include "GlobalDeclarations.h"
+#include "../GlobalDeclarations.h"
 
 const byte KEYPAD_ROWS = 4;
 const byte KEYPAD_COLS = 4;

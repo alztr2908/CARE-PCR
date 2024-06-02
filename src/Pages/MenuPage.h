@@ -1,7 +1,7 @@
 #ifndef MENUPAGE_H
 #define MENUPAGE_H
 
-#include "PageManager.h"
+#include "../Controller/PageManager.h"
 #include "MenuPage.h"
 #include "SavedExperimentPage.h"
 
