@@ -97,8 +97,6 @@ void displayRunExperiment(char key)
 
                             // reset to the first step
                             pageManager.stepArrayIndex = 0;
-
-                            // lcd.clear();
                         }
                     }
                     break;
@@ -106,17 +104,20 @@ void displayRunExperiment(char key)
                 case Thermocycler::ERamp:
                     if (pageManager.currentBlockTempReading > currentStep.getStepTemperature())
                     {
-                        pageManager.currentBlockTempReading--;
                         pageManager.currentRampDirection = false;
+                        pageManager.currentBlockTempReading--;
                     }
                     else if (pageManager.currentBlockTempReading < currentStep.getStepTemperature())
                     {
-                        pageManager.currentBlockTempReading++;
                         pageManager.currentRampDirection = true;
+                        pageManager.currentBlockTempReading++;
                     }
                     else
                     {
                         currentThermocycler.setProgType(Thermocycler::ERunning);
+
+                        // Reduce counter for accurate reading
+                        pageManager.timeElapsedinS--;
                         lcd.clear();
                     }
 
@@ -180,14 +181,14 @@ void displayRunExperiment(char key)
             break;
         case Thermocycler::ERamp:
             lcd.setCursor(0, 1);
-            lcd.printWord("RAMP ");
+            lcd.printWord("RAMP");
             if (pageManager.currentRampDirection)
             {
-                lcd.printWord("UP ");
+                lcd.printWord("++ ");
             }
             else
             {
-                lcd.printWord("DOWN ");
+                lcd.printWord("-- ");
             }
             lcd.printWord(String(pageManager.stepArrayIndex));
             break;
