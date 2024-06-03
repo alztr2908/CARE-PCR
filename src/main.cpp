@@ -2,6 +2,12 @@
 #include "GlobalDeclarations.h"
 #include "./Controller/KeypadHandler.h"
 #include "./Pages/RunExperimentPage.h"
+#include <SPI.h>
+#include <SD.h>
+
+const int chipSelect = 10;               // CS pin for SD card module
+unsigned long previousMillisLogging = 0; // Stores the last time the data was logged
+const long interval = 1000;              // Interval at which to log data (milliseconds)
 
 void displayWelcome()
 {
@@ -27,8 +33,9 @@ void displayWelcome()
 
 void setup()
 {
+  Serial.begin(115200);
   // Initialize and add thermocyclers
-  pageManager.ThermocyclerInitialTemp = 93.00;
+  pageManager.ThermocyclerInitialTemp = 15.00;
 
   Thermocycler tc1;
   tc1.setProgName("CAB");
@@ -56,6 +63,21 @@ void setup()
   // lcd.clear();
   // lcd.printWord(thermocyclerArray.getElement(0).getProgName());
   // delay(1000);
+
+  // Initialize the SD card
+  // if (!SD.begin(chipSelect))
+  // {
+  //   lcd.printWord("Card failed, or not present");
+  //   return;
+  //   // don't do anything more:
+  // }
+  // else
+  // {
+  //   lcd.printWord("card initialized.");
+  // }
+  // lcd.delay(2000);
+  // lcd.clear();
+
   displayMenuPage();
 }
 
@@ -64,7 +86,20 @@ void loop()
   switch (pageManager.getPageState())
   {
   case PageManager::RUN_EXPERIMENT_RUN:
+    // Data logging every 1s (separate millis)
+    // File dataFile = SD.open("datalog.txt", FILE_WRITE);
+    // unsigned long currentMillisLogging = millis();
+    // if (currentMillisLogging - previousMillisLogging >= interval)
+    // {
+    //   if (dataFile)
+    //   {
+    //     dataFile.println(pageManager.currentBlockTempReading);
+    //     dataFile.close();
+    //   }
+    // }
+
     displayRunExperiment();
+
     break;
   default:
     handleKeypad();

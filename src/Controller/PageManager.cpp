@@ -308,7 +308,6 @@ void PageManager::handleEditExperimentSelection(char key)
         case 0:
             currentHeatedLid = currentStringFirstVal.toFloat();
             currentStringFirstVal = "";
-            stepArrayIndex++;
             nextSubpage();
             displayEditExperiment();
             break;
@@ -337,7 +336,7 @@ void PageManager::handleEditExperimentSelection(char key)
             }
             else
             {
-                stepTempHolder[stepArrayIndex] = currentStringFirstVal.toFloat();
+                stepTempHolder[stepArrayIndex] = atof(currentStringFirstVal.c_str()); // Convert string to float
                 currentAnswerField++;
             }
             break;
@@ -373,6 +372,12 @@ void PageManager::handleEditExperimentSelection(char key)
             currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
             currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
 
+            Serial.println("New Line");
+            Serial.println(String(currTc.getStep(0).getStepTemperature()));
+            Serial.println(String(currTc.getStep(1).getStepTemperature()));
+            Serial.println(String(currTc.getStep(2).getStepTemperature()));
+            Serial.println(String(currTc.getStep(3).getStepTemperature()));
+            Serial.println(String(currTc.getStep(4).getStepTemperature()));
             thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
 
             // Clear and reset values
