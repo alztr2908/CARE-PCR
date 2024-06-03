@@ -266,24 +266,16 @@ void displayRunExperiment(char key)
         break;
 
     case 1:
-    case 2:
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(0, 1);
 
-        if (pageManager.getCurrentSubpage() == 1)
-        {
-            lcd.printWord("SUCCESSFUL!!");
-        }
-        else
-        {
-            lcd.printWord("NOT SUCCESSFUL!!");
-        }
+        lcd.printWord("DATA SAVED");
+
         lcd.setCursor(0, 2);
         lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
         lcd.setCursor(0, 3);
-        lcd.printWord("A-Save B-Home");
 
         currentThermocycler.setProgType(Thermocycler::ERunning);
         thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler); // Make sure to save the state

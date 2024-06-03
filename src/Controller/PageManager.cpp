@@ -264,10 +264,20 @@ void PageManager::handleSavedExperimentSelection(char key)
 
 void PageManager::handleRunExperimentSelection(char key)
 {
-    if (key == '>' && getCurrentSubpage() == 0)
+    if (key == '>')
     {
-        nextSubpage();
-        displayRunExperiment();
+        if (getCurrentSubpage() > 0)
+        {
+            // Reset
+            timeElapsedinS = 0;
+
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            nextSubpage();
+            displayRunExperiment();
+        }
     }
     else if (key == '<')
     {
@@ -283,32 +293,7 @@ void PageManager::handleRunExperimentSelection(char key)
     }
     else
     {
-        if (getCurrentSubpage() == 1 || getCurrentSubpage() == 2)
-        {
-            if (key == 'A')
-            {
-                lcd.clear();
-                lcd.setCursor(0, 0);
-                lcd.printWord(thermocyclerArray.getElement(currentThermocyclerArrayIndex).getProgName());
-                lcd.setCursor(0, 1);
-                lcd.printWord("Data saved");
-                lcd.setCursor(0, 2);
-                lcd.printWord("successfully");
-                lcd.delay(2000);
-                handleReturnMenuSelection();
-            }
-            else if (key == 'B')
-            {
-                handleReturnMenuSelection();
-            }
-
-            // Reset
-            timeElapsedinS = 0;
-        }
-        else
-        {
-            displayRunExperiment(key);
-        }
+        displayRunExperiment(key);
     }
 }
 
