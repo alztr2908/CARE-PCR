@@ -35,18 +35,18 @@ void setup()
 {
   Serial.begin(115200);
   // Initialize and add thermocyclers
-  pageManager.ThermocyclerInitialTemp = 15.00;
+  pageManager.ThermocyclerInitialTemp = 92.00;
 
   Thermocycler tc1;
   tc1.setProgName("CAB");
   tc1.setHeatedLid(110.0);
-  tc1.setFinalHoldTemp(72.0);
-  tc1.setNumCycles(2);
+  tc1.setFinalHoldTemp(90.0);
+  tc1.setNumCycles(1);
   tc1.setStep(0, Step::INITIAL, 95.0, 2);
-  tc1.setStep(1, Step::DENATURATION, 94.0, 2);
+  tc1.setStep(1, Step::DENATURATION, 93.0, 2);
   tc1.setStep(2, Step::ANNEALING, 95.0, 2);
-  tc1.setStep(3, Step::EXTENDING, 94.0, 2);
-  tc1.setStep(4, Step::FINAL, 95.0, 2);
+  tc1.setStep(3, Step::EXTENDING, 93.0, 2);
+  tc1.setStep(4, Step::FINAL, 96.0, 10);
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;

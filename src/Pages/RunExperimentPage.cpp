@@ -21,6 +21,8 @@ void displayRunExperiment(char key)
     Step::StepType currentStepType;
     String currentStepTypeString;
 
+    float finalTempReading;
+
     switch (pageManager.getCurrentSubpage())
     {
     case 0:
@@ -58,7 +60,8 @@ void displayRunExperiment(char key)
                         pageManager.stepArrayIndex++;
 
                         // Move to the next step if the current step time has elapsed
-                        if (pageManager.stepArrayIndex < 5)
+                        // until 4 only so that final step won't be included
+                        if (pageManager.stepArrayIndex < 4)
                         {
                             currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
                             pageManager.currentStepTime = currentStep.getStepTime();
@@ -82,21 +85,29 @@ void displayRunExperiment(char key)
                                 currentThermocycler.setStepParams(i, currentStep);
                             }
 
-                            // New temp <- Ramp/Run again
-                            if (currentThermocycler.getStep(0).getStepTemperature() == pageManager.currentBlockTempReading)
+                            // If final temp == current blk temp
+                            if (currentThermocycler.getStep(4).getStepTemperature() == pageManager.currentBlockTempReading)
                             {
                                 currentThermocycler.setProgType(Thermocycler::ERunning);
                             }
                             else
                             {
                                 currentThermocycler.setProgType(Thermocycler::ERamp);
-                                lcd.clear();
+                            }
+                            lcd.clear();
+
+                            // reset to the first step which is 1st index (not initial idx = 0)
+                            // 0th cycle proceed to final step
+                            if (currentThermocycler.getNumCycles() < 1)
+                            {
+                                pageManager.stepArrayIndex = 4;
+                            }
+                            else
+                            {
+                                pageManager.stepArrayIndex = 1;
                             }
 
                             thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
-
-                            // reset to the first step
-                            pageManager.stepArrayIndex = 0;
                         }
                     }
                     break;
@@ -130,33 +141,80 @@ void displayRunExperiment(char key)
                 switch (currentThermocycler.getProgType())
                 {
                 case Thermocycler::ERunning:
-                    currentThermocycler.setProgType(Thermocycler::ERamp);
-                    // Reduce counter for correct timing
-                    pageManager.timeElapsedinS--;
-                    lcd.clear();
+                    // For Final Step Time
+                    if (pageManager.currentStepTime > 1)
+                    {
+                        pageManager.currentStepTime--;
+                        currentStep.setStepTime(pageManager.currentStepTime);
 
-                    thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+                        currentThermocycler.setStep(pageManager.stepArrayIndex, currentStepType, currentStep.getStepTemperature(), currentStep.getStepTime());
+
+                        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 5; i++)
+                        {
+                            currentStep = currentThermocycler.getStep(i);
+                            currentStep.setStepTemperature(pageManager.stepTempHolder[i]);
+                            currentStep.setStepTime(pageManager.stepTimeHolder[i]);
+                            currentThermocycler.setStepParams(i, currentStep);
+                        }
+
+                        pageManager.stepArrayIndex = 0;
+
+                        // At final step, compare to final temp.. if equal to hold then EComplete. ERamp if not
+                        if (currentThermocycler.getFinalHoldTemp() == pageManager.currentBlockTempReading)
+                        {
+                            currentThermocycler.setProgType(Thermocycler::EComplete);
+                        }
+                        else
+                        {
+                            currentThermocycler.setProgType(Thermocycler::ERamp);
+                        }
+                        // Reduce counter for correct timing
+                        pageManager.timeElapsedinS--;
+                        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+                        lcd.clear();
+                    }
                     break;
                 case Thermocycler::ERamp:
-                    if (pageManager.currentBlockTempReading > currentThermocycler.getFinalHoldTemp())
+                    if (pageManager.stepArrayIndex == 4)
+                    {
+                        finalTempReading = currentStep.getStepTemperature();
+                    }
+                    else
+                    {
+                        finalTempReading = currentThermocycler.getFinalHoldTemp();
+                    }
+
+                    if (pageManager.currentBlockTempReading > finalTempReading)
                     {
                         pageManager.currentRampDirection = false;
                         pageManager.currentBlockTempReading--;
                     }
-                    else if (pageManager.currentBlockTempReading < currentThermocycler.getFinalHoldTemp())
+                    else if (pageManager.currentBlockTempReading < finalTempReading)
                     {
                         pageManager.currentRampDirection = true;
                         pageManager.currentBlockTempReading++;
                     }
                     else
                     {
-                        currentThermocycler.setProgType(Thermocycler::EComplete);
+                        // Final step transition or final hold
+                        if (pageManager.stepArrayIndex == 4)
+                        {
+                            currentThermocycler.setProgType(Thermocycler::ERunning);
+                        }
+                        else
+                        {
+                            currentThermocycler.setProgType(Thermocycler::EComplete);
+                        }
                         // Reduce counter for correct timing
                         pageManager.timeElapsedinS--;
+                        thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
                         lcd.clear();
                     }
 
-                    thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
                     break;
                 case Thermocycler::EComplete:
                     currentThermocycler.setNumCycles(pageManager.currentCycleNo);
@@ -227,13 +285,21 @@ void displayRunExperiment(char key)
             }
             if (currentThermocycler.getNumCycles() > 0)
             {
-                lcd.printWord(String(pageManager.stepArrayIndex));
+                lcd.printWord(currentStepTypeString);
             }
             else
             {
-                lcd.printWord("TO ");
-                lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
-                lcd.printWord(" C");
+                if (pageManager.stepArrayIndex != 4)
+                {
+                    lcd.printWord("TO ");
+                    lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
+                    lcd.printWord(" C");
+                }
+                else
+                {
+
+                    lcd.printWord(currentStepTypeString);
+                }
             }
             break;
         }
