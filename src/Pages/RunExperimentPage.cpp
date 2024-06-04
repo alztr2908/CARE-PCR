@@ -15,10 +15,10 @@ unsigned long timeElapsedinS; // Add this if it is not declared
 
 void displayRunExperiment(char key)
 {
-    int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
+    // int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
+    int currentArrayIndex = 0;
     Thermocycler currentThermocycler = thermocyclerArray.getElement(currentArrayIndex);
     Step currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
-
     Step::StepType currentStepType;
     String currentStepTypeString;
 
@@ -40,7 +40,8 @@ void displayRunExperiment(char key)
             pageManager.timeElapsedinS++;
 
             // Read new temperature
-            pageManager.currentBlockTempReading = ReadTemp();
+            // pageManager.currentBlockTempReading = ReadTemp();
+
             // Setpoint is new params since Input is a global variable
             PCR_PID(currentStep.getStepTemperature());
 
@@ -309,7 +310,7 @@ void displayRunExperiment(char key)
 
         /* THIRD ROW */
         // Current block temp
-        lcd.setCursor(6, 2);
+        lcd.setCursor(5, 2);
         lcd.printWord(F("BLOCK: "));
         lcd.printWord(String(pageManager.currentBlockTempReading));
         lcd.printWord(F(" C"));

@@ -8,7 +8,7 @@
 // Define the extern instance
 PageManager pageManager;
 
-PageManager::PageManager() : myPID(&currentBlockTempReading, &blockPWMOutput, &currentTargetSetpoint, PLATE_PID_INC_NORM_P, PLATE_PID_INC_NORM_I, PLATE_PID_INC_NORM_D, DIRECT) {}
+PageManager::PageManager() : myPID(&blockPWMInput, &blockPWMOutput, &currentTargetSetpoint, PLATE_PID_INC_NORM_P, PLATE_PID_INC_NORM_I, PLATE_PID_INC_NORM_D, DIRECT) {}
 
 /* UTILS */
 void PageManager::setPageState(PageState page)

@@ -1,5 +1,6 @@
 #include "DelExperimentPage.h"
 #include "../GlobalDeclarations.h"
+#include "utils.h"
 
 const char choiceLetterList[2][4] PROGMEM = {"A- ", "B- "};
 const char choiceOperationList[2][4] PROGMEM = {"Yes", "No"};
@@ -21,8 +22,8 @@ void displayDelExperiment(char key)
         for (int i = 0; i < 2; i++)
         {
             lcd.setCursor(2, i + 1);
-            lcd.printWord(choiceLetterList[i]);
-            lcd.printWord(choiceOperationList[i]);
+            lcd.printWord(rps(choiceLetterList[i]));
+            lcd.printWord(rps(choiceOperationList[i]));
         }
         break;
     case 1:

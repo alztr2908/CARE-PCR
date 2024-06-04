@@ -4,7 +4,8 @@
 #include "./Pages/RunExperimentPage.h"
 
 // PID
-#include "./Thermocycler/PID_v1.h"
+// #include "./Thermocycler/PID_v1.h"
+#include "./Thermocycler/ThermocyclerOperation.h"
 
 /*
 myPID(&currentBlockTempReading, &blockPWMOutput, &currentTargetSetpoint, PLATE_PID_INC_NORM_P, PLATE_PID_INC_NORM_I, PLATE_PID_INC_NORM_D, DIRECT)
@@ -39,6 +40,8 @@ void displayWelcome()
 
 void setup()
 {
+  Serial.begin(115200);
+  lcd.begin();
 
   /* Set pins for block thermistor */
   pinMode(A0, INPUT);
@@ -47,21 +50,22 @@ void setup()
   // double kP = 0;
   // double kI = 0;
   // double kD = 0;
-  pageManager.currentBlockTempReading = analogRead(A0);
-  pageManager.getMyPID().SetMode(AUTOMATIC);
+  pageManager.currentBlockTempReading = 0;
+  // lcd.clear();
+  // pageManager.getMyPID().SetMode(AUTOMATIC);
   // SET PID constants BELOW <- programmer input
   // pageManager.getMyPID().SetTunings(kP,kI,kD);
 
   /* Set pins for Peltier */
-  pinMode(5, OUTPUT); // INA, peltier
-  pinMode(6, OUTPUT); // INB, peltier
+  // pinMode(5, OUTPUT); // INA, peltier
+  // pinMode(6, OUTPUT); // INB, peltier
 
-  digitalWrite(5, 0);
-  digitalWrite(6, 0);
+  // digitalWrite(5, 0);
+  // digitalWrite(6, 0);
 
   /* Set pins for heater */
-  pinMode(10, OUTPUT); // heater
-  digitalWrite(10, 0);
+  // pinMode(10, OUTPUT); // heater
+  // digitalWrite(10, 0);
 
   // Initialize and add thermocyclers classes
   Thermocycler tc1;
@@ -81,20 +85,26 @@ void setup()
   thermocyclerArray.addElement(2, tc3);
 
   // Display
-  lcd.begin();
   // displayWelcome();
   displayMenuPage();
+  lcd.clear();
+  // lcd.delay(3000);
 }
 
 void loop()
 {
-  switch (pageManager.getPageState())
-  {
-  case PageManager::RUN_EXPERIMENT_RUN:
-    displayRunExperiment();
-    break;
-  default:
-    handleKeypad();
-    break;
-  }
+  pageManager.currentBlockTempReading = ReadTemp();
+  // lcd.printWord(String(pageManager.currentBlockTempReading));
+  // switch (pageManager.getPageState())
+  // {
+  // case PageManager::RUN_EXPERIMENT_RUN:
+  displayRunExperiment();
+  // displayEditExperiment();
+  // lcd.delay(1000);
+  // lcd.clear();
+  //   break;
+  // default:
+  // handleKeypad();
+  //   break;
+  // }
 }

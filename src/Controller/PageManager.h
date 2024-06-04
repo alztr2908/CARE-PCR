@@ -75,7 +75,8 @@ public:
     unsigned long timeElapsedinS;
 
     // PID and Block temperature parameters
-    double currentBlockTempReading;
+    float currentBlockTempReading;
+    double blockPWMInput;
     double blockPWMOutput;
     double currentTargetSetpoint;
     bool currentRampDirection;
