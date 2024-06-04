@@ -1,5 +1,6 @@
 #include "RunExperimentPage.h"
 #include "GlobalDeclarations.h"
+#include "../Thermocycler/ThermocyclerOperation.h"
 
 /*
 Global
@@ -27,17 +28,23 @@ void displayRunExperiment(char key)
     {
     case 0:
         /* LOGIC */
-        pageManager.currentMillis = millis();
         currentStepType = currentStep.getStepType();
         currentStepTypeString = currentThermocycler.getStepTypeString(currentStepType);
 
         // Update the stepTime countdown to do Thermocycler Operation
+        pageManager.currentMillis = millis();
         pageManager.currentStepTime = currentStep.getStepTime();
         if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
         {
             pageManager.previousMillis = pageManager.currentMillis;
             pageManager.timeElapsedinS++;
 
+            // Read new temperature
+            pageManager.currentBlockTempReading = ReadTemp();
+            // Setpoint is new params since Input is a global variable
+            PCR_PID(currentStep.getStepTemperature());
+
+            // Cycle Decrement
             if (currentThermocycler.getNumCycles() > 0)
             {
                 // Operation
@@ -116,12 +123,10 @@ void displayRunExperiment(char key)
                     if (pageManager.currentBlockTempReading > currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = false;
-                        pageManager.currentBlockTempReading--;
                     }
                     else if (pageManager.currentBlockTempReading < currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = true;
-                        pageManager.currentBlockTempReading++;
                     }
                     else
                     {
@@ -191,12 +196,10 @@ void displayRunExperiment(char key)
                     if (pageManager.currentBlockTempReading > finalTempReading)
                     {
                         pageManager.currentRampDirection = false;
-                        pageManager.currentBlockTempReading--;
                     }
                     else if (pageManager.currentBlockTempReading < finalTempReading)
                     {
                         pageManager.currentRampDirection = true;
-                        pageManager.currentBlockTempReading++;
                     }
                     else
                     {

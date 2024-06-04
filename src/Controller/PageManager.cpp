@@ -1,9 +1,9 @@
 #include "PageManager.h"
 #include "../GlobalDeclarations.h"
 
-#define PLATE_PID_INC_NORM_P 1000
-#define PLATE_PID_INC_NORM_I 250
-#define PLATE_PID_INC_NORM_D 250
+#define PLATE_PID_INC_NORM_P 0
+#define PLATE_PID_INC_NORM_I 0
+#define PLATE_PID_INC_NORM_D 0
 
 // Define the extern instance
 PageManager pageManager;
@@ -233,7 +233,6 @@ void PageManager::handleSavedExperimentSelection(char key)
 
                 // Init block temperature.
                 // Block temp reading simulation temp and will  setProgState (ERunning or ERamp)
-                // currentBlockTempReading = ThermocyclerInitialTemp;
                 if (currentThermocycler.getStep(0).getStepTemperature() == currentBlockTempReading)
                 {
                     currentThermocycler.setProgType(Thermocycler::ERunning);
@@ -287,6 +286,9 @@ void PageManager::handleRunExperimentSelection(char key)
     {
         if (getCurrentSubpage() == 0)
         {
+            // Reset
+            timeElapsedinS = 0;
+
             handleReturnMenuSelection();
         }
         else

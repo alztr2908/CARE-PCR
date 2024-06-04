@@ -1,7 +1,7 @@
 #include "ThermocyclerOperation.h"
-
 #include <Arduino.h>
-#include "PID_v1.h"
+#include "../GlobalDeclarations.h"
+// #include "PID_v1.h"
 
 // ADS1115 ADS(0x48); // address of the ADC
 
@@ -210,63 +210,67 @@ float resistance_table[200] = {310.764,
                                6.7108,
                                6.6101};
 
-double Kp = 40;
-double Ki = 1.1;
-double Kd = 10;
-double current_temp;
-double actual_temp;
-bool maintain = false;
-float maintain_start;
-const int num_cycles = 6; // TO DO: CHANGE THIS TO A CYCLE = 3 STEPS SYSTEM
-float cycle_duration[num_cycles] = {60.0, 60.0, 60.0, 60.0, 60.0, 60.0};
-float setpoints_array[num_cycles] = {50.0, 68.0, 75.0, 50.0, 68.0, 75.0};
-int setpoint_idx = 0;
+// double Kp = 40;
+// double Ki = 1.1;
+// double Kd = 10;
+// double current_temp;
+// double actual_temp;
+// bool maintain = false;
+// float maintain_start;
+// const int num_cycles = 6; // TO DO: CHANGE THIS TO A CYCLE = 3 STEPS SYSTEM
+// float cycle_duration[num_cycles] = {60.0, 60.0, 60.0, 60.0, 60.0, 60.0};
+// float setpoints_array[num_cycles] = {50.0, 68.0, 75.0, 50.0, 68.0, 75.0};
+// int setpoint_idx = 0;
 
 // setpoint is the temp we want
 // input is where the pin that reads the thermistor will be
 // output is where the pwm will come from
-double Setpoint, Input, Output;
+// double Setpoint, Input, Output;
 
-PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
+// PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
-float TimeNow_1;
-float TimeNow_2;
-float UpdateInterval = 1000;
+// float TimeNow_1;
+// float TimeNow_2;
+// float UpdateInterval = 1000;
 
 // given some temp, and the globally set <Setpoint>, compute <Output> PWM based on PID G(s)
-void PCR_PID(double actual_temp)
+void PCR_PID(double setPoint)
 {
+  /* Peltier Explanation */
+  //[InA,InB] = (5,6)[0,1] such that [OutA, OutB] = [-,+], peltier is connected [red, black]
+  // [red,black] = (5,6)[0,1] is heating
+  // [red, black] = (5,6)[1,0] is cooling
+
   // HEATING MODE
-  if (actual_temp < Setpoint + 1)
+  if (pageManager.currentBlockTempReading < setPoint + 1)
   {
-    Input = actual_temp;
-    myPID.Compute(); // "return" output.. modify output inside the function
+    pageManager.getMyPID().Compute(); // "return" output.. modify output inside the function
+
     // heat mode if we need to go higher
-    analogWrite(5, 0);       // reset bit for cooling mode
-    analogWrite(6, Output);  // assert bit for peltier's heating mode in a PWM manner
-    analogWrite(10, Output); // send PWM to heater
-    //[InA,InB] = [0,1] such that [OutA, OutB] = [-,+], peltier is connected [red, black]
-    // [red,black] = [0,1] is heating
-    // [red, black] = [1,0] is cooling
+    // assert bit for peltier's heating mode in a PWM manner
+    analogWrite(5, 0); // reset bit for cooling mode
+    analogWrite(6, pageManager.blockPWMOutput);
+
+    // send same PWM to heater
+    analogWrite(10, pageManager.blockPWMOutput);
+
     // Serial.println("Heating Mode");
   }
+
   // COOLING MODE
   else
   {
     // else, if we need cooling, put the pwm on the port meant for the peltier
 
-    // Reflect the input about the setpoint axis
-    Input = actual_temp * (-1.0);
-    Setpoint = Setpoint * (-1.0);
+    // Reflect the input about the setPoint axis
+    pageManager.currentBlockTempReading *= (-1.0);
+    setPoint *= (-1.0);
 
-    myPID.Compute(); // "return" output.. modify output inside the function
-    analogWrite(5, Output);
+    pageManager.getMyPID().Compute(); // "return" output.. modify output inside the function
+    analogWrite(5, pageManager.blockPWMOutput);
     analogWrite(6, 0);
     analogWrite(10, 0); // turn off the heater
     // Serial.println("Cooling Mode");
-
-    // revert the reflection back
-    Setpoint = Setpoint * (-1.0);
   }
 }
 
@@ -304,86 +308,86 @@ float ConvertToTemp(float r_ntc)
   }
 }
 
-void setup()
-{
-  // put your setup code here, to run once:
-  pinMode(A0, INPUT);
-  pinMode(5, OUTPUT);  // INA, peltier
-  pinMode(6, OUTPUT);  // INB, peltier
-  pinMode(10, OUTPUT); // heater
-  // digitalWrite(10, 255);
-  digitalWrite(5, 0);
-  digitalWrite(6, 0);
-  digitalWrite(10, 0);
+// void setup()
+// {
+// put your setup code here, to run once:
+// pinMode(A0, INPUT);
+// pinMode(5, OUTPUT);  // INA, peltier
+// pinMode(6, OUTPUT);  // INB, peltier
+// pinMode(10, OUTPUT); // heater
+// // digitalWrite(10, 255);
+// digitalWrite(5, 0);
+// digitalWrite(6, 0);
+// digitalWrite(10, 0);
 
-  // digitalWrite(5, HIGH); digitalWrite(6, LOW); //[InA, InB] = [1,0]
-  // digitalWrite(5, LOW); digitalWrite(6, HIGH); //[InA, InB] = [0,1]
+// digitalWrite(5, HIGH); digitalWrite(6, LOW); //[InA, InB] = [1,0]
+// digitalWrite(5, LOW); digitalWrite(6, HIGH); //[InA, InB] = [0,1]
 
-  Input = analogRead(A0);
-  Setpoint = setpoints_array[0];
+// Input = analogRead(A0);
+// Setpoint = setpoints_array[0];
 
-  myPID.SetMode(AUTOMATIC);
+// myPID.SetMode(AUTOMATIC);
 
-  TimeNow_1 = millis();
-  Serial.begin(9600);
+// TimeNow_1 = millis();
+// Serial.begin(9600);
 
-  // adc nonsense
-  // Serial.println(__FILE__);
-  // Serial.print("ADS1X15_LIB_VERSION: ");
-  // Serial.println(ADS1X15_LIB_VERSION);
-  // ADS.begin();
-}
+// adc nonsense
+// Serial.println(__FILE__);
+// Serial.print("ADS1X15_LIB_VERSION: ");
+// Serial.println(ADS1X15_LIB_VERSION);
+// ADS.begin();
+// }
 
-void loop()
-{
-  // put your main code here, to run repeatedly:
-  TimeNow_2 = millis();
-  if ((TimeNow_2 - TimeNow_1) > UpdateInterval)
-  {
-    actual_temp = ReadTemp();
-    PCR_PID(actual_temp);
-    TimeNow_1 = TimeNow_2;
-    Serial.println(actual_temp);
-  }
+// void loop()
+// {
+//   // put your main code here, to run repeatedly:
+//   TimeNow_2 = millis();
+//   if ((TimeNow_2 - TimeNow_1) > UpdateInterval)
+//   {
+//     actual_temp = ReadTemp();
+//     PCR_PID(actual_temp);
+//     TimeNow_1 = TimeNow_2;
+//     Serial.println(actual_temp);
+//   }
 
-  /*
-  When the system detects that we are at the desired temperature (Setpoint)
-  Start a timer that counts towards the desired duration to be at a given temp
-  For this test system, keep it at 30s for each cycle that demands temperature
-  T_setpoint, stored in setpoints_array
+/*
+When the system detects that we are at the desired temperature (Setpoint)
+Start a timer that counts towards the desired duration to be at a given temp
+For this test system, keep it at 30s for each cycle that demands temperature
+T_setpoint, stored in setpoints_array
 
-  */
+*/
 
-  //  ERamp mode
-  if (!maintain)
-  {
-    // if we arent maintaining yet, check for the moment when the temperature hits the required setpoint
+//   //  ERamp mode
+//   if (!maintain)
+//   {
+//     // if we arent maintaining yet, check for the moment when the temperature hits the required setpoint
 
-    if ((actual_temp == Setpoint) || (actual_temp == Setpoint - 1))
-    {
-      maintain = true;
-      maintain_start = millis(); // record the instance when we hit the required temperature
-    }
-  }
+//     if ((actual_temp == Setpoint) || (actual_temp == Setpoint - 1))
+//     {
+//       maintain = true;
+//       maintain_start = millis(); // record the instance when we hit the required temperature
+//     }
+//   }
 
-  // ERunning mode
-  if (maintain)
-  {
+//   // ERunning mode
+//   if (maintain)
+//   {
 
-    // if we are maintaining rn, constantly check for if the proper amount of time has elapsed.
-    if (((millis() - maintain_start) >= (cycle_duration[setpoint_idx] * 1000)))
-    {
-      /*
-      when we've already been maintaining for the required amount of time
-      we are done with that temperature step, and now lets move on to the next step:
-      change the setpoint to the next one in the array:
-      */
-      maintain = false; // we are no longer in the maintain mode
-      setpoint_idx++;
+//     // if we are maintaining rn, constantly check for if the proper amount of time has elapsed.
+//     if (((millis() - maintain_start) >= (cycle_duration[setpoint_idx] * 1000)))
+//     {
+//       /*
+//       when we've already been maintaining for the required amount of time
+//       we are done with that temperature step, and now lets move on to the next step:
+//       change the setpoint to the next one in the array:
+//       */
+//       maintain = false; // we are no longer in the maintain mode
+//       setpoint_idx++;
 
-      Setpoint = setpoints_array[setpoint_idx]; // go to the next setpoint
+//       Setpoint = setpoints_array[setpoint_idx]; // go to the next setpoint
 
-      // add some logic to repeat in terms of cycles
-    }
-  }
-}
+//       // add some logic to repeat in terms of cycles
+//     }
+//   }
+// }
