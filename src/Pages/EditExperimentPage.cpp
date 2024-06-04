@@ -1,5 +1,6 @@
 #include "EditExperimentPage.h"
 #include "../GlobalDeclarations.h"
+#include "utils.h"
 
 const char editOperationList[8][14] PROGMEM = {
     "Heated Lid",
@@ -32,14 +33,14 @@ void displayEditExperiment(char key)
         lcd.printWord(String(pageManager.currentThermocyclerArrayIndex));
 
         lcd.setCursor(2, 1);
-        lcd.printWord(readProgmemString(editOperationList[currentScreenIndex]));
+        lcd.printWord(rps(editOperationList[currentScreenIndex]));
     }
 
     switch (currentScreenIndex)
     {
     case 0:
         lcd.setCursor(4, 2);
-        lcd.printWord(readProgmemString(editOperationParams[0]));
+        lcd.printWord(rps(editOperationParams[0]));
         lcd.setCursor(7, 2);
         changeOption(key, pageManager.currentStringFirstVal);
         lcd.printWord(pageManager.currentStringFirstVal);
@@ -53,7 +54,7 @@ void displayEditExperiment(char key)
         for (int i = 0; i < 2; i++)
         {
             lcd.setCursor(4, i + 2);
-            lcd.printWord(readProgmemString(editOperationParams[i]));
+            lcd.printWord(rps(editOperationParams[i]));
         }
         switch (currentAnswerField)
         {
@@ -79,7 +80,7 @@ void displayEditExperiment(char key)
 
     case 7:
         lcd.setCursor(4, 2);
-        lcd.printWord(readProgmemString(editOperationParams[0]));
+        lcd.printWord(rps(editOperationParams[0]));
         lcd.setCursor(7, 2);
         changeOption(key, pageManager.currentStringFirstVal);
         lcd.printWord(pageManager.currentStringFirstVal);
@@ -92,8 +93,8 @@ void displayEditExperiment(char key)
         for (int i = 0; i < 3; i++)
         {
             lcd.setCursor(2, i + 1);
-            lcd.printWord(readProgmemString(choiceLetterList[i]));
-            lcd.printWord(readProgmemString(choiceOperationList[i]));
+            lcd.printWord(rps(choiceLetterList[i]));
+            lcd.printWord(rps(choiceOperationList[i]));
         }
         break;
     }
@@ -121,9 +122,9 @@ bool parseStringFloat(String num)
 }
 
 // Function to read a string from PROGMEM
-const char *readProgmemString(const char *str)
-{
-    static char buffer[64]; // Adjust the buffer size as per your needs
-    strcpy_P(buffer, (char *)str);
-    return buffer;
-}
+// const char *readProgmemString(const char *str)
+// {
+//     static char buffer[64]; // Adjust the buffer size as per your needs
+//     strcpy_P(buffer, (char *)str);
+//     return buffer;
+// }

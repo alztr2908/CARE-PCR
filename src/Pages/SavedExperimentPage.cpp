@@ -1,14 +1,12 @@
 #include "SavedExperimentPage.h"
 #include "../GlobalDeclarations.h"
+#include "utils.h"
+
+const char choiceLetterList[3][4] PROGMEM = {"A- ", "B- ", "C- "};
+const char choiceOperationList[3][7] PROGMEM = {"Run", "Edit", "Delete"};
 
 void displaySavedExperiment(char key)
 {
-    const String choiceLetterList[3] = {"A- ", "B- ", "C- "};
-    const String choiceOperationList[3] = {"Run", "Edit", "Delete"};
-    // const String savedExperimentList[3] = {"AAA", "BAC", "CCC"};
-    // int numSavedExperiment = sizeof(savedExperimentList) / sizeof(savedExperimentList[0]);
-    int numSavedExperiment = 3;
-
     Thermocycler currentThermocycler;
     int currentScreenIndex = pageManager.getCurrentSubpage();
 
@@ -19,22 +17,22 @@ void displaySavedExperiment(char key)
     {
     case 0:
         lcd.printWord("Saved experiments");
-        for (int i = 0; i < numSavedExperiment; i++)
+        for (int i = 0; i < 3; i++)
         {
             currentThermocycler = thermocyclerArray.getElement(i);
             lcd.setCursor(2, i + 1);
-            lcd.printWord(choiceLetterList[i]);
+            lcd.printWord(rps(choiceLetterList[i]));
             lcd.printWord(currentThermocycler.getProgName());
         }
         break;
 
     case 1:
         lcd.printWord(pageManager.currentProgName);
-        for (int i = 0; i < numSavedExperiment; i++)
+        for (int i = 0; i < 3; i++)
         {
             lcd.setCursor(2, i + 1);
-            lcd.printWord(choiceLetterList[i]);
-            lcd.printWord(choiceOperationList[i]);
+            lcd.printWord(rps(choiceLetterList[i]));
+            lcd.printWord(rps(choiceOperationList[i]));
         }
         lcd.setCursor(19, 0);
         lcd.printWord(String(pageManager.currentThermocyclerArrayIndex));

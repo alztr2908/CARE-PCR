@@ -260,31 +260,31 @@ void displayRunExperiment(char key)
             lcd.setCursor(0, 1);
             lcd.printWord(currentStepTypeString);
             lcd.setCursor(13, 1);
-            lcd.printWord(">>  ");
+            lcd.printWord(F(">>  "));
             // Display the remaining step time
             if (pageManager.currentStepTime < 10)
             {
-                lcd.printWord("0");
+                lcd.printWord(F("0"));
             }
             lcd.printWord(String(pageManager.currentStepTime));
-            lcd.printWord("s");
+            lcd.printWord(F("s"));
             break;
         case Thermocycler::EComplete:
             lcd.setCursor(0, 1);
-            lcd.printWord("FINAL HOLD: ");
+            lcd.printWord(F("FINAL HOLD: "));
             lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
-            lcd.printWord(" C");
+            lcd.printWord(F(" C"));
             break;
         case Thermocycler::ERamp:
             lcd.setCursor(0, 1);
-            lcd.printWord("RAMP");
+            lcd.printWord(F("RAMP"));
             if (pageManager.currentRampDirection)
             {
-                lcd.printWord("++ ");
+                lcd.printWord(F("++ "));
             }
             else
             {
-                lcd.printWord("-- ");
+                lcd.printWord(F("-- "));
             }
             if (currentThermocycler.getNumCycles() > 0)
             {
@@ -294,9 +294,9 @@ void displayRunExperiment(char key)
             {
                 if (pageManager.stepArrayIndex != 4)
                 {
-                    lcd.printWord("TO ");
+                    lcd.printWord(F("TO "));
                     lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
-                    lcd.printWord(" C");
+                    lcd.printWord(F(" C"));
                 }
                 else
                 {
@@ -310,9 +310,9 @@ void displayRunExperiment(char key)
         /* THIRD ROW */
         // Current block temp
         lcd.setCursor(6, 2);
-        lcd.printWord("BLOCK: ");
+        lcd.printWord(F("BLOCK: "));
         lcd.printWord(String(pageManager.currentBlockTempReading));
-        lcd.printWord(" C");
+        lcd.printWord(F(" C"));
 
         /* FOURTH ROW */
         // Cycle and elapsed time -> ProgType
@@ -329,7 +329,7 @@ void displayRunExperiment(char key)
             break;
         case Thermocycler::EComplete:
             lcd.setCursor(0, 3);
-            lcd.printWord("*** Run Complete ***");
+            lcd.printWord(F("*** Run Complete ***"));
             break;
         }
         break;
@@ -340,7 +340,7 @@ void displayRunExperiment(char key)
         lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(0, 1);
 
-        lcd.printWord("DATA SAVED");
+        lcd.printWord(F("DATA SAVED"));
 
         lcd.setCursor(0, 2);
         lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));

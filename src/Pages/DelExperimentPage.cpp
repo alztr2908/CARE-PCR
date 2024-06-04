@@ -1,20 +1,20 @@
 #include "DelExperimentPage.h"
 #include "../GlobalDeclarations.h"
 
+const char choiceLetterList[2][4] PROGMEM = {"A- ", "B- "};
+const char choiceOperationList[2][4] PROGMEM = {"Yes", "No"};
+
 void displayDelExperiment(char key)
 {
-    const String choiceLetterList[2] = {"A- ", "B- "};
-    const String choiceOperationList[2] = {"Yes", "No"};
-
     lcd.clear();
     lcd.setCursor(0, 0);
 
     switch (pageManager.getCurrentSubpage())
     {
     case 0:
-        lcd.printWord("Delete ");
+        lcd.printWord(F("Delete "));
         lcd.printWord(pageManager.currentProgName);
-        lcd.printWord("?");
+        lcd.printWord(F("?"));
         lcd.setCursor(19, 0);
         lcd.printWord(String(pageManager.currentThermocyclerArrayIndex));
 
@@ -28,11 +28,11 @@ void displayDelExperiment(char key)
     case 1:
         lcd.printWord(pageManager.currentProgName);
         lcd.setCursor(2, 1);
-        lcd.printWord("*** DELETED");
+        lcd.printWord(F("*** DELETED"));
         lcd.setCursor(2, 2);
-        lcd.printWord("SUCCESSFULLY ***");
+        lcd.printWord(F("SUCCESSFULLY ***"));
         lcd.setCursor(5, 3);
-        lcd.printWord(">> press any...");
+        lcd.printWord(F(">> press any..."));
         break;
     }
 }
