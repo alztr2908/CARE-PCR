@@ -331,7 +331,6 @@ void PageManager::handleEditExperimentSelection(char key)
 
                 currentStringFirstVal = "";
                 currentStringSecondVal = "";
-                stepArrayIndex++;
                 currentAnswerField = 0;
                 nextSubpage();
                 displayEditExperiment();
