@@ -11,6 +11,7 @@ public:
     {
         ERunning,
         EComplete,
+        ERamp,
     };
 
     Thermocycler();

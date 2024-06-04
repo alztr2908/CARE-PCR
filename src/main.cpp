@@ -3,6 +3,9 @@
 #include "./Controller/KeypadHandler.h"
 #include "./Pages/RunExperimentPage.h"
 
+// PID
+#include "./Thermocycler/PID_v1.h"
+
 void displayWelcome()
 {
   // Serial.begin(115200);
@@ -27,6 +30,14 @@ void displayWelcome()
 
 void setup()
 {
+  // Initialize the block thermistor
+  pinMode(A0, INPUT);
+
+  // PID params initialization
+  pageManager.currentBlockTempReading = analogRead(A0);
+
+  pageManager.getMyPID();
+
   // Initialize and add thermocyclers
   Thermocycler tc1;
   tc1.setProgName("CAB");

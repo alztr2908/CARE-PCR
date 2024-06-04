@@ -1,10 +1,14 @@
 #include "PageManager.h"
 #include "../GlobalDeclarations.h"
 
+#define PLATE_PID_INC_NORM_P 1000
+#define PLATE_PID_INC_NORM_I 250
+#define PLATE_PID_INC_NORM_D 250
+
 // Define the extern instance
 PageManager pageManager;
 
-PageManager::PageManager() {}
+PageManager::PageManager() : myPID(&currentBlockTempReading, &blockPWMOutput, &currentTargetSetpoint, PLATE_PID_INC_NORM_P, PLATE_PID_INC_NORM_I, PLATE_PID_INC_NORM_D, DIRECT) {}
 
 /* UTILS */
 void PageManager::setPageState(PageState page)
@@ -227,6 +231,20 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // Init time
                 timeElapsedinS = 0;
 
+                // Init block temperature.
+                // Block temp reading simulation temp and will  setProgState (ERunning or ERamp)
+                // currentBlockTempReading = ThermocyclerInitialTemp;
+                if (currentThermocycler.getStep(0).getStepTemperature() == currentBlockTempReading)
+                {
+                    currentThermocycler.setProgType(Thermocycler::ERunning);
+                }
+                else
+                {
+                    currentThermocycler.setProgType(Thermocycler::ERamp);
+                }
+                thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currentThermocycler);
+
+                // Start the program
                 lcd.clear();
                 displayRunExperiment();
             }
@@ -250,10 +268,20 @@ void PageManager::handleSavedExperimentSelection(char key)
 
 void PageManager::handleRunExperimentSelection(char key)
 {
-    if (key == '>' && getCurrentSubpage() == 0)
+    if (key == '>')
     {
-        nextSubpage();
-        displayRunExperiment();
+        if (getCurrentSubpage() > 0)
+        {
+            // Reset
+            timeElapsedinS = 0;
+
+            handleReturnMenuSelection();
+        }
+        else
+        {
+            nextSubpage();
+            displayRunExperiment();
+        }
     }
     else if (key == '<')
     {
@@ -269,32 +297,7 @@ void PageManager::handleRunExperimentSelection(char key)
     }
     else
     {
-        if (getCurrentSubpage() == 1 || getCurrentSubpage() == 2)
-        {
-            if (key == 'A')
-            {
-                lcd.clear();
-                lcd.setCursor(0, 0);
-                lcd.printWord(thermocyclerArray.getElement(currentThermocyclerArrayIndex).getProgName());
-                lcd.setCursor(0, 1);
-                lcd.printWord("Data saved");
-                lcd.setCursor(0, 2);
-                lcd.printWord("successfully");
-                lcd.delay(2000);
-                handleReturnMenuSelection();
-            }
-            else if (key == 'B')
-            {
-                handleReturnMenuSelection();
-            }
-
-            // Reset
-            timeElapsedinS = 0;
-        }
-        else
-        {
-            displayRunExperiment(key);
-        }
+        displayRunExperiment(key);
     }
 }
 
@@ -309,7 +312,6 @@ void PageManager::handleEditExperimentSelection(char key)
         case 0:
             currentHeatedLid = currentStringFirstVal.toFloat();
             currentStringFirstVal = "";
-            stepArrayIndex++;
             nextSubpage();
             displayEditExperiment();
             break;
@@ -331,13 +333,14 @@ void PageManager::handleEditExperimentSelection(char key)
 
                 currentStringFirstVal = "";
                 currentStringSecondVal = "";
+                stepArrayIndex++;
                 currentAnswerField = 0;
                 nextSubpage();
                 displayEditExperiment();
             }
             else
             {
-                stepTempHolder[stepArrayIndex] = currentStringFirstVal.toFloat();
+                stepTempHolder[stepArrayIndex] = atof(currentStringFirstVal.c_str()); // Convert string to float
                 currentAnswerField++;
             }
             break;
@@ -373,6 +376,12 @@ void PageManager::handleEditExperimentSelection(char key)
             currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
             currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
 
+            Serial.println("New Line");
+            Serial.println(String(currTc.getStep(0).getStepTemperature()));
+            Serial.println(String(currTc.getStep(1).getStepTemperature()));
+            Serial.println(String(currTc.getStep(2).getStepTemperature()));
+            Serial.println(String(currTc.getStep(3).getStepTemperature()));
+            Serial.println(String(currTc.getStep(4).getStepTemperature()));
             thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
 
             // Clear and reset values

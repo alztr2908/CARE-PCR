@@ -1,3 +1,5 @@
+#include "ThermocyclerOperation.h"
+
 #include <Arduino.h>
 #include "PID_v1.h"
 
@@ -220,13 +222,12 @@ float cycle_duration[num_cycles] = {60.0, 60.0, 60.0, 60.0, 60.0, 60.0};
 float setpoints_array[num_cycles] = {50.0, 68.0, 75.0, 50.0, 68.0, 75.0};
 int setpoint_idx = 0;
 
-double Setpoint, Input, Output;
 // setpoint is the temp we want
 // input is where the pin that reads the thermistor will be
 // output is where the pwm will come from
-PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
+double Setpoint, Input, Output;
 
-const int VoutPin = A0;
+PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 float TimeNow_1;
 float TimeNow_2;
@@ -239,7 +240,7 @@ void PCR_PID(double actual_temp)
   if (actual_temp < Setpoint + 1)
   {
     Input = actual_temp;
-    myPID.Compute(); // compute as usual
+    myPID.Compute(); // "return" output.. modify output inside the function
     // heat mode if we need to go higher
     analogWrite(5, 0);       // reset bit for cooling mode
     analogWrite(6, Output);  // assert bit for peltier's heating mode in a PWM manner
@@ -258,7 +259,7 @@ void PCR_PID(double actual_temp)
     Input = actual_temp * (-1.0);
     Setpoint = Setpoint * (-1.0);
 
-    myPID.Compute();
+    myPID.Compute(); // "return" output.. modify output inside the function
     analogWrite(5, Output);
     analogWrite(6, 0);
     analogWrite(10, 0); // turn off the heater
@@ -278,7 +279,7 @@ float ReadTemp()
   // int16_t val_0 = ADS.readADC(0);
   // float f = ADS.toVoltage(2);  // voltage factor
 
-  Vout = (analogRead(VoutPin) * (5.0 / 1024.0));
+  Vout = (analogRead(A0) * (5.0 / 1024.0));
   // Serial.println("Vout: ");
   // Serial.println(Vout);
   R_NTC = (Vout * 51000) / (Vcc - Vout);
@@ -318,8 +319,8 @@ void setup()
   // digitalWrite(5, HIGH); digitalWrite(6, LOW); //[InA, InB] = [1,0]
   // digitalWrite(5, LOW); digitalWrite(6, HIGH); //[InA, InB] = [0,1]
 
-  Input = analogRead(VoutPin);
-  Setpoint = setpoints_array[setpoint_idx];
+  Input = analogRead(A0);
+  Setpoint = setpoints_array[0];
 
   myPID.SetMode(AUTOMATIC);
 
@@ -352,6 +353,8 @@ void loop()
   T_setpoint, stored in setpoints_array
 
   */
+
+  //  ERamp mode
   if (!maintain)
   {
     // if we arent maintaining yet, check for the moment when the temperature hits the required setpoint
@@ -363,6 +366,7 @@ void loop()
     }
   }
 
+  // ERunning mode
   if (maintain)
   {
 

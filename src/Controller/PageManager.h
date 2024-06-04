@@ -9,6 +9,9 @@
 #include "../Pages/EditExperimentPage.h"
 #include "../Pages/DelExperimentPage.h"
 
+// PID
+#include "../Thermocycler/PID_v1.h"
+
 #define MAX_STEPS 5
 
 class PageManager
@@ -60,7 +63,7 @@ public:
     int currentCycleNo;
     float currentFinalHoldTemp;
 
-    // Steps
+    // Thermocycling Steps
     float stepTempHolder[MAX_STEPS];
     int stepTimeHolder[MAX_STEPS];
 
@@ -71,6 +74,13 @@ public:
     unsigned long currentMillis;
     unsigned long timeElapsedinS;
 
+    // PID and Block temperature parameters
+    double currentBlockTempReading;
+    double blockPWMOutput;
+    double currentTargetSetpoint;
+    bool currentRampDirection;
+    PID getMyPID() { return myPID; }
+
 private:
     // Accesory methods
     void resetSubpage();
@@ -78,9 +88,13 @@ private:
     void clearIntArray(int *array, int size);
     void clearFloatArray(float *array, int size);
 
+    // Page
     PageState currentState;
     int currentAnswerField;
     int currentSubpage;
+
+    // PID
+    PID myPID;
 };
 
 // Declare the extern instance
