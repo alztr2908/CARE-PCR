@@ -80,7 +80,12 @@ public:
     double blockPWMOutput;
     double currentTargetSetpoint;
     bool currentRampDirection;
+    // PID myPID;
+
     PID getMyPID() { return myPID; }
+    void setPIDTunings(double Kp, double Ki, double Kd);
+    void PIDCompute();
+    void setPIDMode(int mode);
 
 private:
     // Accesory methods

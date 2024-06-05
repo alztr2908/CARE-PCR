@@ -31,26 +31,25 @@
 void PCR_PID(double temp, double setPoint)
 {
   /* Peltier Explanation */
-  //[InA,InB] = (5,6)[0,1] such that [OutA, OutB] = [-,+], peltier is connected [red, black]
-  // [red,black] = (5,6)[0,1] is heating
-  // [red, black] = (5,6)[1,0] is cooling
-
-  pageManager.currentTargetSetpoint = setPoint;
+  //[InA,InB] = (9,10)[0,1] such that [OutA, OutB] = [-,+], peltier is connected [red, black]
+  // [red,black] = (9,10)[0,1] is heating
+  // [red, black] = (9,10)[1,0] is cooling
 
   // HEATING MODE
   if (temp < setPoint + 1)
   {
     pageManager.blockPWMInput = temp;
+    pageManager.currentTargetSetpoint = setPoint;
 
-    pageManager.getMyPID().Compute(); // "return" output.. modify output inside the function
+    pageManager.PIDCompute(); // "return" output.. modify output inside the function
 
     // heat mode if we need to go higher
     // assert bit for peltier's heating mode in a PWM manner
-    // analogWrite(5, 0); // reset bit for cooling mode
-    // analogWrite(6, pageManager.blockPWMOutput);
+    analogWrite(9, 0); // reset bit for cooling mode
+    analogWrite(10, pageManager.blockPWMOutput);
 
     // send same PWM to heater
-    // analogWrite(10, pageManager.blockPWMOutput);
+    analogWrite(11, pageManager.blockPWMOutput);
 
     // Serial.println("Heating Mode");
   }
@@ -62,12 +61,13 @@ void PCR_PID(double temp, double setPoint)
 
     // Reflect the input about the setPoint axis
     pageManager.blockPWMInput = temp * (-1.0);
-    setPoint *= (-1.0);
+    pageManager.currentTargetSetpoint = setPoint * (-1.0);
+    // setPoint *= (-1.0);
 
-    pageManager.getMyPID().Compute(); // "return" output.. modify output inside the function
-    // analogWrite(5, pageManager.blockPWMOutput);
-    // analogWrite(6, 0);
-    // analogWrite(10, 0); // turn off the heater
+    pageManager.PIDCompute(); // "return" output.. modify output inside the function
+    analogWrite(9, pageManager.blockPWMOutput);
+    analogWrite(10, 0);
+    analogWrite(11, 0); // turn off the heater
     // Serial.println("Cooling Mode");
   }
 }

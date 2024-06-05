@@ -5,14 +5,31 @@
 // #include "./Thermocycler/PID_v1.h"
 #include "./Thermocycler/ThermocyclerOperation.h"
 
-#define PLATE_PID_INC_NORM_P 0
-#define PLATE_PID_INC_NORM_I 0
-#define PLATE_PID_INC_NORM_D 0
+#define PLATE_PID_INC_NORM_P 10
+#define PLATE_PID_INC_NORM_I 20
+#define PLATE_PID_INC_NORM_D 30
 
 // Define the extern instance
 PageManager pageManager;
 
 PageManager::PageManager() : myPID(&blockPWMInput, &blockPWMOutput, &currentTargetSetpoint, PLATE_PID_INC_NORM_P, PLATE_PID_INC_NORM_I, PLATE_PID_INC_NORM_D, DIRECT) {}
+// PageManager::PageManager() {}
+
+/* PID */
+void PageManager::setPIDTunings(double Kp, double Ki, double Kd)
+{
+    myPID.SetTunings(Kp, Ki, Kd);
+}
+
+void PageManager::PIDCompute()
+{
+    myPID.Compute();
+}
+
+void PageManager::setPIDMode(int mode)
+{
+    myPID.SetMode(mode);
+}
 
 /* UTILS */
 void PageManager::setPageState(PageState page)
@@ -382,12 +399,11 @@ void PageManager::handleEditExperimentSelection(char key)
             currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
             currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
 
-            Serial.println("New Line");
-            Serial.println(String(currTc.getStep(0).getStepTemperature()));
-            Serial.println(String(currTc.getStep(1).getStepTemperature()));
-            Serial.println(String(currTc.getStep(2).getStepTemperature()));
-            Serial.println(String(currTc.getStep(3).getStepTemperature()));
-            Serial.println(String(currTc.getStep(4).getStepTemperature()));
+            // Serial.println(String(currTc.getStep(0).getStepTemperature()));
+            // Serial.println(String(currTc.getStep(1).getStepTemperature()));
+            // Serial.println(String(currTc.getStep(2).getStepTemperature()));
+            // Serial.println(String(currTc.getStep(3).getStepTemperature()));
+            // Serial.println(String(currTc.getStep(4).getStepTemperature()));
             thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
 
             // Clear and reset values

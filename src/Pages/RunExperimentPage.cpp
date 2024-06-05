@@ -1,6 +1,7 @@
 #include "RunExperimentPage.h"
 #include "GlobalDeclarations.h"
 #include "../Thermocycler/ThermocyclerOperation.h"
+#include <Arduino.h>
 
 /*
 Global
@@ -15,6 +16,8 @@ unsigned long timeElapsedinS; // Add this if it is not declared
 
 void displayRunExperiment(char key)
 {
+    // lcd.printWord(String(pageManager.currentBlockTempReading));
+    // lcd.delay(1000);
     int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
     // int currentArrayIndex = 0;
     Thermocycler currentThermocycler = thermocyclerArray.getElement(currentArrayIndex);
@@ -34,6 +37,7 @@ void displayRunExperiment(char key)
         // Update the stepTime countdown to do Thermocycler Operation
         pageManager.currentMillis = millis();
         pageManager.currentStepTime = currentStep.getStepTime();
+
         if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
         {
             pageManager.previousMillis = pageManager.currentMillis;
@@ -230,6 +234,11 @@ void displayRunExperiment(char key)
                     }
                     thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
 
+                    // Turn off peltier and heater
+                    analogWrite(9, 0);
+                    analogWrite(10, 0);
+                    analogWrite(11, 0);
+
                     // reset to the first step
                     pageManager.stepArrayIndex = 0;
                     break;
@@ -248,7 +257,8 @@ void displayRunExperiment(char key)
         lcd.printWord(String(currentArrayIndex));
         // clock
         lcd.setCursor(15, 0);
-        lcd.printWord("11:59");
+        lcd.printWord(String(currentStep.getStepTemperature()));
+        // lcd.printWord("11:59");
 
         /* SECOND ROW*/
         switch (currentThermocycler.getProgType())
@@ -309,8 +319,8 @@ void displayRunExperiment(char key)
         // Current block temp
         lcd.setCursor(5, 2);
         lcd.printWord(F("BLOCK: "));
-        // lcd.printWord(String(pageManager.currentBlockTempReading));
-        lcd.printWord(String(pageManager.blockPWMInput));
+        lcd.printWord(String(pageManager.currentBlockTempReading));
+        // lcd.printWord(String(pageManager.blockPWMInput));
         // lcd.printWord(F(" C"));
 
         /* FOURTH ROW */
@@ -320,11 +330,18 @@ void displayRunExperiment(char key)
         case Thermocycler::ERunning:
         case Thermocycler::ERamp:
             lcd.setCursor(0, 3);
-            lcd.printWord(String(currentThermocycler.getNumCycles()));
-            lcd.printWord(" of ");
-            lcd.printWord(String(pageManager.currentCycleNo));
-            lcd.setCursor(12, 3);
-            lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
+            lcd.printWord("In:");
+            lcd.printWord(String(pageManager.blockPWMInput));
+
+            lcd.setCursor(10, 3);
+            lcd.printWord("Out:");
+            lcd.printWord(String(pageManager.blockPWMOutput));
+            // lcd.setCursor(0, 3);
+            // lcd.printWord(String(currentThermocycler.getNumCycles()));
+            // lcd.printWord(" of ");
+            // lcd.printWord(String(pageManager.currentCycleNo));
+            // lcd.setCursor(12, 3);
+            // lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
             break;
         case Thermocycler::EComplete:
             lcd.setCursor(0, 3);
