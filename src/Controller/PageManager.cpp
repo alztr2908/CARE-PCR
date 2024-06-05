@@ -1,6 +1,10 @@
 #include "PageManager.h"
 #include "../GlobalDeclarations.h"
 
+// PID
+// #include "./Thermocycler/PID_v1.h"
+#include "./Thermocycler/ThermocyclerOperation.h"
+
 #define PLATE_PID_INC_NORM_P 0
 #define PLATE_PID_INC_NORM_I 0
 #define PLATE_PID_INC_NORM_D 0

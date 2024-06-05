@@ -16,6 +16,9 @@ PID::SetMode(int Mode)
 PID::SetControllerDirection(int Direction)
 */
 
+unsigned long currentTime;
+unsigned long previousTime = 0;
+
 void displayWelcome()
 {
   // Serial.begin(115200);
@@ -47,14 +50,13 @@ void setup()
   pinMode(A0, INPUT);
 
   // PID params initialization
-  // double kP = 0;
-  // double kI = 0;
-  // double kD = 0;
+  double kP = 100;
+  double kI = 10;
+  double kD = 40;
   pageManager.currentBlockTempReading = 0;
-  // lcd.clear();
-  // pageManager.getMyPID().SetMode(AUTOMATIC);
+  pageManager.getMyPID().SetMode(AUTOMATIC);
   // SET PID constants BELOW <- programmer input
-  // pageManager.getMyPID().SetTunings(kP,kI,kD);
+  pageManager.getMyPID().SetTunings(kP, kI, kD);
 
   /* Set pins for Peltier */
   // pinMode(5, OUTPUT); // INA, peltier
@@ -87,24 +89,24 @@ void setup()
   // Display
   // displayWelcome();
   displayMenuPage();
-  lcd.clear();
+  // lcd.clear();
   // lcd.delay(3000);
 }
 
 void loop()
 {
-  pageManager.currentBlockTempReading = ReadTemp();
-  // lcd.printWord(String(pageManager.currentBlockTempReading));
-  // switch (pageManager.getPageState())
-  // {
-  // case PageManager::RUN_EXPERIMENT_RUN:
-  displayRunExperiment();
-  // displayEditExperiment();
-  // lcd.delay(1000);
-  // lcd.clear();
-  //   break;
-  // default:
+  // pageManager.currentBlockTempReading = ReadTemp();
+  // displayRunExperiment();
+
   // handleKeypad();
-  //   break;
-  // }
+  switch (pageManager.getPageState())
+  {
+  case PageManager::RUN_EXPERIMENT_RUN:
+    pageManager.currentBlockTempReading = ReadTemp();
+    displayRunExperiment();
+    break;
+  default:
+    handleKeypad();
+    break;
+  }
 }

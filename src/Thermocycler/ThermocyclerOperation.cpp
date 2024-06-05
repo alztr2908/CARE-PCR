@@ -28,16 +28,20 @@
 // float UpdateInterval = 1000;
 
 // given some temp, and the globally set <Setpoint>, compute <Output> PWM based on PID G(s)
-void PCR_PID(double setPoint)
+void PCR_PID(double temp, double setPoint)
 {
   /* Peltier Explanation */
   //[InA,InB] = (5,6)[0,1] such that [OutA, OutB] = [-,+], peltier is connected [red, black]
   // [red,black] = (5,6)[0,1] is heating
   // [red, black] = (5,6)[1,0] is cooling
 
+  pageManager.currentTargetSetpoint = setPoint;
+
   // HEATING MODE
-  if (pageManager.currentBlockTempReading < setPoint + 1)
+  if (temp < setPoint + 1)
   {
+    pageManager.blockPWMInput = temp;
+
     pageManager.getMyPID().Compute(); // "return" output.. modify output inside the function
 
     // heat mode if we need to go higher
@@ -57,13 +61,13 @@ void PCR_PID(double setPoint)
     // else, if we need cooling, put the pwm on the port meant for the peltier
 
     // Reflect the input about the setPoint axis
-    pageManager.currentBlockTempReading *= (-1.0);
+    pageManager.blockPWMInput = temp * (-1.0);
     setPoint *= (-1.0);
 
     pageManager.getMyPID().Compute(); // "return" output.. modify output inside the function
-    analogWrite(5, pageManager.blockPWMOutput);
-    analogWrite(6, 0);
-    analogWrite(10, 0); // turn off the heater
+    // analogWrite(5, pageManager.blockPWMOutput);
+    // analogWrite(6, 0);
+    // analogWrite(10, 0); // turn off the heater
     // Serial.println("Cooling Mode");
   }
 }

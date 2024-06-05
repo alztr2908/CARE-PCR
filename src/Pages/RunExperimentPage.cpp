@@ -15,8 +15,8 @@ unsigned long timeElapsedinS; // Add this if it is not declared
 
 void displayRunExperiment(char key)
 {
-    // int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
-    int currentArrayIndex = 0;
+    int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
+    // int currentArrayIndex = 0;
     Thermocycler currentThermocycler = thermocyclerArray.getElement(currentArrayIndex);
     Step currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
     Step::StepType currentStepType;
@@ -39,11 +39,8 @@ void displayRunExperiment(char key)
             pageManager.previousMillis = pageManager.currentMillis;
             pageManager.timeElapsedinS++;
 
-            // Read new temperature
-            // pageManager.currentBlockTempReading = ReadTemp();
-
-            // Setpoint is new params since Input is a global variable
-            PCR_PID(currentStep.getStepTemperature());
+            // Put block temp reading into PID
+            PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
 
             // Cycle Decrement
             if (currentThermocycler.getNumCycles() > 0)
@@ -94,7 +91,7 @@ void displayRunExperiment(char key)
                             }
 
                             // If final temp == current blk temp
-                            if (currentThermocycler.getStep(4).getStepTemperature() == pageManager.currentBlockTempReading)
+                            if (currentThermocycler.getStep(4).getStepTemperature() == pageManager.blockPWMInput)
                             {
                                 currentThermocycler.setProgType(Thermocycler::ERunning);
                             }
@@ -121,11 +118,11 @@ void displayRunExperiment(char key)
                     break;
                 // ERamp: inc/dec curentBlockTempReading depends on target temp
                 case Thermocycler::ERamp:
-                    if (pageManager.currentBlockTempReading > currentStep.getStepTemperature())
+                    if (pageManager.blockPWMInput > currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = false;
                     }
-                    else if (pageManager.currentBlockTempReading < currentStep.getStepTemperature())
+                    else if (pageManager.blockPWMInput < currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = true;
                     }
@@ -170,7 +167,7 @@ void displayRunExperiment(char key)
                         pageManager.stepArrayIndex = 0;
 
                         // At final step, compare to final temp.. if equal to hold then EComplete. ERamp if not
-                        if (currentThermocycler.getFinalHoldTemp() == pageManager.currentBlockTempReading)
+                        if (currentThermocycler.getFinalHoldTemp() == pageManager.blockPWMInput)
                         {
                             currentThermocycler.setProgType(Thermocycler::EComplete);
                         }
@@ -194,11 +191,11 @@ void displayRunExperiment(char key)
                         finalTempReading = currentThermocycler.getFinalHoldTemp();
                     }
 
-                    if (pageManager.currentBlockTempReading > finalTempReading)
+                    if (pageManager.blockPWMInput > finalTempReading)
                     {
                         pageManager.currentRampDirection = false;
                     }
-                    else if (pageManager.currentBlockTempReading < finalTempReading)
+                    else if (pageManager.blockPWMInput < finalTempReading)
                     {
                         pageManager.currentRampDirection = true;
                     }
@@ -312,8 +309,9 @@ void displayRunExperiment(char key)
         // Current block temp
         lcd.setCursor(5, 2);
         lcd.printWord(F("BLOCK: "));
-        lcd.printWord(String(pageManager.currentBlockTempReading));
-        lcd.printWord(F(" C"));
+        // lcd.printWord(String(pageManager.currentBlockTempReading));
+        lcd.printWord(String(pageManager.blockPWMInput));
+        // lcd.printWord(F(" C"));
 
         /* FOURTH ROW */
         // Cycle and elapsed time -> ProgType
