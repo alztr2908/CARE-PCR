@@ -395,6 +395,7 @@ void PageManager::handleEditExperimentSelection(char key)
             // Serial.println(String(currTc.getStep(2).getStepTemperature()));
             // Serial.println(String(currTc.getStep(3).getStepTemperature()));
             // Serial.println(String(currTc.getStep(4).getStepTemperature()));
+            currTc.saveToEEPROM(currentThermocyclerArrayIndex * 100);
             thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
 
             // Clear and reset values
@@ -446,6 +447,7 @@ void PageManager::handleEditExperimentSelection(char key)
             currentStringFirstVal = "";
             previousSubpage();
             displayEditExperiment('\0');
+            break;
 
         default:
             previousSubpage();
@@ -471,6 +473,7 @@ void PageManager::handleEditExperimentSelection(char key)
                 currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
                 currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
 
+                currTc.saveToEEPROM(currentThermocyclerArrayIndex * 100);
                 thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
 
                 // Clear and reset values

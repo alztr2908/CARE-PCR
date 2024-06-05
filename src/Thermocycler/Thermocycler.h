@@ -32,6 +32,10 @@ public:
     void setStepParams(int index, Step step);
     void setProgType(ProgramType type) { ThermocyclingType = type; }
 
+    // EEPROM
+    void saveToEEPROM(int baseAddr);
+    Thermocycler loadFromEEPROM(int baseAddr);
+
 private:
     String progName;
     ProgramType ThermocyclingType;

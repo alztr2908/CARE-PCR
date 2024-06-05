@@ -1,4 +1,5 @@
 #include "Thermocycler.h"
+#include <EEPROM.h>
 
 Thermocycler::Thermocycler() : progName(""), finalHoldTemp(0.0), numCycles(0), ThermocyclingType(ERunning)
 {
@@ -62,3 +63,64 @@ void Thermocycler::setProgName(String name)
 {
     progName = name;
 }
+
+// EEPROM
+// void Thermocycler::saveToEEPROM(int baseAddr)
+// {
+//     int addr = baseAddr;
+//     EEPROM.put(addr, progName);
+//     addr += sizeof(progName);
+//     EEPROM.put(addr, finalHoldTemp);
+//     addr += sizeof(finalHoldTemp);
+//     EEPROM.put(addr, numCycles);
+//     addr += sizeof(numCycles);
+//     for (int i = 0; i < 5; i++)
+//     {
+//         EEPROM.put(addr, steps[i].getStepType());
+//         addr += sizeof(steps[i].getStepType());
+//         EEPROM.put(addr, steps[i].getStepTemperature());
+//         addr += sizeof(steps[i].getStepTemperature());
+//         EEPROM.put(addr, steps[i].getStepTime());
+//         addr += sizeof(steps[i].getStepTime());
+//     }
+// }
+
+// Thermocycler Thermocycler::loadFromEEPROM(int baseAddr)
+// {
+//     Thermocycler loadedTc;
+//     int addr = baseAddr;
+
+//     // Check if data exists at the base address
+//     int dataCheck;
+//     EEPROM.get(addr, dataCheck);
+
+//     // If dataCheck is empty, initialize a default Thermocycler object
+//     if (dataCheck == 0)
+//     {
+//         return loadedTc; // Return the default Thermocycler object
+//     }
+
+//     // Load data from EEPROM
+//     EEPROM.get(addr, loadedTc.progName);
+//     addr += sizeof(loadedTc.progName);
+//     EEPROM.get(addr, loadedTc.finalHoldTemp);
+//     addr += sizeof(loadedTc.finalHoldTemp);
+//     EEPROM.get(addr, loadedTc.numCycles);
+//     addr += sizeof(loadedTc.numCycles);
+
+//     Step::StepType type;
+//     float temp;
+//     int time;
+//     for (int i = 0; i < 5; i++)
+//     {
+//         EEPROM.get(addr, type);
+//         addr += sizeof(type);
+//         EEPROM.get(addr, temp);
+//         addr += sizeof(temp);
+//         EEPROM.get(addr, time);
+//         addr += sizeof(time);
+//         loadedTc.setStep(i, type, temp, time);
+//     }
+
+//     return loadedTc;
+// }
