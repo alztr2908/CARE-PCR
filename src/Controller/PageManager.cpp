@@ -96,7 +96,7 @@ void PageManager::handleReturnMenuSelection()
     resetSubpage();
     lcd.clear();
     lcd.delay(500);
-    displayMenuPage();
+    displayMenuPage('\0');
 }
 
 void PageManager::handleMenuSelection(char key)
@@ -105,11 +105,11 @@ void PageManager::handleMenuSelection(char key)
     {
     case 'A':
         setPageState(PageManager::NEW_EXPERIMENT);
-        displayNewExperiment();
+        displayNewExperiment('\0');
         break;
     case 'B':
         setPageState(PageManager::SAVED_EXPERIMENT);
-        displaySavedExperiment();
+        displaySavedExperiment('\0');
         break;
     }
 }
@@ -131,14 +131,14 @@ void PageManager::handleNewExperimentSelection(char key)
 
                 setPageState(PageManager::EDIT_EXPERIMENT);
                 resetSubpage();
-                displayEditExperiment();
+                displayEditExperiment('\0');
             }
             else
             {
                 // If thermocyclerArray experiments is full, proceed to next page
                 newProgName = "";
                 nextSubpage();
-                displayNewExperiment();
+                displayNewExperiment('\0');
             }
         }
         else
@@ -158,7 +158,7 @@ void PageManager::handleNewExperimentSelection(char key)
             {
                 String slicedString = newProgName.substring(0, newProgName.length() - 1);
                 newProgName = slicedString;
-                displayNewExperiment();
+                displayNewExperiment('\0');
             }
             else
             {
@@ -168,7 +168,7 @@ void PageManager::handleNewExperimentSelection(char key)
         else
         {
             previousSubpage();
-            displayNewExperiment();
+            displayNewExperiment('\0');
         }
     }
     else
@@ -188,7 +188,7 @@ void PageManager::handleSavedExperimentSelection(char key)
         else
         {
             previousSubpage();
-            displaySavedExperiment();
+            displaySavedExperiment('\0');
         }
     }
     else
@@ -219,12 +219,12 @@ void PageManager::handleSavedExperimentSelection(char key)
                 {
                     setPageState(PageManager::NEW_EXPERIMENT);
                     resetSubpage();
-                    displayNewExperiment();
+                    displayNewExperiment('\0');
                 }
                 else
                 {
                     nextSubpage();
-                    displaySavedExperiment();
+                    displaySavedExperiment('\0');
                 }
             }
         }
@@ -266,21 +266,21 @@ void PageManager::handleSavedExperimentSelection(char key)
 
                 // Start the program
                 lcd.clear();
-                displayRunExperiment();
+                displayRunExperiment('\0');
             }
             else if (key == 'B')
             {
                 // Implement Edit logic here
                 setPageState(PageManager::EDIT_EXPERIMENT);
                 resetSubpage();
-                displayEditExperiment();
+                displayEditExperiment('\0');
             }
             else if (key == 'C')
             {
                 // Implement Delete logic here
                 setPageState(PageManager::DEL_EXPERIMENT);
                 resetSubpage();
-                displayDelExperiment();
+                displayDelExperiment('\0');
             }
         }
     }
@@ -300,7 +300,7 @@ void PageManager::handleRunExperimentSelection(char key)
         else
         {
             nextSubpage();
-            displayRunExperiment();
+            displayRunExperiment('\0');
         }
     }
     else if (key == '<')
@@ -315,7 +315,7 @@ void PageManager::handleRunExperimentSelection(char key)
         else
         {
             previousSubpage();
-            displayRunExperiment();
+            displayRunExperiment('\0');
         }
     }
     else
@@ -331,12 +331,12 @@ void PageManager::handleEditExperimentSelection(char key)
         switch (getCurrentSubpage())
         {
 
-        // Heated Lid
+        // Cycle No.
         case 0:
-            currentHeatedLid = currentStringFirstVal.toFloat();
+            currentCycleNo = currentStringFirstVal.toInt();
             currentStringFirstVal = "";
             nextSubpage();
-            displayEditExperiment();
+            displayEditExperiment('\0');
             break;
 
         // Initial Step
@@ -345,10 +345,10 @@ void PageManager::handleEditExperimentSelection(char key)
         // Step 3 - Extension
         // Final Step
         case 1:
+        case 2:
         case 3:
         case 4:
         case 5:
-        case 6:
             // Change Answer fields
             if (getCurrentAnswerField() == 1)
             {
@@ -359,7 +359,7 @@ void PageManager::handleEditExperimentSelection(char key)
                 stepArrayIndex++;
                 currentAnswerField = 0;
                 nextSubpage();
-                displayEditExperiment();
+                displayEditExperiment('\0');
             }
             else
             {
@@ -368,28 +368,19 @@ void PageManager::handleEditExperimentSelection(char key)
             }
             break;
 
-        // Cycle No.
-        case 2:
-            currentCycleNo = currentStringFirstVal.toInt();
-            currentStringFirstVal = "";
-            nextSubpage();
-            displayEditExperiment();
-            break;
-
         // Final Hold
-        case 7:
+        case 6:
             currentFinalHoldTemp = currentStringFirstVal.toFloat();
             currentStringFirstVal = "";
             nextSubpage();
-            displayEditExperiment();
+            displayEditExperiment('\0');
             break;
 
         // Saving
-        case 8:
+        case 7:
             // Initialize and add the new/modified thermocycler
             Thermocycler currTc = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
             currTc.setProgName(currentProgName);
-            currTc.setHeatedLid(currentHeatedLid);
             currTc.setNumCycles(currentCycleNo);
             currTc.setFinalHoldTemp(currentFinalHoldTemp);
 
@@ -415,7 +406,7 @@ void PageManager::handleEditExperimentSelection(char key)
             // Go back to saved experiment to see if new thermocycler has been saved
             setPageState(PageManager::SAVED_EXPERIMENT);
             resetSubpage();
-            displaySavedExperiment();
+            displaySavedExperiment('\0');
             break;
         }
     }
@@ -432,11 +423,12 @@ void PageManager::handleEditExperimentSelection(char key)
 
             handleReturnMenuSelection();
             break;
+
         case 1:
+        case 2:
         case 3:
         case 4:
         case 5:
-        case 6:
             if (getCurrentAnswerField() == 1)
             {
                 currentAnswerField--;
@@ -446,12 +438,18 @@ void PageManager::handleEditExperimentSelection(char key)
                 currentStringFirstVal = "";
                 currentStringSecondVal = "";
                 previousSubpage();
-                displayEditExperiment();
+                displayEditExperiment('\0');
             }
             break;
+
+        case 6:
+            currentStringFirstVal = "";
+            previousSubpage();
+            displayEditExperiment('\0');
+
         default:
             previousSubpage();
-            displayEditExperiment();
+            displayEditExperiment('\0');
             break;
         }
     }
@@ -464,7 +462,6 @@ void PageManager::handleEditExperimentSelection(char key)
                 // Initialize and add the new/modified thermocycler
                 Thermocycler currTc = thermocyclerArray.getElement(currentThermocyclerArrayIndex);
                 currTc.setProgName(currentProgName);
-                currTc.setHeatedLid(currentHeatedLid);
                 currTc.setNumCycles(currentCycleNo);
                 currTc.setFinalHoldTemp(currentFinalHoldTemp);
 
@@ -485,12 +482,12 @@ void PageManager::handleEditExperimentSelection(char key)
                 // Go back to saved experiment to see if new thermocycler has been saved
                 setPageState(PageManager::SAVED_EXPERIMENT);
                 resetSubpage();
-                displaySavedExperiment();
+                displaySavedExperiment('\0');
             }
             else if (key == 'B')
             {
                 resetSubpage();
-                displayEditExperiment();
+                displayEditExperiment('\0');
             }
             else if (key == 'C')
             {
@@ -519,7 +516,7 @@ void PageManager::handleDelExperimentSelection(char key)
             // Delete thermocyclerArray element
             thermocyclerArray.deleteElement(currentThermocyclerArrayIndex);
             nextSubpage();
-            displayDelExperiment();
+            displayDelExperiment('\0');
             break;
         default:
             handleReturnMenuSelection();
@@ -535,7 +532,7 @@ void PageManager::handleDelExperimentSelection(char key)
             currentState = SAVED_EXPERIMENT;
             setPageState(PageManager::SAVED_EXPERIMENT);
             setCurrentSubPage(1);
-            displaySavedExperiment();
+            displaySavedExperiment('\0');
             break;
         default:
             handleReturnMenuSelection();
@@ -552,7 +549,7 @@ void PageManager::handleDelExperimentSelection(char key)
                 // Go back to saved experiment list
                 currentState = SAVED_EXPERIMENT;
                 setCurrentSubPage(0);
-                displaySavedExperiment();
+                displaySavedExperiment('\0');
             }
             break;
         default:

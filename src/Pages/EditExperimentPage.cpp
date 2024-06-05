@@ -3,7 +3,6 @@
 #include "utils.h"
 
 const char editOperationList[8][14] PROGMEM = {
-    "Heated Lid",
     "Initial Step",
     "Cycles",
     "Denaturation",
@@ -40,17 +39,16 @@ void displayEditExperiment(char key)
     {
     case 0:
         lcd.setCursor(4, 2);
-        lcd.printWord(rps(editOperationParams[0]));
-        lcd.setCursor(7, 2);
+        lcd.printWord(F("# cycles- "));
         changeOption(key, pageManager.currentStringFirstVal);
         lcd.printWord(pageManager.currentStringFirstVal);
         break;
 
     case 1:
+    case 2:
     case 3:
     case 4:
     case 5:
-    case 6:
         for (int i = 0; i < 2; i++)
         {
             lcd.setCursor(4, i + 2);
@@ -71,14 +69,7 @@ void displayEditExperiment(char key)
         lcd.printWord(pageManager.currentStringSecondVal);
         break;
 
-    case 2:
-        lcd.setCursor(4, 2);
-        lcd.printWord(F("# cycles- "));
-        changeOption(key, pageManager.currentStringFirstVal);
-        lcd.printWord(pageManager.currentStringFirstVal);
-        break;
-
-    case 7:
+    case 6:
         lcd.setCursor(4, 2);
         lcd.printWord(rps(editOperationParams[0]));
         lcd.setCursor(7, 2);
@@ -86,7 +77,7 @@ void displayEditExperiment(char key)
         lcd.printWord(pageManager.currentStringFirstVal);
         break;
 
-    case 8:
+    case 7:
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.printWord(pageManager.currentProgName);

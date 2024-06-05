@@ -38,6 +38,8 @@ void handleKeypad()
         case PageManager::DEL_EXPERIMENT:
             pageManager.handleDelExperimentSelection(key);
             break;
+        case PageManager::RUN_EXPERIMENT_RUN:
+            break;
         }
     }
 }

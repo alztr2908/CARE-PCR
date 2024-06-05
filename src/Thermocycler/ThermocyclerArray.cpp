@@ -41,6 +41,8 @@ int ThermocyclerArray::emptyElementIndex()
             return index;
         }
     }
+
+    return -1;
 }
 
 void ThermocyclerArray::addElement(int index, Thermocycler thermocycler)
@@ -73,4 +75,6 @@ Thermocycler ThermocyclerArray::getElement(int index)
     {
         return thermocyclerArray[index];
     }
+
+    return thermocyclerArray[-1];
 }

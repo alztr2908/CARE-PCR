@@ -59,7 +59,6 @@ public:
     int currentThermocyclerArrayIndex;
 
     // Thermocycling parameters
-    float currentHeatedLid;
     int currentCycleNo;
     float currentFinalHoldTemp;
 

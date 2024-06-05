@@ -18,8 +18,6 @@ public:
 
     // Getters
     String getProgName() { return progName; }
-    double getHeatedLid() { return heatedLid; }
-    // const Step *getSteps() const { return steps; }
     float getFinalHoldTemp() { return finalHoldTemp; }
     int getNumCycles() { return numCycles; }
     Step getStep(int index);
@@ -28,7 +26,6 @@ public:
 
     // Setters
     void setProgName(String name);
-    void setHeatedLid(double lid) { heatedLid = lid; }
     void setFinalHoldTemp(float temp) { finalHoldTemp = temp; }
     void setNumCycles(int cycles) { numCycles = cycles; }
     void setStep(int index, Step::StepType type, float temp, int time);
@@ -38,7 +35,6 @@ public:
 private:
     String progName;
     ProgramType ThermocyclingType;
-    double heatedLid;
     Step steps[5]; // Fixed array of 6 steps
     float finalHoldTemp;
     int numCycles;

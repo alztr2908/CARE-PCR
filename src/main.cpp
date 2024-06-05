@@ -74,15 +74,14 @@ void setup()
 
   // Initialize and add thermocyclers classes
   Thermocycler tc1;
-  tc1.setProgName("CAB");
-  tc1.setHeatedLid(110.0);
-  tc1.setFinalHoldTemp(20.0);
-  tc1.setNumCycles(2);
-  tc1.setStep(0, Step::INITIAL, 35.0, 5);
-  tc1.setStep(1, Step::DENATURATION, 30.0, 5);
-  tc1.setStep(2, Step::ANNEALING, 35.0, 5);
-  tc1.setStep(3, Step::EXTENDING, 32.0, 5);
-  tc1.setStep(4, Step::FINAL, 25.0, 5);
+  // tc1.setProgName("CAB");
+  // tc1.setFinalHoldTemp(20.0);
+  // tc1.setNumCycles(2);
+  // tc1.setStep(0, Step::INITIAL, 35.0, 5);
+  // tc1.setStep(1, Step::DENATURATION, 30.0, 5);
+  // tc1.setStep(2, Step::ANNEALING, 35.0, 5);
+  // tc1.setStep(3, Step::EXTENDING, 32.0, 5);
+  // tc1.setStep(4, Step::FINAL, 25.0, 5);
   thermocyclerArray.addElement(0, tc1);
   Thermocycler tc2;
   thermocyclerArray.addElement(1, tc2);

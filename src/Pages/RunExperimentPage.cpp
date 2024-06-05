@@ -15,6 +15,8 @@ unsigned long currentMillis;
 unsigned long timeElapsedinS; // Add this if it is not declared
 */
 
+const char currentStepTypeList[6][13] PROGMEM = {"INITIAL", "DENATURATION", "ANNEALING", "EXTENDING", "FINAL", "HOLD"};
+
 void displayRunExperiment(char key)
 {
     // lcd.printWord(String(pageManager.currentBlockTempReading));
@@ -131,15 +133,15 @@ void displayRunExperiment(char key)
                     break;
                 // ERamp: inc/dec curentBlockTempReading depends on target temp
                 case Thermocycler::ERamp:
-                    if (pageManager.blockPWMInput > currentStep.getStepTemperature())
+                    if (absf(pageManager.blockPWMInput) > currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = false;
                     }
-                    else if (pageManager.blockPWMInput < currentStep.getStepTemperature())
+                    else if (absf(pageManager.blockPWMInput) < currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = true;
                     }
-                    else if (pageManager.blockPWMInput == currentStep.getStepTemperature() || ((-1.0) * pageManager.blockPWMInput) == currentStep.getStepTemperature())
+                    else if (absf(pageManager.blockPWMInput) == currentStep.getStepTemperature())
                     {
                         currentThermocycler.setProgType(Thermocycler::ERunning);
 
@@ -149,6 +151,9 @@ void displayRunExperiment(char key)
                     }
 
                     thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
+                    break;
+
+                case Thermocycler::EComplete:
                     break;
                 }
             }
@@ -204,15 +209,15 @@ void displayRunExperiment(char key)
                         finalTempReading = currentThermocycler.getFinalHoldTemp();
                     }
 
-                    if (pageManager.blockPWMInput > finalTempReading)
+                    if (absf(pageManager.blockPWMInput) > finalTempReading)
                     {
                         pageManager.currentRampDirection = false;
                     }
-                    else if (pageManager.blockPWMInput < finalTempReading)
+                    else if (absf(pageManager.blockPWMInput < finalTempReading))
                     {
                         pageManager.currentRampDirection = true;
                     }
-                    else if (pageManager.blockPWMInput == finalTempReading || ((-1.0) * pageManager.blockPWMInput) == finalTempReading)
+                    else if (absf(pageManager.blockPWMInput == finalTempReading))
                     {
                         // Final step transition or final hold
                         if (pageManager.stepArrayIndex == 4)
