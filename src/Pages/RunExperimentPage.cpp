@@ -2,6 +2,7 @@
 #include "GlobalDeclarations.h"
 #include "../Thermocycler/ThermocyclerOperation.h"
 #include <Arduino.h>
+#include "utils.h"
 
 /*
 Global
@@ -43,8 +44,16 @@ void displayRunExperiment(char key)
             pageManager.previousMillis = pageManager.currentMillis;
             pageManager.timeElapsedinS++;
 
+            if (pageManager.stepArrayIndex < 4)
+            {
+                PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
+            }
+            else
+            {
+                PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
+            }
+
             // Put block temp reading into PID
-            PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
 
             // Cycle Decrement
             if (currentThermocycler.getNumCycles() > 0)
@@ -130,7 +139,7 @@ void displayRunExperiment(char key)
                     {
                         pageManager.currentRampDirection = true;
                     }
-                    else
+                    else if (pageManager.blockPWMInput == currentStep.getStepTemperature() || ((-1.0) * pageManager.blockPWMInput) == currentStep.getStepTemperature())
                     {
                         currentThermocycler.setProgType(Thermocycler::ERunning);
 
@@ -203,7 +212,7 @@ void displayRunExperiment(char key)
                     {
                         pageManager.currentRampDirection = true;
                     }
-                    else
+                    else if (pageManager.blockPWMInput == finalTempReading || ((-1.0) * pageManager.blockPWMInput) == finalTempReading)
                     {
                         // Final step transition or final hold
                         if (pageManager.stepArrayIndex == 4)
@@ -257,7 +266,14 @@ void displayRunExperiment(char key)
         lcd.printWord(String(currentArrayIndex));
         // clock
         lcd.setCursor(15, 0);
-        lcd.printWord(String(currentStep.getStepTemperature()));
+        if (pageManager.stepArrayIndex < 4)
+        {
+            lcd.printWord(String(currentStep.getStepTemperature()));
+        }
+        else
+        {
+            lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
+        }
         // lcd.printWord("11:59");
 
         /* SECOND ROW*/
@@ -319,8 +335,8 @@ void displayRunExperiment(char key)
         // Current block temp
         lcd.setCursor(5, 2);
         lcd.printWord(F("BLOCK: "));
-        lcd.printWord(String(pageManager.currentBlockTempReading));
-        // lcd.printWord(String(pageManager.blockPWMInput));
+        // lcd.printWord(String(pageManager.currentBlockTempReading));
+        lcd.printWord(String(absf(pageManager.blockPWMInput)));
         // lcd.printWord(F(" C"));
 
         /* FOURTH ROW */
@@ -329,19 +345,19 @@ void displayRunExperiment(char key)
         {
         case Thermocycler::ERunning:
         case Thermocycler::ERamp:
-            lcd.setCursor(0, 3);
-            lcd.printWord("In:");
-            lcd.printWord(String(pageManager.blockPWMInput));
-
-            lcd.setCursor(10, 3);
-            lcd.printWord("Out:");
-            lcd.printWord(String(pageManager.blockPWMOutput));
             // lcd.setCursor(0, 3);
-            // lcd.printWord(String(currentThermocycler.getNumCycles()));
-            // lcd.printWord(" of ");
-            // lcd.printWord(String(pageManager.currentCycleNo));
-            // lcd.setCursor(12, 3);
-            // lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
+            // lcd.printWord("In:");
+            // lcd.printWord(String(pageManager.blockPWMInput));
+
+            // lcd.setCursor(10, 3);
+            // lcd.printWord("Out:");
+            // lcd.printWord(String(pageManager.blockPWMOutput));
+            lcd.setCursor(0, 3);
+            lcd.printWord(String(currentThermocycler.getNumCycles()));
+            lcd.printWord(" of ");
+            lcd.printWord(String(pageManager.currentCycleNo));
+            lcd.setCursor(12, 3);
+            lcd.printWord(parseTimeElapse(pageManager.timeElapsedinS));
             break;
         case Thermocycler::EComplete:
             lcd.setCursor(0, 3);

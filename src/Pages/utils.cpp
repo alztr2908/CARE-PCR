@@ -7,3 +7,13 @@ char *rps(const char *progString)
     strcpy_P(buf, progString);
     return buf;
 }
+
+float absf(float val)
+{
+    if (val < 0)
+    {
+        return (-1.0) * val;
+    }
+
+    return val;
+}
