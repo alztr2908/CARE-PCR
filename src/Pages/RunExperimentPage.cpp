@@ -22,8 +22,8 @@ const char TEMP_FORM_STR[] PROGMEM = "%4f C";
 void displayRunExperiment(char key)
 {
     // Strings
-    char setPointTempStr[16];
-    char blkTempStr[16];
+    // char setPointTempStr[16];
+    // char blkTempStr[16];
 
     // lcd.printWord(String(pageManager.currentBlockTempReading));
     // lcd.delay(1000);

@@ -37,13 +37,19 @@ void displayEditExperiment(char key)
 
     switch (currentScreenIndex)
     {
+    // # of cycles - whole number
     case 0:
         lcd.setCursor(4, 2);
         lcd.printWord(F("# cycles- "));
-        changeOption(key, pageManager.currentStringFirstVal);
+        optionIntNum(key, pageManager.currentStringFirstVal);
         lcd.printWord(pageManager.currentStringFirstVal);
         break;
 
+    // 1. Initial step (float | whole)
+    // 2. Step 1 - Denaturation (float | whole)
+    // 3. Step 2 - Annealing (float | whole)
+    // 4. Step 3 - Extension (float | whole)
+    // 5. Final step (float | whole)
     case 1:
     case 2:
     case 3:
@@ -57,10 +63,10 @@ void displayEditExperiment(char key)
         switch (currentAnswerField)
         {
         case 0:
-            changeOption(key, pageManager.currentStringFirstVal);
+            optionFloatNum(key, pageManager.currentStringFirstVal);
             break;
         case 1:
-            changeOption(key, pageManager.currentStringSecondVal);
+            optionIntNum(key, pageManager.currentStringSecondVal);
             break;
         }
         lcd.setCursor(7, 2);
@@ -69,11 +75,12 @@ void displayEditExperiment(char key)
         lcd.printWord(pageManager.currentStringSecondVal);
         break;
 
+    // Final Hold - float
     case 6:
         lcd.setCursor(4, 2);
         lcd.printWord(rps(editOperationParams[0]));
         lcd.setCursor(7, 2);
-        changeOption(key, pageManager.currentStringFirstVal);
+        optionFloatNum(key, pageManager.currentStringFirstVal);
         lcd.printWord(pageManager.currentStringFirstVal);
         break;
 
@@ -91,7 +98,7 @@ void displayEditExperiment(char key)
     }
 }
 
-void changeOption(char key, String &currentVal)
+void optionFloatNum(char key, String &currentVal)
 {
     const int MAX_DIGIT_LENGTH = 4;
 
@@ -107,15 +114,20 @@ void changeOption(char key, String &currentVal)
     }
 }
 
+void optionIntNum(char key, String &currentVal)
+{
+    const int MAX_DIGIT_LENGTH = 3;
+
+    if (key != '\0' && key != '<' && key != '>' && key != 'A' && key != 'B' && key != 'C' && key != '.')
+    {
+        if (currentVal.length() < MAX_DIGIT_LENGTH)
+        {
+            currentVal += key;
+        }
+    }
+}
+
 bool parseStringFloat(String num)
 {
     return num.indexOf('.') == -1;
 }
-
-// Function to read a string from PROGMEM
-// const char *readProgmemString(const char *str)
-// {
-//     static char buffer[64]; // Adjust the buffer size as per your needs
-//     strcpy_P(buffer, (char *)str);
-//     return buffer;
-// }
