@@ -455,7 +455,7 @@ void PageManager::handleEditExperimentSelection(char key)
     }
     else
     {
-        if (getCurrentSubpage() == 8)
+        if (getCurrentSubpage() == 7)
         {
             if (key == 'A')
             {

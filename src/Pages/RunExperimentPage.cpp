@@ -17,8 +17,14 @@ unsigned long timeElapsedinS; // Add this if it is not declared
 
 const char currentStepTypeList[6][13] PROGMEM = {"INITIAL", "DENATURATION", "ANNEALING", "EXTENDING", "FINAL", "HOLD"};
 
+const char TEMP_FORM_STR[] PROGMEM = "%4f C";
+
 void displayRunExperiment(char key)
 {
+    // Strings
+    char setPointTempStr[16];
+    char blkTempStr[16];
+
     // lcd.printWord(String(pageManager.currentBlockTempReading));
     // lcd.delay(1000);
     int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
@@ -26,7 +32,6 @@ void displayRunExperiment(char key)
     Thermocycler currentThermocycler = thermocyclerArray.getElement(currentArrayIndex);
     Step currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
     Step::StepType currentStepType;
-    String currentStepTypeString;
 
     float finalTempReading;
 
@@ -34,8 +39,6 @@ void displayRunExperiment(char key)
     {
     case 0:
         /* LOGIC */
-        currentStepType = currentStep.getStepType();
-        currentStepTypeString = currentThermocycler.getStepTypeString(currentStepType);
 
         // Update the stepTime countdown to do Thermocycler Operation
         pageManager.currentMillis = millis();
@@ -269,7 +272,7 @@ void displayRunExperiment(char key)
         lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(4, 0);
         lcd.printWord(String(currentArrayIndex));
-        // clock
+        // Setpoint
         lcd.setCursor(15, 0);
         if (pageManager.stepArrayIndex < 4)
         {
@@ -277,7 +280,14 @@ void displayRunExperiment(char key)
         }
         else
         {
-            lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
+            if (Thermocycler::EComplete)
+            {
+                lcd.printWord(rps(currentStepTypeList[5]));
+            }
+            else
+            {
+                lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
+            }
         }
         // lcd.printWord("11:59");
 
@@ -287,7 +297,7 @@ void displayRunExperiment(char key)
         case Thermocycler::ERunning:
             // Step Type >> time set countdown
             lcd.setCursor(0, 1);
-            lcd.printWord(currentStepTypeString);
+            lcd.printWord(rps(currentStepTypeList[pageManager.stepArrayIndex]));
             lcd.setCursor(13, 1);
             lcd.printWord(F(">>  "));
             // Display the remaining step time
@@ -317,7 +327,7 @@ void displayRunExperiment(char key)
             }
             if (currentThermocycler.getNumCycles() > 0)
             {
-                lcd.printWord(currentStepTypeString);
+                lcd.printWord(rps(currentStepTypeList[pageManager.stepArrayIndex]));
             }
             else
             {
@@ -330,7 +340,7 @@ void displayRunExperiment(char key)
                 else
                 {
 
-                    lcd.printWord(currentStepTypeString);
+                    lcd.printWord(rps(currentStepTypeList[4]));
                 }
             }
             break;
@@ -338,7 +348,7 @@ void displayRunExperiment(char key)
 
         /* THIRD ROW */
         // Current block temp
-        lcd.setCursor(5, 2);
+        lcd.setCursor(6, 2);
         lcd.printWord(F("BLOCK: "));
         // lcd.printWord(String(pageManager.currentBlockTempReading));
         lcd.printWord(String(absf(pageManager.blockPWMInput)));
