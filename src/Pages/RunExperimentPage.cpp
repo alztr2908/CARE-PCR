@@ -9,7 +9,7 @@
 #include <SD.h>
 
 // Datetime
-RTC_DS1307 rtc;
+// RTC_DS1307 rtc;
 
 const int chipSelect = 53;
 
@@ -24,7 +24,7 @@ unsigned long currentMillis;
 unsigned long timeElapsedinS; // Add this if it is not declared
 */
 
-const char currentStepTypeList[6][13] PROGMEM = {"INITIAL", "DENATURATION", "ANNEALING", "EXTENDING", "FINAL", "HOLD"};
+const char currentStepTypeList[6][13] PROGMEM = {"INITIAL", "DENATURATION", "ANNEALING", "EXTENDING", "FINAL", " HOLD"};
 
 const char TEMP_FORM_STR[] PROGMEM = "%4f C";
 
@@ -59,14 +59,14 @@ void displayRunExperiment(char key)
             pageManager.timeElapsedinS++;
 
             // Put block temp reading into PID
-            if (pageManager.stepArrayIndex < 4)
-            {
-                PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
-            }
-            else
-            {
-                PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
-            }
+            // if (pageManager.stepArrayIndex < 4)
+            // {
+            //     PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
+            // }
+            // else
+            // {
+            //     PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
+            // }
 
             // Add currentBlockTempReading to data logger, if a card is detected "^^" as indicator of card detected
             if (SD.begin(chipSelect))
@@ -166,10 +166,12 @@ void displayRunExperiment(char key)
                     if (absf(pageManager.blockPWMInput) > currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = false;
+                        pageManager.blockPWMInput--;
                     }
                     else if (absf(pageManager.blockPWMInput) < currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = true;
+                        pageManager.blockPWMInput++;
                     }
                     else if (absf(pageManager.blockPWMInput) == currentStep.getStepTemperature())
                     {
@@ -212,7 +214,7 @@ void displayRunExperiment(char key)
                             currentThermocycler.setStepParams(i, currentStep);
                         }
 
-                        pageManager.stepArrayIndex = 0;
+                        pageManager.stepArrayIndex = 5;
 
                         // At final step, compare to final temp.. if equal to hold then EComplete. ERamp if not
                         if (currentThermocycler.getFinalHoldTemp() == absf(pageManager.blockPWMInput))
@@ -242,12 +244,14 @@ void displayRunExperiment(char key)
                     if (absf(pageManager.blockPWMInput) > finalTempReading)
                     {
                         pageManager.currentRampDirection = false;
+                        pageManager.blockPWMInput--;
                     }
-                    else if (absf(pageManager.blockPWMInput < finalTempReading))
+                    else if (absf(pageManager.blockPWMInput) < finalTempReading)
                     {
                         pageManager.currentRampDirection = true;
+                        pageManager.blockPWMInput++;
                     }
-                    else if (absf(pageManager.blockPWMInput == finalTempReading))
+                    else if (absf(pageManager.blockPWMInput) == finalTempReading)
                     {
                         // Final step transition or final hold
                         if (pageManager.stepArrayIndex == 4)
@@ -280,13 +284,8 @@ void displayRunExperiment(char key)
                     }
                     thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
 
-                    // Turn off peltier and heater
-                    analogWrite(9, 0);
-                    analogWrite(10, 0);
-                    analogWrite(11, 0);
 
-                    // reset to the first step
-                    pageManager.stepArrayIndex = 0;
+
                     break;
                 }
             }
@@ -301,6 +300,7 @@ void displayRunExperiment(char key)
         lcd.printWord(currentThermocycler.getProgName());
         lcd.setCursor(4, 0);
         lcd.printWord(String(currentArrayIndex));
+
         // Setpoint
         lcd.setCursor(15, 0);
         if (pageManager.stepArrayIndex < 4)
@@ -309,16 +309,15 @@ void displayRunExperiment(char key)
         }
         else
         {
-            if (Thermocycler::EComplete)
+            if (pageManager.stepArrayIndex == 4)
             {
-                lcd.printWord(rps(currentStepTypeList[5]));
+                lcd.printWord(String(currentStep.getStepTemperature()));
             }
             else
             {
-                lcd.printWord(String(currentThermocycler.getFinalHoldTemp()));
+                lcd.printWord(rps(currentStepTypeList[5]));
             }
         }
-        // lcd.printWord("11:59");
 
         /* SECOND ROW*/
         switch (currentThermocycler.getProgType())

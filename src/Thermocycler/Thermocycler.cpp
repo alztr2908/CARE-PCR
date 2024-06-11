@@ -1,5 +1,4 @@
 #include "Thermocycler.h"
-#include <EEPROM.h>
 
 Thermocycler::Thermocycler() : progName(""), finalHoldTemp(0.0), numCycles(0), ThermocyclingType(ERunning)
 {

@@ -55,7 +55,7 @@ void setup()
   double kP = 100;
   double kI = 10;
   double kD = 40;
-  pageManager.currentBlockTempReading = 0;
+  pageManager.blockPWMInput = 40;
   pageManager.setPIDMode(AUTOMATIC);
   // pageManager.getMyPID();
   // SET PID constants BELOW <- programmer input
@@ -77,13 +77,13 @@ void setup()
   Thermocycler tc1;
   // tc1 = tc1.loadFromEEPROM(0);
   tc1.setProgName("CAB");
-  tc1.setFinalHoldTemp(20.0);
-  tc1.setNumCycles(2);
-  tc1.setStep(0, Step::INITIAL, 40.0, 5);
-  tc1.setStep(1, Step::DENATURATION, 50.0, 5);
-  tc1.setStep(2, Step::ANNEALING, 60.0, 5);
-  tc1.setStep(3, Step::EXTENDING, 70.0, 5);
-  tc1.setStep(4, Step::FINAL, 30.0, 5);
+  tc1.setFinalHoldTemp(35.0);
+  tc1.setNumCycles(1);
+  tc1.setStep(0, Step::INITIAL, 45.0, 3);
+  tc1.setStep(1, Step::DENATURATION, 50.0, 3);
+  tc1.setStep(2, Step::ANNEALING, 53.0, 3);
+  tc1.setStep(3, Step::EXTENDING, 51.0, 3);
+  tc1.setStep(4, Step::FINAL, 48.0, 3);
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;

@@ -294,7 +294,12 @@ void PageManager::handleRunExperimentSelection(char key)
         {
             // Reset
             timeElapsedinS = 0;
+            stepArrayIndex = 0;
 
+            // Turn off peltier and heater
+            analogWrite(9, 0);
+            analogWrite(10, 0);
+            analogWrite(11, 0);
             handleReturnMenuSelection();
         }
         else
@@ -309,13 +314,9 @@ void PageManager::handleRunExperimentSelection(char key)
         {
             // Reset
             timeElapsedinS = 0;
+            stepArrayIndex = 0;
 
             handleReturnMenuSelection();
-        }
-        else
-        {
-            previousSubpage();
-            displayRunExperiment('\0');
         }
     }
     else
