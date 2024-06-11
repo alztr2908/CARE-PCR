@@ -59,14 +59,14 @@ void displayRunExperiment(char key)
             pageManager.timeElapsedinS++;
 
             // Put block temp reading into PID
-            // if (pageManager.stepArrayIndex < 4)
-            // {
-            //     PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
-            // }
-            // else
-            // {
-            //     PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
-            // }
+            if (pageManager.stepArrayIndex < 5)
+            {
+                PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
+            }
+            else
+            {
+                PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
+            }
 
             // Add currentBlockTempReading to data logger, if a card is detected "^^" as indicator of card detected
             if (SD.begin(chipSelect))
@@ -166,12 +166,12 @@ void displayRunExperiment(char key)
                     if (absf(pageManager.blockPWMInput) > currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = false;
-                        pageManager.blockPWMInput--;
+                        // pageManager.blockPWMInput--;
                     }
                     else if (absf(pageManager.blockPWMInput) < currentStep.getStepTemperature())
                     {
                         pageManager.currentRampDirection = true;
-                        pageManager.blockPWMInput++;
+                        // pageManager.blockPWMInput++;
                     }
                     else if (absf(pageManager.blockPWMInput) == currentStep.getStepTemperature())
                     {
@@ -244,12 +244,12 @@ void displayRunExperiment(char key)
                     if (absf(pageManager.blockPWMInput) > finalTempReading)
                     {
                         pageManager.currentRampDirection = false;
-                        pageManager.blockPWMInput--;
+                        // pageManager.blockPWMInput--;
                     }
                     else if (absf(pageManager.blockPWMInput) < finalTempReading)
                     {
                         pageManager.currentRampDirection = true;
-                        pageManager.blockPWMInput++;
+                        // pageManager.blockPWMInput++;
                     }
                     else if (absf(pageManager.blockPWMInput) == finalTempReading)
                     {
@@ -283,8 +283,6 @@ void displayRunExperiment(char key)
                         currentThermocycler.setStepParams(i, currentStep);
                     }
                     thermocyclerArray.modifyElement(currentArrayIndex, currentThermocycler);
-
-
 
                     break;
                 }
