@@ -8,6 +8,9 @@
 #include <SPI.h>
 #include <SD.h>
 
+// Datetime
+RTC_DS1307 rtc;
+
 const int chipSelect = 53;
 
 /*
@@ -70,13 +73,18 @@ void displayRunExperiment(char key)
             {
                 lcd.setCursor(9, 0);
                 lcd.printWord("^^");
-                File dataFile = SD.open("datalog.txt", FILE_WRITE);
+                File dataFile = SD.open("datalog.csv", FILE_WRITE);
                 // if the file is available, write to it:
                 if (dataFile)
                 {
                     dataFile.println(pageManager.currentBlockTempReading);
                     dataFile.close();
                 }
+            }
+            else
+            {
+                lcd.setCursor(9, 0);
+                lcd.printWord("vv");
             }
 
             // Cycle Decrement
