@@ -8,8 +8,8 @@ char keys[KEYPAD_ROWS][KEYPAD_COLS] = {
     {'4', '5', '6', 'B'},
     {'7', '8', '9', 'C'},
     {'.', '0', '<', '>'}};
-byte rowPins[KEYPAD_ROWS] = {2, 3, 4, 5};
-byte colPins[KEYPAD_COLS] = {6, 7, 8, 12};
+byte rowPins[KEYPAD_ROWS] = {22, 24, 26, 28}; // connect to the row pinouts of the keypad
+byte colPins[KEYPAD_COLS] = {31, 35, 37, 39}; // connect to the column pinouts of the keypad
 
 Keypad customKeypad = Keypad(makeKeymap(keys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_COLS);
 

@@ -4,6 +4,12 @@
 #include <Arduino.h>
 #include "utils.h"
 
+// Integrate microsd card
+#include <SPI.h>
+#include <SD.h>
+
+const int chipSelect = 53;
+
 /*
 Global
 int stepArrayIndex = 0;
@@ -49,6 +55,7 @@ void displayRunExperiment(char key)
             pageManager.previousMillis = pageManager.currentMillis;
             pageManager.timeElapsedinS++;
 
+            // Put block temp reading into PID
             if (pageManager.stepArrayIndex < 4)
             {
                 PCR_PID(pageManager.currentBlockTempReading, currentStep.getStepTemperature());
@@ -58,7 +65,17 @@ void displayRunExperiment(char key)
                 PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
             }
 
-            // Put block temp reading into PID
+            // Add currentBlockTempReading to data logger
+            if (SD.begin(chipSelect))
+            {
+                File dataFile = SD.open("datalog.txt", FILE_WRITE);
+                // if the file is available, write to it:
+                if (dataFile)
+                {
+                    dataFile.println(pageManager.currentBlockTempReading);
+                    dataFile.close();
+                }
+            }
 
             // Cycle Decrement
             if (currentThermocycler.getNumCycles() > 0)
@@ -188,7 +205,7 @@ void displayRunExperiment(char key)
                         pageManager.stepArrayIndex = 0;
 
                         // At final step, compare to final temp.. if equal to hold then EComplete. ERamp if not
-                        if (currentThermocycler.getFinalHoldTemp() == pageManager.blockPWMInput)
+                        if (currentThermocycler.getFinalHoldTemp() == absf(pageManager.blockPWMInput))
                         {
                             currentThermocycler.setProgType(Thermocycler::EComplete);
                         }
@@ -239,6 +256,8 @@ void displayRunExperiment(char key)
 
                     break;
                 case Thermocycler::EComplete:
+
+                    // Reset
                     currentThermocycler.setNumCycles(pageManager.currentCycleNo);
                     pageManager.setPageState(PageManager::RUN_EXPERIMENT_NOTRUN);
 

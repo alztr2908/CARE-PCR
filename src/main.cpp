@@ -79,11 +79,11 @@ void setup()
   tc1.setProgName("CAB");
   tc1.setFinalHoldTemp(20.0);
   tc1.setNumCycles(2);
-  tc1.setStep(0, Step::INITIAL, 100.0, 5);
-  tc1.setStep(1, Step::DENATURATION, 100.0, 30);
-  tc1.setStep(2, Step::ANNEALING, 200.0, 5);
-  tc1.setStep(3, Step::EXTENDING, 300.0, 20);
-  tc1.setStep(4, Step::FINAL, 400.0, 10);
+  tc1.setStep(0, Step::INITIAL, 40.0, 5);
+  tc1.setStep(1, Step::DENATURATION, 50.0, 5);
+  tc1.setStep(2, Step::ANNEALING, 60.0, 5);
+  tc1.setStep(3, Step::EXTENDING, 70.0, 5);
+  tc1.setStep(4, Step::FINAL, 30.0, 5);
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;

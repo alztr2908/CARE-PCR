@@ -50,6 +50,7 @@ void PCR_PID(double temp, double setPoint)
 
     // send same PWM to heater
     analogWrite(11, pageManager.blockPWMOutput);
+    // analogWrite(11, 0); // if final hold - turn on only peltier
 
     // Serial.println("Heating Mode");
   }
