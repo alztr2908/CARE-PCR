@@ -65,9 +65,11 @@ void displayRunExperiment(char key)
                 PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
             }
 
-            // Add currentBlockTempReading to data logger
+            // Add currentBlockTempReading to data logger, if a card is detected "^^" as indicator of card detected
             if (SD.begin(chipSelect))
             {
+                lcd.setCursor(9, 0);
+                lcd.printWord("^^");
                 File dataFile = SD.open("datalog.txt", FILE_WRITE);
                 // if the file is available, write to it:
                 if (dataFile)
