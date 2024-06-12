@@ -30,9 +30,6 @@ const char TEMP_FORM_STR[] PROGMEM = "%4f C";
 
 void displayRunExperiment(char key)
 {
-    // Strings
-    // char setPointTempStr[16];
-    // char blkTempStr[16];
 
     // lcd.printWord(String(pageManager.currentBlockTempReading));
     // lcd.delay(1000);
@@ -43,6 +40,12 @@ void displayRunExperiment(char key)
     Step::StepType currentStepType;
 
     float finalTempReading;
+
+    // Strings
+    char setPointTempFloat[16];
+    char setPointTempString[16];
+    char blkTempFloat[16];
+    char blkTempString[16];
 
     switch (pageManager.getCurrentSubpage())
     {
@@ -299,17 +302,19 @@ void displayRunExperiment(char key)
         lcd.setCursor(4, 0);
         lcd.printWord(String(currentArrayIndex));
 
-        // Setpoint
+        // Setpoint - format string
         lcd.setCursor(15, 0);
+        dtostrf(currentStep.getStepTemperature(), 5, 2, setPointTempFloat); // convert to char array with 6 digits, 2 decimal places
+        sprintf(setPointTempString, "%s", setPointTempFloat);
         if (pageManager.stepArrayIndex < 4)
         {
-            lcd.printWord(String(currentStep.getStepTemperature()));
+            lcd.printWord(setPointTempString);
         }
         else
         {
             if (pageManager.stepArrayIndex == 4)
             {
-                lcd.printWord(String(currentStep.getStepTemperature()));
+                lcd.printWord(setPointTempString);
             }
             else
             {
@@ -376,9 +381,12 @@ void displayRunExperiment(char key)
         // Current block temp
         lcd.setCursor(6, 2);
         lcd.printWord(F("BLOCK: "));
-        // lcd.printWord(String(pageManager.currentBlockTempReading));
-        lcd.printWord(String(absf(pageManager.blockPWMInput)));
-        // lcd.printWord(F(" C"));
+        // Convert the float value blockPWMInput to a string and then to a char array
+        dtostrf(absf(pageManager.blockPWMInput), 5, 2, blkTempFloat); // convert to char array with 6 digits, 2 decimal places
+        sprintf(blkTempString, "%s", blkTempFloat);
+        lcd.printWord(blkTempString);
+        lcd.printWord(F(" C"));
+        // lcd.printWord(String(absf(pageManager.blockPWMInput)));
 
         /* FOURTH ROW */
         // Cycle and elapsed time -> ProgType
