@@ -26,8 +26,6 @@ unsigned long timeElapsedinS; // Add this if it is not declared
 
 const char currentStepTypeList[6][13] PROGMEM = {"INITIAL", "DENATURATION", "ANNEALING", "EXTENDING", "FINAL", " HOLD"};
 
-const char TEMP_FORM_STR[] PROGMEM = "%4f C";
-
 void displayRunExperiment(char key)
 {
 
@@ -402,7 +400,7 @@ void displayRunExperiment(char key)
             // lcd.printWord("Out:");
             // lcd.printWord(String(pageManager.blockPWMOutput));
             lcd.setCursor(0, 3);
-            lcd.printWord(String(currentThermocycler.getNumCycles()));
+            lcd.printWord(String(pageManager.currentCycleNo - currentThermocycler.getNumCycles()));
             lcd.printWord(" of ");
             lcd.printWord(String(pageManager.currentCycleNo));
             lcd.setCursor(12, 3);
