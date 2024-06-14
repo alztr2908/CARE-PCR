@@ -18,8 +18,8 @@ PID::SetControllerDirection(int Direction)
 // double Setpoint, Input, Output, Kp, Ki, Kd;
 // PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
-unsigned long currentTime;
-unsigned long previousTime = 0;
+// unsigned long currentTime;
+// unsigned long previousTime = 0;
 
 void displayWelcome()
 {
@@ -101,6 +101,9 @@ void setup()
   // lcd.printWord(String(sizeof(tc3)));
   // lcd.delay(3000);
   // lcd.clear();
+
+  // Setup rtc
+  rtcManager.begin(); // one-time only(??)
 
   // Display
   displayWelcome();
