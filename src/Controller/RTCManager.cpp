@@ -28,13 +28,6 @@ void RTCManager::begin()
     }
 }
 
-// Set the time on the RTC
-// void RTCManager::setTime(uint8_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute, uint8_t second, uint8_t dow)
-// {
-//     Ds1302::DateTime dt = {year, month, day, hour, minute, second, dow};
-//     rtc.setDateTime(&dt);
-// }
-
 // Update the current time from the RTC
 void RTCManager::updateTime()
 {

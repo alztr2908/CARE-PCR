@@ -15,12 +15,6 @@ PID::SetMode(int Mode)
 PID::SetControllerDirection(int Direction)
 */
 
-// double Setpoint, Input, Output, Kp, Ki, Kd;
-// PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
-
-// unsigned long currentTime;
-// unsigned long previousTime = 0;
-
 void displayWelcome()
 {
   // Serial.begin(115200);
@@ -73,9 +67,7 @@ void setup()
   digitalWrite(11, 0);
 
   // Initialize and add thermocyclers classes
-
   Thermocycler tc1;
-  // tc1 = tc1.loadFromEEPROM(0);
   tc1.setProgName("CAB");
   tc1.setFinalHoldTemp(35.0);
   tc1.setNumCycles(1);
@@ -87,20 +79,9 @@ void setup()
   thermocyclerArray.addElement(0, tc1);
 
   Thermocycler tc2;
-  // tc2.loadFromEEPROM(100);
   thermocyclerArray.addElement(1, tc2);
   Thermocycler tc3;
-  // tc3.loadFromEEPROM(200);
   thermocyclerArray.addElement(2, tc3);
-
-  // lcd.setCursor(0, 0);
-  // lcd.printWord(String(sizeof(tc1)));
-  // lcd.setCursor(0, 1);
-  // lcd.printWord(String(sizeof(tc2)));
-  // lcd.setCursor(0, 2);
-  // lcd.printWord(String(sizeof(tc3)));
-  // lcd.delay(3000);
-  // lcd.clear();
 
   // Setup rtc
   rtc.begin(); // one-time only without battery(??)
@@ -110,18 +91,8 @@ void setup()
   displayMenuPage();
 }
 
-// void foo()
-// {
-//   pageManager.currentBlockTempReading = ReadTemp();
-//   displayRunExperiment();
-// }
-
 void loop()
 {
-  // pageManager.currentBlockTempReading = ReadTemp();
-  // displayRunExperiment();
-
-  // handleKeypad();
   switch (pageManager.getPageState())
   {
   case PageManager::RUN_EXPERIMENT_RUN:
