@@ -35,7 +35,6 @@ void PageManager::setPIDMode(int mode)
 void PageManager::setPageState(PageState page)
 {
     currentState = page;
-    // resetSubpage();
 }
 
 PageManager::PageState PageManager::getPageState() const
@@ -397,12 +396,6 @@ void PageManager::handleEditExperimentSelection(char key)
             currTc.setStep(3, Step::EXTENDING, stepTempHolder[3], stepTimeHolder[3]);
             currTc.setStep(4, Step::FINAL, stepTempHolder[4], stepTimeHolder[4]);
 
-            // Serial.println(String(currTc.getStep(0).getStepTemperature()));
-            // Serial.println(String(currTc.getStep(1).getStepTemperature()));
-            // Serial.println(String(currTc.getStep(2).getStepTemperature()));
-            // Serial.println(String(currTc.getStep(3).getStepTemperature()));
-            // Serial.println(String(currTc.getStep(4).getStepTemperature()));
-            // currTc.saveToEEPROM(currentThermocyclerArrayIndex * 100);
             thermocyclerArray.modifyElement(currentThermocyclerArrayIndex, currTc);
 
             // Clear and reset values

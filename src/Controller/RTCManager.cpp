@@ -44,9 +44,8 @@ char *RTCManager::displayDateFilename()
     {
         last_second = now.second;
         sprintf(timeFilename, "%02d%02d%02d.csv", now.hour, now.minute, now.second);
-
-        /* "logMMSS.csv" */
     }
 
+    /* "HHMMSS.csv" */
     return timeFilename;
 }

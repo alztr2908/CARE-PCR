@@ -15,15 +15,11 @@ public:
     void clear();
     void setCursor(int col, int row);
     void delay(unsigned long ms);
-    // Add more methods as needed
 
 private:
     LiquidCrystal_I2C lcd;
     uint8_t cols;
     uint8_t rows;
 };
-
-// Declare the extern instance
-// extern LCDManager lcd;
 
 #endif

@@ -21,8 +21,6 @@ public:
     void deleteElement(int index);
     void modifyElement(int index, Thermocycler thermocycler);
     Thermocycler getElement(int index);
-
-    // const Thermocycler *getThermocyclers() const { return thermocyclerArray; }
 };
 
 #endif

@@ -105,7 +105,4 @@ private:
     PID myPID;
 };
 
-// Declare the extern instance
-// extern PageManager pageManager;
-
 #endif

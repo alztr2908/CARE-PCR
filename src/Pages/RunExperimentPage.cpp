@@ -29,10 +29,7 @@ const char currentStepTypeList[6][13] PROGMEM = {"INITIAL", "DENATURATION", "ANN
 void displayRunExperiment(char key)
 {
 
-    // lcd.printWord(String(pageManager.currentBlockTempReading));
-    // lcd.delay(1000);
     int currentArrayIndex = pageManager.currentThermocyclerArrayIndex;
-    // int currentArrayIndex = 0;
     Thermocycler currentThermocycler = thermocyclerArray.getElement(currentArrayIndex);
     Step currentStep = currentThermocycler.getStep(pageManager.stepArrayIndex);
     Step::StepType currentStepType;
@@ -387,7 +384,6 @@ void displayRunExperiment(char key)
         sprintf(blkTempString, "%s", blkTempFloat);
         lcd.printWord(blkTempString);
         lcd.printWord(F(" C"));
-        // lcd.printWord(String(absf(pageManager.blockPWMInput)));
 
         /* FOURTH ROW */
         // Cycle and elapsed time -> ProgType
@@ -395,13 +391,6 @@ void displayRunExperiment(char key)
         {
         case Thermocycler::ERunning:
         case Thermocycler::ERamp:
-            // lcd.setCursor(0, 3);
-            // lcd.printWord("In:");
-            // lcd.printWord(String(pageManager.blockPWMInput));
-
-            // lcd.setCursor(10, 3);
-            // lcd.printWord("Out:");
-            // lcd.printWord(String(pageManager.blockPWMOutput));
             lcd.setCursor(0, 3);
             lcd.printWord(String(pageManager.currentCycleNo - currentThermocycler.getNumCycles()));
             lcd.printWord(" of ");
