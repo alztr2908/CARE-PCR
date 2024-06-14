@@ -11,21 +11,21 @@ RTCManager::RTCManager(int pinEna, int pinClk, int pinDat) : rtc(pinEna, pinClk,
 void RTCManager::begin()
 {
     rtc.init();
-    Ds1302::DateTime dt = {
-        .year = 24,
-        .month = Ds1302::MONTH_JUN,
-        .day = 15,
-        .hour = 02,
-        .minute = 55,
-        .second = 00,
-        .dow = Ds1302::DOW_SAT,
-    };
 
-    rtc.setDateTime(&dt);
     // Test if clock is halted and set a date-time to start it
-    // if (rtc.isHalted())
-    // {
-    // }
+    if (rtc.isHalted())
+    {
+        Ds1302::DateTime dt = {
+            .year = 24,
+            .month = Ds1302::MONTH_JUN,
+            .day = 15,
+            .hour = 02,
+            .minute = 55,
+            .second = 00,
+            .dow = Ds1302::DOW_SAT,
+        };
+        rtc.setDateTime(&dt);
+    }
 }
 
 // Set the time on the RTC

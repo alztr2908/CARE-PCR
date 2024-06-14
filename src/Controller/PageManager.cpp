@@ -252,8 +252,9 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // Init time
                 timeElapsedinS = 0;
 
-                // Set RTC filename
+                // Save final rtc reading
                 rtc.updateTime();
+                displayDateFilenameHolder = rtc.displayDateFilename();
 
                 // Init block temperature.
                 // Block temp reading simulation temp and will  setProgState (ERunning or ERamp)

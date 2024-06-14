@@ -69,13 +69,15 @@ void displayRunExperiment(char key)
                 PCR_PID(pageManager.currentBlockTempReading, currentThermocycler.getFinalHoldTemp());
             }
 
-            const char *filename = rtc.displayDateFilename();
+            // Set RTC filename
+            rtc.updateTime();
+
             // Add currentBlockTempReading to data logger, if a card is detected "^^" as indicator of card detected
             if (SD.begin(chipSelect))
             {
                 lcd.setCursor(9, 0);
                 lcd.printWord("^^");
-                File dataFile = SD.open(filename, FILE_WRITE);
+                File dataFile = SD.open(pageManager.displayDateFilenameHolder, FILE_WRITE);
                 // if the file is available, write to it:
                 if (dataFile)
                 {

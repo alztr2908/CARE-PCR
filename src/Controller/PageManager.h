@@ -86,6 +86,9 @@ public:
     void PIDCompute();
     void setPIDMode(int mode);
 
+    // RTC
+    const char *displayDateFilenameHolder;
+
 private:
     // Accesory methods
     void resetSubpage();
