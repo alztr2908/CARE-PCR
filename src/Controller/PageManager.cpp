@@ -252,6 +252,9 @@ void PageManager::handleSavedExperimentSelection(char key)
                 // Init time
                 timeElapsedinS = 0;
 
+                // Set RTC filename
+                rtc.updateTime();
+
                 // Init block temperature.
                 // Block temp reading simulation temp and will  setProgState (ERunning or ERamp)
                 if (currentThermocycler.getStep(0).getStepTemperature() == currentBlockTempReading)

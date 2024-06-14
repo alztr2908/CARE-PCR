@@ -11,22 +11,21 @@ RTCManager::RTCManager(int pinEna, int pinClk, int pinDat) : rtc(pinEna, pinClk,
 void RTCManager::begin()
 {
     rtc.init();
+    Ds1302::DateTime dt = {
+        .year = 24,
+        .month = Ds1302::MONTH_JUN,
+        .day = 15,
+        .hour = 02,
+        .minute = 55,
+        .second = 00,
+        .dow = Ds1302::DOW_SAT,
+    };
 
+    rtc.setDateTime(&dt);
     // Test if clock is halted and set a date-time to start it
-    if (rtc.isHalted())
-    {
-        Ds1302::DateTime dt = {
-            .year = 24,
-            .month = Ds1302::MONTH_JUN,
-            .day = 15,
-            .hour = 12,
-            .minute = 51,
-            .second = 02,
-            .dow = Ds1302::DOW_SAT,
-        };
-
-        rtc.setDateTime(&dt);
-    }
+    // if (rtc.isHalted())
+    // {
+    // }
 }
 
 // Set the time on the RTC
@@ -46,31 +45,15 @@ void RTCManager::updateTime()
 char *RTCManager::displayDateFilename()
 {
     static uint8_t last_second = 0;
-    char timeFilename[30];
+    static char timeFilename[10];
 
     if (last_second != now.second)
     {
         last_second = now.second;
+        sprintf(timeFilename, "%02d%02d%02d.csv", now.hour, now.minute, now.second);
 
-        /* "templog_YYYY-DD-MM_HHMMSS.csv" */
-        sprintf(timeFilename, "templog_20%02d-%02d-%02d_%02d%02d%02d.csv", now.year, now.day, now.month, now.hour, now.minute, now.second);
+        /* "logMMSS.csv" */
     }
 
     return timeFilename;
-}
-
-char *RTCManager::displayClockTime()
-{
-    static uint8_t last_second = 0;
-    char clockTime[6];
-
-    if (last_second != now.second)
-    {
-        last_second = now.second;
-
-        /* "templog_YYYY-DD-MM_HHMMSS.csv" */
-        sprintf(clockTime, "%02d:%02d", now.hour, now.minute);
-    }
-
-    return clockTime;
 }
