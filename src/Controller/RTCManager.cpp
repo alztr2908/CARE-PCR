@@ -62,7 +62,7 @@ char *RTCManager::displayDateFilename()
 char *RTCManager::displayClockTime()
 {
     static uint8_t last_second = 0;
-    char clockTime[5];
+    char clockTime[6];
 
     if (last_second != now.second)
     {

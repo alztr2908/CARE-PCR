@@ -103,7 +103,7 @@ void setup()
   // lcd.clear();
 
   // Setup rtc
-  rtcManager.begin(); // one-time only(??)
+  rtc.begin(); // one-time only without battery(??)
 
   // Display
   displayWelcome();

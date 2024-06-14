@@ -295,6 +295,7 @@ void PageManager::handleRunExperimentSelection(char key)
             // Reset
             timeElapsedinS = 0;
             stepArrayIndex = 0;
+            previousMillis = 0;
 
             // Turn off peltier and heater
             analogWrite(9, 0);
@@ -315,6 +316,7 @@ void PageManager::handleRunExperimentSelection(char key)
             // Reset
             timeElapsedinS = 0;
             stepArrayIndex = 0;
+            previousMillis = 0;
 
             handleReturnMenuSelection();
         }

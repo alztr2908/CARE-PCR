@@ -13,10 +13,19 @@ void displayMenuPage(char key)
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.printWord(rps(welcomeMsg));
-    lcd.setCursor(15, 0);
-    lcd.printWord(rps(timeMsg));
     lcd.setCursor(0, 2);
     lcd.printWord(rps(optionAMsg));
     lcd.setCursor(0, 3);
     lcd.printWord(rps(optionBMsg));
+
+    // Ticking clock every minute 60s
+    lcd.setCursor(15, 0);
+    pageManager.currentMillis = millis();
+    if (pageManager.currentMillis - pageManager.previousMillis >= 1000)
+    {
+        pageManager.previousMillis = pageManager.currentMillis;
+        lcd.printWord(String(pageManager.previousMillis));
+        // rtc.updateTime();
+        // lcd.printWord(rtc.displayClockTime());
+    }
 }

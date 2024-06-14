@@ -9,6 +9,6 @@
 extern LCDManager lcd;
 extern PageManager pageManager;
 extern ThermocyclerArray thermocyclerArray;
-extern RTCManager rtcManager;
+extern RTCManager rtc;
 
 #endif
