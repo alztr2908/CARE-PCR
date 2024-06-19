@@ -131,7 +131,7 @@ float ReadTemp()
   float Vout = (analogRead(A0) * (5.0 / 1024.0));
   // Serial.println("Vout: ");
   // Serial.println(Vout);
-  float R_NTC = (Vout * 51000) / (3.3 - Vout);
+  float R_NTC = (Vout * 56000) / (3.3 - Vout);
   // Serial.println("RNTC: ");
   // Serial.println(R_NTC);
   float Temp_C = ConvertToTemp((R_NTC / 1000.0));

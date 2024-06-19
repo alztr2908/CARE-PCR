@@ -300,7 +300,7 @@ void PageManager::handleRunExperimentSelection(char key)
             stepArrayIndex = 0;
             previousMillis = 0;
 
-            // Turn off peltier and heater
+            // Turn off peltier and heater - Not needed since it was turned off after EComplete
             analogWrite(9, 0);
             analogWrite(10, 0);
             analogWrite(11, 0);

@@ -18,11 +18,11 @@ void RTCManager::begin()
         Ds1302::DateTime dt = {
             .year = 24,
             .month = Ds1302::MONTH_JUN,
-            .day = 15,
-            .hour = 02,
-            .minute = 55,
-            .second = 00,
-            .dow = Ds1302::DOW_SAT,
+            .day = 17,
+            .hour = 00,
+            .minute = 38,
+            .second = 30,
+            .dow = Ds1302::DOW_MON,
         };
         rtc.setDateTime(&dt);
     }

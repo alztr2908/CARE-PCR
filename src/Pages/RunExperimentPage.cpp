@@ -276,6 +276,11 @@ void displayRunExperiment(char key)
                     currentThermocycler.setNumCycles(pageManager.currentCycleNo);
                     pageManager.setPageState(PageManager::RUN_EXPERIMENT_NOTRUN);
 
+                    // Turn off peltier and heater
+                    analogWrite(9, 0);
+                    analogWrite(10, 0);
+                    analogWrite(11, 0);
+
                     for (int i = 0; i < 5; i++)
                     {
                         currentStep = currentThermocycler.getStep(i);

@@ -3,13 +3,14 @@
 #include "utils.h"
 
 const char editOperationList[8][14] PROGMEM = {
-    "Initial Step",
     "Cycles",
+    "Initial Step",
     "Denaturation",
     "Annealing",
     "Extending",
     "Final Step",
-    "Final Hold"};
+    "Final Hold",
+};
 
 const char editOperationParams[2][4] PROGMEM = {"C- ", "T- "};
 
